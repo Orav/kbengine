@@ -31,18 +31,18 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "mysql/mysql.h"
 #if KBE_PLATFORM == PLATFORM_WIN32
-#ifdef _DEBUG
-#pragma comment (lib, "libmysql_d.lib")
-#pragma comment (lib, "mysqlclient_d.lib")
+#ifdef X64
+#pragma comment (lib, "libmysql64.lib")
+#pragma comment (lib, "mysqlclient64.lib")
 #else
-#pragma comment (lib, "libmysql.lib")
-#pragma comment (lib, "mysqlclient.lib")
+#pragma comment (lib, "libmysql32.lib")
+#pragma comment (lib, "mysqlclient32.lib")
 #endif
 #endif
 
 namespace KBEngine { 
 
-struct TABLE_FIELD
+struct MYSQL_TABLE_FIELD
 {
 	std::string name;
 	int32 length;
@@ -57,22 +57,21 @@ struct TABLE_FIELD
 class DBInterfaceMysql : public DBInterface
 {
 public:
-	DBInterfaceMysql(std::string characterSet, std::string collation);
+	DBInterfaceMysql(const char* name, std::string characterSet, std::string collation);
 	virtual ~DBInterfaceMysql();
 
-	static bool initInterface(DBInterface* dbi);
+	static bool initInterface(DBInterface* pdbi);
 	
 	/**
 		与某个数据库关联
 	*/
+	bool reattach();
 	virtual bool attach(const char* databaseName = NULL);
 	virtual bool detach();
 
 	bool ping(){ 
 		return mysql_ping(pMysql_) == 0; 
 	}
-
-	bool reattach();
 
 	void inTransaction(bool value)
 	{
@@ -94,7 +93,7 @@ public:
 	*/
 	virtual bool checkErrors();
 
-	virtual bool query(const char* strCommand, uint32 size, bool showExecInfo = true, MemoryStream * result = NULL);
+	virtual bool query(const char* strCommand, uint32 size, bool printlog = true, MemoryStream * result = NULL);
 
 	bool write_query_result(MemoryStream * result);
 
@@ -133,7 +132,7 @@ public:
 
 	unsigned int getLastErrorNum() { return mysql_errno( pMysql_ ); }
 
-	typedef KBEUnordered_map<std::string, TABLE_FIELD> TABLE_FIELDS;
+	typedef KBEUnordered_map<std::string, MYSQL_TABLE_FIELD> TABLE_FIELDS;
 	void getFields(TABLE_FIELDS& outs, const char* tableName);
 
 	/**
@@ -159,7 +158,7 @@ public:
 	/**
 		创建一个entity存储表
 	*/
-	virtual EntityTable* createEntityTable();
+	virtual EntityTable* createEntityTable(EntityTables* pEntityTables);
 
 	/** 
 		从数据库删除entity表
@@ -189,7 +188,7 @@ protected:
 
 	bool inTransaction_;
 
-	DBTransaction lock_;
+	mysql::DBTransaction lock_;
 
 	std::string characterSet_;
 	std::string collation_;

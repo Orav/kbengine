@@ -97,7 +97,7 @@ public:
 		想dbmgr请求执行一个数据库命令
 	*/
 	static PyObject* __py_executeRawDatabaseCommand(PyObject* self, PyObject* args);
-	void executeRawDatabaseCommand(const char* datas, uint32 size, PyObject* pycallback, ENTITY_ID eid);
+	void executeRawDatabaseCommand(const char* datas, uint32 size, PyObject* pycallback, ENTITY_ID eid, const std::string& dbInterfaceName);
 	void onExecuteRawDatabaseCommandCB(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
 	/** 网络接口
@@ -250,8 +250,15 @@ public:
 	int raycast(SPACE_ID spaceID, int layer, const Position3D& start, const Position3D& end, std::vector<Position3D>& hitPos);
 	static PyObject* __py_raycast(PyObject* self, PyObject* args);
 
+	uint32 flags() const { return flags_; }
+	void flags(uint32 v) { flags_ = v; }
+	static PyObject* __py_setFlags(PyObject* self, PyObject* args);
+	static PyObject* __py_getFlags(PyObject* self, PyObject* args);
+
 protected:
-	GlobalDataClient*					pCellAppData_;									// cellAppData
+	// cellAppData
+	GlobalDataClient*					pCellAppData_;
+
 	ForwardComponent_MessageBuffer		forward_messagebuffer_;
 
 	Updatables							updatables_;
@@ -264,6 +271,9 @@ protected:
 	WitnessedTimeoutHandler	*			pWitnessedTimeoutHandler_;
 
 	GhostManager*						pGhostManager_;
+	
+	// APP的标志
+	uint32								flags_;
 };
 
 }

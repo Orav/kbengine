@@ -34,7 +34,7 @@ static KBEUnordered_map< std::string, uint32 > g_querystatistics;
 static bool _g_installedWatcher = false;
 static bool _g_debug = false;
 
-void querystatistics(const char* strCommand, uint32 size)
+static void querystatistics(const char* strCommand, uint32 size)
 {
 	std::string op;
 	for(uint32 i=0; i<size; ++i)
@@ -65,7 +65,7 @@ void querystatistics(const char* strCommand, uint32 size)
 	_g_logMutex.unlockMutex();
 }
 
-uint32 watcher_query(std::string cmd)
+static uint32 watcher_query(std::string cmd)
 {
 	KBEngine::thread::ThreadGuard tg(&_g_logMutex); 
 
@@ -78,52 +78,52 @@ uint32 watcher_query(std::string cmd)
 	return 0;
 }
 
-uint32 watcher_select()
+static uint32 watcher_select()
 {
 	return watcher_query("SELECT");
 }
 
-uint32 watcher_delete()
+static uint32 watcher_delete()
 {
 	return watcher_query("DELETE");
 }
 
-uint32 watcher_insert()
+static uint32 watcher_insert()
 {
 	return watcher_query("INSERT");
 }
 
-uint32 watcher_update()
+static uint32 watcher_update()
 {
 	return watcher_query("UPDATE");
 }
 
-uint32 watcher_create()
+static uint32 watcher_create()
 {
 	return watcher_query("CREATE");
 }
 
-uint32 watcher_drop()
+static uint32 watcher_drop()
 {
 	return watcher_query("DROP");
 }
 
-uint32 watcher_show()
+static uint32 watcher_show()
 {
 	return watcher_query("SHOW");
 }
 
-uint32 watcher_alter()
+static uint32 watcher_alter()
 {
 	return watcher_query("ALTER");
 }
 
-uint32 watcher_grant()
+static uint32 watcher_grant()
 {
 	return watcher_query("GRANT");
 }
 
-void initializeWatcher()
+static void initializeWatcher()
 {
 	if(_g_installedWatcher)
 		return;
@@ -144,8 +144,8 @@ void initializeWatcher()
 
 size_t DBInterfaceMysql::sql_max_allowed_packet_ = 0;
 //-------------------------------------------------------------------------------------
-DBInterfaceMysql::DBInterfaceMysql(std::string characterSet, std::string collation) :
-DBInterface(),
+DBInterfaceMysql::DBInterfaceMysql(const char* name, std::string characterSet, std::string collation) :
+DBInterface(name),
 pMysql_(NULL),
 hasLostConnection_(false),
 inTransaction_(false),
@@ -162,11 +162,13 @@ DBInterfaceMysql::~DBInterfaceMysql()
 }
 
 //-------------------------------------------------------------------------------------
-bool DBInterfaceMysql::initInterface(DBInterface* dbi)
+bool DBInterfaceMysql::initInterface(DBInterface* pdbi)
 {
-	EntityTables::getSingleton().addKBETable(new KBEAccountTableMysql());
-	EntityTables::getSingleton().addKBETable(new KBEEntityLogTableMysql());
-	EntityTables::getSingleton().addKBETable(new KBEEmailVerificationTableMysql());	
+	EntityTables& entityTables = EntityTables::findByInterfaceName(pdbi->name());
+
+	entityTables.addKBETable(new KBEAccountTableMysql(&entityTables));
+	entityTables.addKBETable(new KBEEntityLogTableMysql(&entityTables));
+	entityTables.addKBETable(new KBEEmailVerificationTableMysql(&entityTables));
 	return true;
 }
 
@@ -314,8 +316,8 @@ bool DBInterfaceMysql::checkEnvironment()
 				}
 				else
 				{
-					CRITICAL_MSG(fmt::format("DBInterfaceMysql::checkEnvironment: [my.cnf or my.ini]->lower_case_table_names != 0, curr={}!\n"
-						"Windows use cmd('sc qc MySQL|find \".ini\"') to view the configuration directory.\n", v));
+					CRITICAL_MSG(fmt::format("DBInterfaceMysql::checkEnvironment: [my.cnf or my.ini]->lower_case_table_names != 2 or 0, curr={}!\n"
+						"Windows use CMD(wmic service where \"name like 'mysql%'\") to view the configuration directory.\n", v));
 				}
 			}
 			else if(s == "max_allowed_packet")
@@ -335,7 +337,7 @@ bool DBInterfaceMysql::checkEnvironment()
 //-------------------------------------------------------------------------------------
 bool DBInterfaceMysql::createDatabaseIfNotExist()
 {
-	std::string querycmd = fmt::format("create database {}", DBUtil::dbname());
+	std::string querycmd = fmt::format("create database {}", db_name_);
 	query(querycmd.c_str(), querycmd.size(), false);
 	return true;
 }
@@ -362,6 +364,9 @@ bool DBInterfaceMysql::checkErrors()
 	{
 		querycmd = "DROP TABLE `kbe_email_verification`, `kbe_accountinfos`";
 
+		WARNING_MSG(fmt::format("DBInterfaceRedis::checkErrors: not found {} table, reset kbe_* table...\n", 
+			DBUtil::accountScriptName()));
+		
 		try
 		{
 			query(querycmd.c_str(), querycmd.size(), false);
@@ -369,6 +374,8 @@ bool DBInterfaceMysql::checkErrors()
 		catch (...)
 		{
 		}
+		
+		WARNING_MSG(fmt::format("DBInterfaceRedis::checkErrors: reset kbe_* table end!\n"));
 	}
 
 	return true;
@@ -406,9 +413,9 @@ bool DBInterfaceMysql::detach()
 }
 
 //-------------------------------------------------------------------------------------
-EntityTable* DBInterfaceMysql::createEntityTable()
+EntityTable* DBInterfaceMysql::createEntityTable(EntityTables* pEntityTables)
 {
-	return new EntityTableMysql();
+	return new EntityTableMysql(pEntityTables);
 }
 
 //-------------------------------------------------------------------------------------
@@ -437,31 +444,18 @@ bool DBInterfaceMysql::dropEntityTableItemFromDB(const char* tableName, const ch
 }
 
 //-------------------------------------------------------------------------------------
-void DBInterfaceMysql::throwError()
-{
-	DBException e( this );
-
-	if (e.isLostConnection())
-	{
-		this->hasLostConnection(true);
-	}
-
-	throw e;
-}
-
-//-------------------------------------------------------------------------------------
-bool DBInterfaceMysql::query(const char* cmd, uint32 size, bool showExecInfo, MemoryStream * result)
+bool DBInterfaceMysql::query(const char* cmd, uint32 size, bool printlog, MemoryStream * result)
 {
 	if(pMysql_ == NULL)
 	{
-		if(showExecInfo)
+		if(printlog)
 		{
 			ERROR_MSG(fmt::format("DBInterfaceMysql::query: has no attach(db).sql:({})\n", lastquery_));
 		}
 
 		if(result)
 			write_query_result(result);
-		
+
 		return false;
 	}
 
@@ -477,8 +471,8 @@ bool DBInterfaceMysql::query(const char* cmd, uint32 size, bool showExecInfo, Me
     int nResult = mysql_real_query(pMysql_, cmd, size);  
 
     if(nResult != 0)  
-    {  
-		if(showExecInfo)
+    {
+		if(printlog)
 		{
 			ERROR_MSG(fmt::format("DBInterfaceMysql::query: is error({}:{})!\nsql:({})\n", 
 				mysql_errno(pMysql_), mysql_error(pMysql_), lastquery_)); 
@@ -488,17 +482,17 @@ bool DBInterfaceMysql::query(const char* cmd, uint32 size, bool showExecInfo, Me
 		
 		if(result)
 			write_query_result(result);
-		
+
         return false;
-    }  
+    } 
     else
     {
-		if(showExecInfo)
+		if(printlog)
 		{
 			INFO_MSG("DBInterfaceMysql::query: successfully!\n"); 
 		}
     }
-    
+
     return result == NULL || write_query_result(result);
 }
 
@@ -611,8 +605,8 @@ bool DBInterfaceMysql::getTableItemNames(const char* tableName, std::vector<std:
 const char* DBInterfaceMysql::c_str()
 {
 	static char strdescr[MAX_BUF];
-	kbe_snprintf(strdescr, MAX_BUF, "dbtype=mysql, ip=%s, port=%u, currdatabase=%s, username=%s, connected=%s.\n", 
-		db_ip_, db_port_, db_name_, db_username_, pMysql_ == NULL ? "no" : "yes");
+	kbe_snprintf(strdescr, MAX_BUF, "interface=%s, dbtype=mysql, ip=%s, port=%u, currdatabase=%s, username=%s, connected=%s.\n", 
+		name_, db_ip_, db_port_, db_name_, db_username_, pMysql_ == NULL ? "no" : "yes");
 
 	return strdescr;
 }
@@ -650,7 +644,7 @@ void DBInterfaceMysql::getFields(TABLE_FIELDS& outs, const char* tableName)
 
 	for(unsigned int i=0; i<numFields; ++i)
 	{
-		TABLE_FIELD& info = outs[fields[i].name];
+		MYSQL_TABLE_FIELD& info = outs[fields[i].name];
 		info.name = fields[i].name;
 		info.length = fields[i].length;
 		info.maxlength = fields[i].max_length;
@@ -677,6 +671,19 @@ bool DBInterfaceMysql::unlock()
 }
 
 //-------------------------------------------------------------------------------------
+void DBInterfaceMysql::throwError()
+{
+	DBException e( this );
+
+	if (e.isLostConnection())
+	{
+		this->hasLostConnection(true);
+	}
+
+	throw e;
+}
+
+//-------------------------------------------------------------------------------------
 bool DBInterfaceMysql::processException(std::exception & e)
 {
 	DBException* dbe = static_cast<DBException*>(&e);
@@ -684,7 +691,7 @@ bool DBInterfaceMysql::processException(std::exception & e)
 
 	if (dbe->isLostConnection())
 	{
-		INFO_MSG(fmt::format("DBInterfaceMysql::processException: "
+		ERROR_MSG(fmt::format("DBInterfaceMysql::processException: "
 				"Thread {:p} lost connection to database. Exception: {}. "
 				"Attempting to reconnect.\n",
 			(void*)this,

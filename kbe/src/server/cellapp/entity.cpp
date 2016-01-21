@@ -68,6 +68,7 @@ SCRIPT_METHOD_DECLARE("cancelController",			pyCancelController,				METH_VARARGS,
 SCRIPT_METHOD_DECLARE("canNavigate",				pycanNavigate,					METH_VARARGS,				0)
 SCRIPT_METHOD_DECLARE("navigatePathPoints",			pyNavigatePathPoints,			METH_VARARGS,				0)
 SCRIPT_METHOD_DECLARE("navigate",					pyNavigate,						METH_VARARGS,				0)
+SCRIPT_METHOD_DECLARE("getRandomPoints",			pyGetRandomPoints,				METH_VARARGS,				0)
 SCRIPT_METHOD_DECLARE("moveToPoint",				pyMoveToPoint,					METH_VARARGS,				0)
 SCRIPT_METHOD_DECLARE("moveToEntity",				pyMoveToEntity,					METH_VARARGS,				0)
 SCRIPT_METHOD_DECLARE("entitiesInRange",			pyEntitiesInRange,				METH_VARARGS,				0)
@@ -98,7 +99,7 @@ ENTITY_GETSET_DECLARE_END()
 BASE_SCRIPT_INIT(Entity, 0, 0, 0, 0, 0)	
 
 //-------------------------------------------------------------------------------------
-Entity::Entity(ENTITY_ID id, const ScriptDefModule* scriptModule):
+Entity::Entity(ENTITY_ID id, const ScriptDefModule* pScriptModule):
 ScriptObject(getScriptType(), true),
 ENTITY_CONSTRUCTION(Entity),
 clientMailbox_(NULL),
@@ -118,8 +119,8 @@ topSpeedY_(-0.1f),
 witnesses_(),
 witnesses_count_(0),
 pWitness_(NULL),
-allClients_(new AllClients(scriptModule, id, false)),
-otherClients_(new AllClients(scriptModule, id, true)),
+allClients_(new AllClients(pScriptModule, id, false)),
+otherClients_(new AllClients(pScriptModule, id, true)),
 pEntityCoordinateNode_(NULL),
 pControllers_(new Controllers(id)),
 pyPositionChangedCallback_(),
@@ -394,7 +395,7 @@ PyObject* Entity::onScriptGetAttribute(PyObject* attr)
 	// 如果是ghost调用def方法则需要rpc调用。
 	if(!isReal())
 	{
-		MethodDescription* pMethodDescription = const_cast<ScriptDefModule*>(scriptModule())->findCellMethodDescription(ccattr);
+		MethodDescription* pMethodDescription = const_cast<ScriptDefModule*>(pScriptModule())->findCellMethodDescription(ccattr);
 		
 		if(pMethodDescription)
 		{
@@ -406,7 +407,7 @@ PyObject* Entity::onScriptGetAttribute(PyObject* attr)
 	{
 		// 如果访问了def持久化类容器属性
 		// 由于没有很好的监测容器类属性内部的变化，这里使用一个折中的办法进行标脏
-		PropertyDescription* pPropertyDescription = const_cast<ScriptDefModule*>(scriptModule())->findPersistentPropertyDescription(ccattr);
+		PropertyDescription* pPropertyDescription = const_cast<ScriptDefModule*>(pScriptModule())->findPersistentPropertyDescription(ccattr);
 		if(pPropertyDescription && (pPropertyDescription->getFlags() & ENTITY_CELL_DATA_FLAGS) > 0)
 		{
 			setDirty();
@@ -481,20 +482,22 @@ void Entity::onDefDataChanged(const PropertyDescription* propertyDescription, Py
 			if(pChannel == NULL)
 				continue;
 
+			// 这个可能性是存在的，例如数据来源于createWitnessFromStream()
+			// 又如自己的entity还未在目标客户端上创建
 			if(!pEntity->pWitness()->entityInAOI(id()))
 				continue;
 
 			const Position3D& targetPos = pEntity->position();
 			Position3D lengthPos = targetPos - basePos;
 
-			if(scriptModule_->getDetailLevel().level[propertyDetailLevel].inLevel(lengthPos.length()))
+			if(pScriptModule_->getDetailLevel().level[propertyDetailLevel].inLevel(lengthPos.length()))
 			{
 				Network::Bundle* pForwardBundle = Network::Bundle::ObjPool().createObject();
 
 				pEntity->pWitness()->addSmartAOIEntityMessageToBundle(pForwardBundle, ClientInterface::onUpdatePropertys, 
 					ClientInterface::onUpdatePropertysOptimized, id());
 
-				if(scriptModule_->usePropertyDescrAlias())
+				if(pScriptModule_->usePropertyDescrAlias())
 					(*pForwardBundle) << propertyDescription->aliasIDAsUint8();
 				else
 					(*pForwardBundle) << propertyDescription->getUType();
@@ -577,7 +580,7 @@ void Entity::onDefDataChanged(const PropertyDescription* propertyDescription, Py
 		(*pForwardBundle).newMessage(ClientInterface::onUpdatePropertys);
 		(*pForwardBundle) << id();
 
-		if(scriptModule_->usePropertyDescrAlias())
+		if(pScriptModule_->usePropertyDescrAlias())
 			(*pForwardBundle) << propertyDescription->aliasIDAsUint8();
 		else
 			(*pForwardBundle) << propertyDescription->getUType();
@@ -608,7 +611,7 @@ void Entity::onRemoteMethodCall(Network::Channel* pChannel, MemoryStream& s)
 	ENTITY_METHOD_UID utype = 0;
 	s >> utype;
 
-	MethodDescription* pMethodDescription = scriptModule_->findCellMethodDescription(utype);
+	MethodDescription* pMethodDescription = pScriptModule_->findCellMethodDescription(utype);
 
 	if(pMethodDescription == NULL)
 	{
@@ -627,7 +630,7 @@ void Entity::onRemoteCallMethodFromClient(Network::Channel* pChannel, ENTITY_ID 
 	ENTITY_METHOD_UID utype = 0;
 	s >> utype;
 
-	MethodDescription* pMethodDescription = scriptModule_->findCellMethodDescription(utype);
+	MethodDescription* pMethodDescription = pScriptModule_->findCellMethodDescription(utype);
 	if(pMethodDescription)
 	{
 		if(!pMethodDescription->isExposed())
@@ -720,7 +723,7 @@ void Entity::addCellDataToStream(uint32 flags, MemoryStream* mstream, bool useAl
 	PyObject* cellData = PyObject_GetAttrString(this, "__dict__");
 
 	ScriptDefModule::PROPERTYDESCRIPTION_MAP& propertyDescrs =
-					scriptModule_->getCellPropertyDescriptions();
+					pScriptModule_->getCellPropertyDescriptions();
 
 	ScriptDefModule::PROPERTYDESCRIPTION_MAP::const_iterator iter = propertyDescrs.begin();
 
@@ -732,7 +735,7 @@ void Entity::addCellDataToStream(uint32 flags, MemoryStream* mstream, bool useAl
 			// DEBUG_MSG(fmt::format("Entity::addCellDataToStream: {}.\n", propertyDescription->getName()));
 			PyObject* pyVal = PyDict_GetItemString(cellData, propertyDescription->getName());
 
-			if(useAliasID && scriptModule_->usePropertyDescrAlias())
+			if(useAliasID && pScriptModule_->usePropertyDescrAlias())
 			{
 				(*mstream) << propertyDescription->aliasIDAsUint8();
 			}
@@ -803,7 +806,7 @@ void Entity::backupCellData()
 }
 
 //-------------------------------------------------------------------------------------
-void Entity::writeToDB(void* data, void* extra)
+void Entity::writeToDB(void* data, void* extra1, void* extra2)
 {
 	CALLBACK_ID* pCallbackID = static_cast<CALLBACK_ID*>(data);
 	CALLBACK_ID callbackID = 0;
@@ -812,9 +815,29 @@ void Entity::writeToDB(void* data, void* extra)
 		callbackID = *pCallbackID;
 
 	int8 shouldAutoLoad = -1;
-	if(extra)
-		shouldAutoLoad = *static_cast<int8*>(extra);
+	if (extra1)
+		shouldAutoLoad = *static_cast<int8*>(extra1);
 
+	int dbInterfaceIndex = -1;
+
+	if (extra2)
+	{
+		if (strlen(static_cast<char*>(extra2)) > 0)
+		{
+			int fdbInterfaceIndex = g_kbeSrvConfig.dbInterfaceName2dbInterfaceIndex(static_cast<char*>(extra2));
+			if (fdbInterfaceIndex >= 0)
+			{
+				dbInterfaceIndex = fdbInterfaceIndex;
+			}
+			else
+			{
+				ERROR_MSG(fmt::format("Entity::writeToDB: not found dbInterface({})!\n",
+					static_cast<char*>(extra2)));
+
+				return;
+			}
+		}
+	}
 	onWriteToDB();
 	backupCellData();
 
@@ -823,6 +846,7 @@ void Entity::writeToDB(void* data, void* extra)
 	(*pBundle) << this->id();
 	(*pBundle) << callbackID;
 	(*pBundle) << shouldAutoLoad;
+	(*pBundle) << dbInterfaceIndex;
 
 	if(this->baseMailbox())
 	{
@@ -857,7 +881,7 @@ void Entity::addWitnessed(Entity* entity)
 	++witnesses_count_;
 
 	/*
-	int8 detailLevel = scriptModule_->getDetailLevel().getLevelByRange(range);
+	int8 detailLevel = pScriptModule_->getDetailLevel().getLevelByRange(range);
 	WitnessInfo* info = new WitnessInfo(detailLevel, entity, range);
 	ENTITY_ID id = entity->id();
 
@@ -1182,7 +1206,7 @@ int Entity::pySetPosition(PyObject *value)
 	}
 
 	static PropertyDescription positionDescription(posuid, "VECTOR3", "position", ED_FLAG_ALL_CLIENTS, true, DataTypes::getDataType("VECTOR3"), false, "", 0, "", DETAIL_LEVEL_FAR);
-	if(scriptModule_->usePropertyDescrAlias() && positionDescription.aliasID() == -1)
+	if(pScriptModule_->usePropertyDescrAlias() && positionDescription.aliasID() == -1)
 		positionDescription.aliasID(ENTITY_BASE_PROPERTY_ALIASID_POSITION_XYZ);
 
 	onDefDataChanged(&positionDescription, value);
@@ -1309,7 +1333,7 @@ int Entity::pySetDirection(PyObject *value)
 	}
 
 	static PropertyDescription directionDescription(diruid, "VECTOR3", "direction", ED_FLAG_ALL_CLIENTS, true, DataTypes::getDataType("VECTOR3"), false, "", 0, "", DETAIL_LEVEL_FAR);
-	if(scriptModule_->usePropertyDescrAlias() && directionDescription.aliasID() == -1)
+	if(pScriptModule_->usePropertyDescrAlias() && directionDescription.aliasID() == -1)
 		directionDescription.aliasID(ENTITY_BASE_PROPERTY_ALIASID_DIRECTION_ROLL_PITCH_YAW);
 
 	onDefDataChanged(&directionDescription, value);
@@ -1352,7 +1376,7 @@ void Entity::onPyPositionChanged()
 	}
 
 	static PropertyDescription positionDescription(posuid, "VECTOR3", "position", ED_FLAG_ALL_CLIENTS, true, DataTypes::getDataType("VECTOR3"), false, "", 0, "", DETAIL_LEVEL_FAR);
-	if(scriptModule_->usePropertyDescrAlias() && positionDescription.aliasID() == -1)
+	if(pScriptModule_->usePropertyDescrAlias() && positionDescription.aliasID() == -1)
 		positionDescription.aliasID(ENTITY_BASE_PROPERTY_ALIASID_POSITION_XYZ);
 
 	onDefDataChanged(&positionDescription, pPyPosition_);
@@ -1399,7 +1423,7 @@ void Entity::onPyDirectionChanged()
 	}
 
 	static PropertyDescription directionDescription(diruid, "VECTOR3", "direction", ED_FLAG_ALL_CLIENTS, true, DataTypes::getDataType("VECTOR3"), false, "", 0, "", DETAIL_LEVEL_FAR);
-	if(scriptModule_->usePropertyDescrAlias() && directionDescription.aliasID() == -1)
+	if(pScriptModule_->usePropertyDescrAlias() && directionDescription.aliasID() == -1)
 		directionDescription.aliasID(ENTITY_BASE_PROPERTY_ALIASID_DIRECTION_ROLL_PITCH_YAW);
 
 	onDefDataChanged(&directionDescription, pPyDirection_);
@@ -1435,7 +1459,7 @@ void Entity::onGetWitness(bool fromBase)
 
 	if(fromBase)
 	{
-		// proxy的giveClientTo功能或者reloginGateway， 如果一个entity已经创建了cell， 并将控制权绑定
+		// proxy的giveClientTo功能或者reloginBaseapp， 如果一个entity已经创建了cell， 并将控制权绑定
 		// 到该entity时是一定没有clientMailbox的。
 		if(clientMailbox() == NULL)
 		{
@@ -1744,11 +1768,11 @@ bool Entity::navigatePathPoints( std::vector<Position3D>& outPaths, const Positi
 	{
 		WARNING_MSG(fmt::format("Entity::navigatePathPoints(): space({}), entityID({}), not found navhandle!\n",
 			spaceID(), id()));
+
 		return false;
 	}
 
-	int resultCount = pNavHandle->findStraightPath(layer, position_, destination, outPaths);
-	if (resultCount < 0)
+	if (pNavHandle->findStraightPath(layer, position_, destination, outPaths) < 0)
 	{
 		return false;
 	}
@@ -1762,9 +1786,11 @@ bool Entity::navigatePathPoints( std::vector<Position3D>& outPaths, const Positi
 			iter++;
 			continue;
 		}
+
 		break;
 	}
 
+	// 第一个坐标点是当前位置，因此可以过滤掉
 	if (iter != outPaths.begin())
 	{
 		outPaths.erase(outPaths.begin(), iter);
@@ -1780,14 +1806,14 @@ PyObject* Entity::pyNavigatePathPoints(PyObject_ptr pyDestination, float maxSear
 
 	if(!PySequence_Check(pyDestination))
 	{
-		PyErr_Format(PyExc_TypeError, "%s::navigate: args1(position) not is PySequence!", scriptName());
+		PyErr_Format(PyExc_TypeError, "%s::navigatePathPoints: args1(position) not is PySequence!", scriptName());
 		PyErr_PrintEx(0);
 		return 0;
 	}
 
 	if(PySequence_Size(pyDestination) != 3)
 	{
-		PyErr_Format(PyExc_TypeError, "%s::navigate: args1(position) invalid!", scriptName());
+		PyErr_Format(PyExc_TypeError, "%s::navigatePathPoints: args1(position) invalid!", scriptName());
 		PyErr_PrintEx(0);
 		return 0;
 	}
@@ -1808,6 +1834,7 @@ PyObject* Entity::pyNavigatePathPoints(PyObject_ptr pyDestination, float maxSear
 		Py_INCREF(pos);
 		PyList_SET_ITEM(pyList, i++, pos);
 	}
+
 	return pyList;
 }
 
@@ -1880,6 +1907,70 @@ PyObject* Entity::pyNavigate(PyObject_ptr pyDestination, float velocity, float d
 
 	return PyLong_FromLong(navigate(destination, velocity, distance, maxMoveDistance, 
 		maxDistance, faceMovement > 0, layer, userData));
+}
+
+//-------------------------------------------------------------------------------------
+bool Entity::getRandomPoints(std::vector<Position3D>& outPoints, const Position3D& centerPos,
+	float maxRadius, uint32 maxPoints, int8 layer)
+{
+	Space* pSpace = Spaces::findSpace(spaceID());
+	if(pSpace == NULL || !pSpace->isGood())
+	{
+		ERROR_MSG(fmt::format("Entity::getRandomPoints(): not found space({}), entityID({})!\n",
+			spaceID(), id()));
+
+		return false;
+	}
+
+	NavigationHandlePtr pNavHandle = pSpace->pNavHandle();
+
+	if(!pNavHandle)
+	{
+		WARNING_MSG(fmt::format("Entity::getRandomPoints(): space({}), entityID({}), not found navhandle!\n",
+			spaceID(), id()));
+		return false;
+	}
+
+	return pNavHandle->findRandomPointAroundCircle(layer, centerPos, outPoints, maxPoints, maxRadius) > 0;
+}
+
+//-------------------------------------------------------------------------------------
+PyObject* Entity::pyGetRandomPoints(PyObject_ptr pyCenterPos, float maxRadius, uint32 maxPoints, int8 layer)
+{
+	Position3D centerPos;
+
+	if (!PySequence_Check(pyCenterPos))
+	{
+		PyErr_Format(PyExc_TypeError, "%s::getRandomPoints: args1(position) not is PySequence!", scriptName());
+		PyErr_PrintEx(0);
+		return 0;
+	}
+
+	if (PySequence_Size(pyCenterPos) != 3)
+	{
+		PyErr_Format(PyExc_TypeError, "%s::getRandomPoints: args1(position) invalid!", scriptName());
+		PyErr_PrintEx(0);
+		return 0;
+	}
+
+	// 将坐标信息提取出来
+	script::ScriptVector3::convertPyObjectToVector3(centerPos, pyCenterPos);
+
+	std::vector<Position3D> outPoints;
+	getRandomPoints(outPoints, centerPos, maxRadius, maxPoints, layer);
+	
+	PyObject* pyList = PyList_New(outPoints.size());
+
+	int i = 0;
+	std::vector<Position3D>::iterator iter = outPoints.begin();
+	for (; iter != outPoints.end(); ++iter)
+	{
+		script::ScriptVector3 *pos = new script::ScriptVector3(*iter);
+		Py_INCREF(pos);
+		PyList_SET_ITEM(pyList, i++, pos);
+	}
+
+	return pyList;
 }
 
 //-------------------------------------------------------------------------------------
@@ -2580,7 +2671,9 @@ void Entity::teleportRefMailbox(EntityMailbox* nearbyMBRef, Position3D& pos, Dir
 	if(this->baseMailbox() != NULL)
 	{
 		// 如果有base部分, 我们还需要调用一下备份功能。
-		this->backupCellData();
+		// 由于ghost功能会addCellDataToStream一次数据流，并且在传送失败时能重用该实体
+		// 因此这里不需要进行备份
+		// this->backupCellData();
 		
 		Network::Channel* pBaseChannel = baseMailbox()->getChannel();
 		if(pBaseChannel)
@@ -2615,7 +2708,7 @@ void Entity::onTeleportRefMailbox(EntityMailbox* nearbyMBRef, Position3D& pos, D
 	(*pBundle) << id();
 	(*pBundle) << nearbyMBRef->id();
 	(*pBundle) << spaceID();
-	(*pBundle) << scriptModule()->getUType();
+	(*pBundle) << pScriptModule()->getUType();
 	(*pBundle) << pos.x << pos.y << pos.z;
 	(*pBundle) << dir.roll() << dir.pitch() << dir.yaw();
 
@@ -2831,7 +2924,7 @@ void Entity::onRestore()
 //-------------------------------------------------------------------------------------
 bool Entity::_reload(bool fullReload)
 {
-	allClients_->setScriptModule(scriptModule_);
+	allClients_->setScriptModule(pScriptModule_);
 	return true;
 }
 
@@ -2841,7 +2934,7 @@ void Entity::onUpdateGhostPropertys(KBEngine::MemoryStream& s)
 	ENTITY_PROPERTY_UID utype;
 	s >> utype;
 
-	PropertyDescription* pPropertyDescription = scriptModule()->findCellPropertyDescription(utype);
+	PropertyDescription* pPropertyDescription = pScriptModule()->findCellPropertyDescription(utype);
 	if(pPropertyDescription == NULL)
 	{
 		ERROR_MSG(fmt::format("{}::onUpdateGhostPropertys: not found propertyID({}), entityID({})\n", 
@@ -2876,7 +2969,7 @@ void Entity::onRemoteRealMethodCall(KBEngine::MemoryStream& s)
 	ENTITY_METHOD_UID utype;
 	s >> utype;
 
-	MethodDescription* pMethodDescription = scriptModule()->findCellMethodDescription(utype);
+	MethodDescription* pMethodDescription = pScriptModule()->findCellMethodDescription(utype);
 	if(pMethodDescription == NULL)
 	{
 		ERROR_MSG(fmt::format("{}::onRemoteRealMethodCall: not found propertyID({}), entityID({})\n", 
@@ -2969,7 +3062,7 @@ void Entity::addToStream(KBEngine::MemoryStream& s)
 		baseMailboxComponentID = baseMailbox_->componentID();
 	}
 
-	s << scriptModule_->getUType() << spaceID_ << isDestroyed_ << 
+	s << pScriptModule_->getUType() << spaceID_ << isDestroyed_ << 
 		isOnGround_ << topSpeed_ << topSpeedY_ << 
 		layer_ << baseMailboxComponentID;
 
@@ -2996,11 +3089,11 @@ void Entity::createFromStream(KBEngine::MemoryStream& s)
 	// 而服务端的NPC则与移动后是否在地面来判定。
 	isOnGround_ = false;
 
-	this->scriptModule_ = EntityDef::findScriptModule(scriptUType);
+	this->pScriptModule_ = EntityDef::findScriptModule(scriptUType);
 
 	// 设置entity的baseMailbox
 	if(baseMailboxComponentID > 0)
-		baseMailbox(new EntityMailbox(scriptModule(), NULL, baseMailboxComponentID, id_, MAILBOX_TYPE_BASE));
+		baseMailbox(new EntityMailbox(pScriptModule(), NULL, baseMailboxComponentID, id_, MAILBOX_TYPE_BASE));
 
 	PyObject* cellData = createCellDataFromStream(&s);
 	createNamespace(cellData);

@@ -75,6 +75,12 @@ INLINE ENGINE_COMPONENT_INFO& ServerConfig::getLogger(void)
 	return _loggerInfo;
 }
 
+//-------------------------------------------------------------------------------------		
+INLINE ENGINE_COMPONENT_INFO& ServerConfig::getInterfaces(void)
+{
+	return _interfacesInfo;
+}
+
 //-------------------------------------------------------------------------------------	
 INLINE ENGINE_COMPONENT_INFO& ServerConfig::getConfig()
 {
@@ -115,16 +121,20 @@ INLINE int16 ServerConfig::gameUpdateHertz(void) const { return gameUpdateHertz_
 //-------------------------------------------------------------------------------------	
 INLINE Network::Address ServerConfig::interfacesAddr(void) const { return interfacesAddr_;}
 
-INLINE const char* ServerConfig::interfacesAccountType() const { return interfaces_accountType_.c_str(); }
-INLINE const char* ServerConfig::interfacesChargeType() const { return interfaces_chargeType_.c_str(); }
+//-------------------------------------------------------------------------------------	
+DBInterfaceInfo* ServerConfig::dbInterface(const std::string& name)
+{
+	std::vector<DBInterfaceInfo>::iterator dbinfo_iter = _dbmgrInfo.dbInterfaceInfos.begin();
+	for (; dbinfo_iter != _dbmgrInfo.dbInterfaceInfos.end(); ++dbinfo_iter)
+	{
+		if (name == (*dbinfo_iter).name)
+		{
+			return &(*dbinfo_iter);
+		}
+	}
 
-INLINE const char* ServerConfig::interfacesThirdpartyAccountServiceAddr() const { return interfaces_thirdpartyAccountServiceAddr_.c_str(); }
-INLINE uint16 ServerConfig::interfacesThirdpartyAccountServicePort() const { return interfaces_thirdpartyAccountServicePort_; }
-
-INLINE const char* ServerConfig::interfacesThirdpartyChargeServiceAddr() const { return interfaces_thirdpartyChargeServiceAddr_.c_str(); }
-INLINE uint16 ServerConfig::interfacesThirdpartyChargeServicePort() const { return interfaces_thirdpartyChargeServicePort_; }
-
-INLINE uint16 ServerConfig::interfacesThirdpartyServiceCBPort() const { return interfaces_thirdpartyServiceCBPort_; }
+	return NULL;
+}
 
 //-------------------------------------------------------------------------------------	
 

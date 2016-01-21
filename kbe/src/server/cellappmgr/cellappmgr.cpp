@@ -113,7 +113,7 @@ void Cellappmgr::handleGameTick()
 	 //time_t t = ::time(NULL);
 	 //DEBUG_MSG("Cellappmgr::handleGameTick[%"PRTime"]:%u\n", t, time_);
 	
-	g_kbetime++;
+	++g_kbetime;
 	threadPool_.onMainThreadTick();
 	networkInterface().processChannels(&CellappmgrInterface::messageHandlers);
 }
@@ -155,7 +155,7 @@ void Cellappmgr::forwardMessage(Network::Channel* pChannel, MemoryStream& s)
 	KBE_ASSERT(cinfos != NULL && cinfos->pChannel != NULL);
 
 	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
-	(*pBundle).append((char*)s.data() + s.rpos(), s.length());
+	(*pBundle).append((char*)s.data() + s.rpos(), (int)s.length());
 	cinfos->pChannel->send(pBundle);
 	s.done();
 }
@@ -171,6 +171,9 @@ COMPONENT_ID Cellappmgr::findFreeCellapp(void)
 
 	for(; iter != cellapps_.end(); ++iter)
 	{
+		if ((iter->second.flags() & APP_FLAGS_NONE) > 0)
+			continue;
+		
 		if(!iter->second.isDestroyed() &&
 			iter->second.initProgress() > 1.f && 
 			(iter->second.numEntities() == 0 ||
@@ -300,13 +303,15 @@ void Cellappmgr::reqRestoreSpaceInCell(Network::Channel* pChannel, MemoryStream&
 }
 
 //-------------------------------------------------------------------------------------
-void Cellappmgr::updateCellapp(Network::Channel* pChannel, COMPONENT_ID componentID, ENTITY_ID numEntities, float load)
+void Cellappmgr::updateCellapp(Network::Channel* pChannel, COMPONENT_ID componentID, 
+	ENTITY_ID numEntities, float load, uint32 flags)
 {
 	Cellapp& cellapp = cellapps_[componentID];
 	
 	cellapp.load(load);
 	cellapp.numEntities(numEntities);
-
+	cellapp.flags(flags);
+	
 	updateBestCellapp();
 }
 

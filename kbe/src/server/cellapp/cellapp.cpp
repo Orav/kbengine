@@ -63,7 +63,8 @@ Cellapp::Cellapp(Network::EventDispatcher& dispatcher,
 	cells_(),
 	pTelnetServer_(NULL),
 	pWitnessedTimeoutHandler_(NULL),
-	pGhostManager_(NULL)
+	pGhostManager_(NULL),
+	flags_(APP_FLAGS_NONE)
 {
 	KBEngine::Network::MessageHandlers::pMainMessageHandlers = &CellappInterface::messageHandlers;
 
@@ -89,7 +90,7 @@ bool Cellapp::canShutdown()
 	{
 		//Entity* pEntity = static_cast<Entity*>(iter->second.get());
 		//if(pEntity->baseMailbox() != NULL && 
-		//		pEntity->scriptModule()->isPersistent())
+		//		pEntity->pScriptModule()->isPersistent())
 		{
 			lastShutdownFailReason_ = "destroyHasBaseEntitys";
 			return false;
@@ -117,7 +118,7 @@ void Cellapp::onShutdown(bool first)
 		{
 			//Entity* pEntity = static_cast<Entity*>(iter->second.get());
 			//if(pEntity->baseMailbox() != NULL && 
-			//	pEntity->scriptModule()->isPersistent())
+			//	pEntity->pScriptModule()->isPersistent())
 			{
 				this->destroyEntity(static_cast<Entity*>(iter->second.get())->id(), true);
 
@@ -155,6 +156,17 @@ bool Cellapp::installPyModules()
 
 	registerScript(Entity::getScriptType());
 	
+	// 将app标记注册到脚本
+	std::map<uint32, std::string> flagsmaps = createAppFlagsMaps();
+	std::map<uint32, std::string>::iterator fiter = flagsmaps.begin();
+	for (; fiter != flagsmaps.end(); ++fiter)
+	{
+		if (PyModule_AddIntConstant(getScript().getModule(), fiter->second.c_str(), fiter->first))
+		{
+			ERROR_MSG(fmt::format("Cellapp::onInstallPyModules: Unable to set KBEngine.{}.\n", fiter->second));
+		}
+	}
+
 	// 注册创建entity的方法到py
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),		time,							__py_gametime,						METH_VARARGS,			0);
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),		createEntity,					__py_createEntity,					METH_VARARGS,			0);
@@ -168,7 +180,9 @@ bool Cellapp::installPyModules()
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),		isShuttingDown,					__py_isShuttingDown,				METH_VARARGS,			0);
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),		address,						__py_address,						METH_VARARGS,			0);
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),		raycast,						__py_raycast,						METH_VARARGS,			0);
-
+	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(), 		setAppFlags,					__py_setFlags,						METH_VARARGS,			0);
+	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(), 		getAppFlags,					__py_getFlags,						METH_VARARGS,			0);
+	
 	return EntityApp<Entity>::installPyModules();
 }
 
@@ -394,8 +408,8 @@ void Cellapp::onUpdateLoad()
 	{
 		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 		(*pBundle).newMessage(CellappmgrInterface::updateCellapp);
-		CellappmgrInterface::updateCellappArgs3::staticAddToBundle((*pBundle), 
-			componentID_, pEntities_->getEntities().size(), getLoad());
+		CellappmgrInterface::updateCellappArgs4::staticAddToBundle((*pBundle), 
+			componentID_, (ENTITY_ID)pEntities_->getEntities().size(), getLoad(), flags_);
 
 		pChannel->send(pBundle);
 	}
@@ -462,15 +476,18 @@ PyObject* Cellapp::__py_createEntity(PyObject* self, PyObject* args)
 //-------------------------------------------------------------------------------------
 PyObject* Cellapp::__py_executeRawDatabaseCommand(PyObject* self, PyObject* args)
 {
-	int argCount = PyTuple_Size(args);
+	int argCount = (int)PyTuple_Size(args);
 	PyObject* pycallback = NULL;
+	PyObject* pyDBInterfaceName = NULL;
 	int ret = -1;
 	ENTITY_ID eid = -1;
 
 	char* data = NULL;
 	Py_ssize_t size;
 	
-	if(argCount == 3)
+	if (argCount == 4)
+		ret = PyArg_ParseTuple(args, "s#|O|i|O", &data, &size, &pycallback, &eid, &pyDBInterfaceName);
+	else if (argCount == 3)
 		ret = PyArg_ParseTuple(args, "s#|O|i", &data, &size, &pycallback, &eid);
 	else if(argCount == 2)
 		ret = PyArg_ParseTuple(args, "s#|O", &data, &size, &pycallback);
@@ -481,14 +498,34 @@ PyObject* Cellapp::__py_executeRawDatabaseCommand(PyObject* self, PyObject* args
 	{
 		PyErr_Format(PyExc_TypeError, "KBEngine::executeRawDatabaseCommand: args is error!");
 		PyErr_PrintEx(0);
+		S_Return;
 	}
 	
-	Cellapp::getSingleton().executeRawDatabaseCommand(data, size, pycallback, eid);
+	std::string dbInterfaceName = "default";
+	if (pyDBInterfaceName)
+	{
+		wchar_t* PyUnicode_AsWideCharStringRet0 = PyUnicode_AsWideCharString(pyDBInterfaceName, NULL);
+		char* ccattr = strutil::wchar2char(PyUnicode_AsWideCharStringRet0);
+		dbInterfaceName = ccattr;
+		PyMem_Free(PyUnicode_AsWideCharStringRet0);
+		free(ccattr);
+		
+		if (!g_kbeSrvConfig.dbInterface(dbInterfaceName))
+		{
+			PyErr_Format(PyExc_TypeError, "KBEngine::executeRawDatabaseCommand: args4, incorrect dbInterfaceName(%s)!", 
+				dbInterfaceName.c_str());
+			
+			PyErr_PrintEx(0);
+			S_Return;
+		}
+	}
+
+	Cellapp::getSingleton().executeRawDatabaseCommand(data, (uint32)size, pycallback, eid, dbInterfaceName);
 	S_Return;
 }
 
 //-------------------------------------------------------------------------------------
-void Cellapp::executeRawDatabaseCommand(const char* datas, uint32 size, PyObject* pycallback, ENTITY_ID eid)
+void Cellapp::executeRawDatabaseCommand(const char* datas, uint32 size, PyObject* pycallback, ENTITY_ID eid, const std::string& dbInterfaceName)
 {
 	if(datas == NULL)
 	{
@@ -508,11 +545,21 @@ void Cellapp::executeRawDatabaseCommand(const char* datas, uint32 size, PyObject
 		return;
 	}
 
-	INFO_MSG(fmt::format("KBEngine::executeRawDatabaseCommand{}:{}.\n", (eid > 0 ? fmt::format("(entityID={})", eid) : ""), datas));
+	int dbInterfaceIndex = g_kbeSrvConfig.dbInterfaceName2dbInterfaceIndex(dbInterfaceName);
+	if (dbInterfaceIndex < 0)
+	{
+		ERROR_MSG(fmt::format("KBEngine::executeRawDatabaseCommand: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return;
+	}
+
+	//INFO_MSG(fmt::format("KBEngine::executeRawDatabaseCommand{}:{}.\n", (eid > 0 ? fmt::format("(entityID={})", eid) : ""), datas));
 
 	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 	(*pBundle).newMessage(DbmgrInterface::executeRawDatabaseCommand);
 	(*pBundle) << eid;
+	(*pBundle) << (uint16)dbInterfaceIndex;
 	(*pBundle) << componentID_ << componentType_;
 
 	CALLBACK_ID callbackID = 0;
@@ -672,7 +719,7 @@ void Cellapp::reqWriteToDBFromBaseapp(Network::Channel* pChannel, KBEngine::Memo
 		return;
 	}
 
-	e->writeToDB(&callbackID, &shouldAutoLoad);
+	e->writeToDB(&callbackID, &shouldAutoLoad, NULL);
 }
 
 //-------------------------------------------------------------------------------------
@@ -788,7 +835,7 @@ void Cellapp::onCreateInNewSpaceFromBaseapp(Network::Channel* pChannel, KBEngine
 		PyObject* cellData = e->createCellDataFromStream(&s);
 
 		// 设置entity的baseMailbox
-		EntityMailbox* mailbox = new EntityMailbox(e->scriptModule(), NULL, componentID, mailboxEntityID, MAILBOX_TYPE_BASE);
+		EntityMailbox* mailbox = new EntityMailbox(e->pScriptModule(), NULL, componentID, mailboxEntityID, MAILBOX_TYPE_BASE);
 		e->baseMailbox(mailbox);
 		
 		// 此处baseapp可能还有没初始化过来， 所以有一定概率是为None的
@@ -859,7 +906,7 @@ void Cellapp::onRestoreSpaceInCellFromBaseapp(Network::Channel* pChannel, KBEngi
 		PyObject* cellData = e->createCellDataFromStream(&s);
 
 		// 设置entity的baseMailbox
-		EntityMailbox* mailbox = new EntityMailbox(e->scriptModule(), NULL, componentID, mailboxEntityID, MAILBOX_TYPE_BASE);
+		EntityMailbox* mailbox = new EntityMailbox(e->pScriptModule(), NULL, componentID, mailboxEntityID, MAILBOX_TYPE_BASE);
 		e->baseMailbox(mailbox);
 		
 		// 此处baseapp可能还有没初始化过来， 所以有一定概率是为None的
@@ -1015,7 +1062,7 @@ void Cellapp::_onCreateCellEntityFromBaseapp(std::string& entityType, ENTITY_ID 
 		}
 
 		// 设置entity的baseMailbox
-		EntityMailbox* mailbox = new EntityMailbox(e->scriptModule(), NULL, componentID, entityID, MAILBOX_TYPE_BASE);
+		EntityMailbox* mailbox = new EntityMailbox(e->pScriptModule(), NULL, componentID, entityID, MAILBOX_TYPE_BASE);
 		e->baseMailbox(mailbox);
 		
 		cellData = e->createCellDataFromStream(pCellData);
@@ -1225,7 +1272,7 @@ void Cellapp::onRemoteCallMethodFromClient(Network::Channel* pChannel, KBEngine:
 		e->onRemoteCallMethodFromClient(pChannel, srcEntityID, s);
 	}catch(MemoryStreamException &)
 	{
-		ERROR_MSG(fmt::format("Cellapp::onRemoteCallMethodFromClient: message is error! entityID:{}.\n", 
+		ERROR_MSG(fmt::format("Cellapp::onRemoteCallMethodFromClient: message error! entityID:{}.\n", 
 			targetID));
 
 		s.done();
@@ -1443,15 +1490,15 @@ void Cellapp::forwardEntityMessageToCellappFromClient(Network::Channel* pChannel
 		size_t wpos = s.wpos();
 		// size_t rpos = s.rpos();
 		size_t frpos = s.rpos() + currMsgLen;
-		s.wpos(frpos);
+		s.wpos((int)frpos);
 
 		try
 		{
 			pMsgHandler->handle(pChannel, s);
 		}catch(MemoryStreamException &)
 		{
-			ERROR_MSG(fmt::format("Cellapp::forwardEntityMessageToCellappFromClient: message is error! entityID:{}.\n", 
-				srcEntityID));
+			ERROR_MSG(fmt::format("Cellapp::forwardEntityMessageToCellappFromClient: message({}) error! entityID:{}.\n", 
+				pMsgHandler->name.c_str(), srcEntityID));
 
 			s.done();
 			return;
@@ -1465,11 +1512,11 @@ void Cellapp::forwardEntityMessageToCellappFromClient(Network::Channel* pChannel
 				CRITICAL_MSG(fmt::format("Cellapp::forwardEntityMessageToCellappFromClient[{}]: rpos({}) invalid, expect={}. msgID={}, msglen={}.\n",
 					pMsgHandler->name.c_str(), s.rpos(), frpos, currMsgID, currMsgLen));
 
-				s.rpos(frpos);
+				s.rpos((int)frpos);
 			}
 		}
 
-		s.wpos(wpos);
+		s.wpos((int)wpos);
 	}
 }
 
@@ -1517,7 +1564,7 @@ void Cellapp::lookApp(Network::Channel* pChannel)
 PyObject* Cellapp::__py_reloadScript(PyObject* self, PyObject* args)
 {
 	bool fullReload = true;
-	int argCount = PyTuple_Size(args);
+	int argCount = (int)PyTuple_Size(args);
 	if(argCount == 1)
 	{
 		if(PyArg_ParseTuple(args, "b", &fullReload) == -1)
@@ -1589,7 +1636,7 @@ void Cellapp::reqTeleportToCellApp(Network::Channel* pChannel, MemoryStream& s)
 	Entity* refEntity = Cellapp::getSingleton().findEntity(nearbyMBRefID);
 	if(refEntity == NULL || refEntity->isDestroyed())
 	{
-		s.rpos(rpos);
+		s.rpos((int)rpos);
 
 		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 		(*pBundle).newMessage(CellappInterface::reqTeleportToCellAppCB);
@@ -1609,7 +1656,7 @@ void Cellapp::reqTeleportToCellApp(Network::Channel* pChannel, MemoryStream& s)
 	Space* space = Spaces::findSpace(refEntity->spaceID());
 	if(space == NULL || !space->isGood())
 	{
-		s.rpos(rpos);
+		s.rpos((int)rpos);
 
 		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 		(*pBundle).newMessage(CellappInterface::reqTeleportToCellAppCB);
@@ -1628,7 +1675,7 @@ void Cellapp::reqTeleportToCellApp(Network::Channel* pChannel, MemoryStream& s)
 	Entity* e = createEntity(EntityDef::findScriptModule(entityType)->getName(), NULL, false, teleportEntityID, false);
 	if(e == NULL)
 	{
-		s.rpos(rpos);
+		s.rpos((int)rpos);
 
 		Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
 		(*pBundle).newMessage(CellappInterface::reqTeleportToCellAppCB);
@@ -1788,7 +1835,7 @@ int Cellapp::raycast(SPACE_ID spaceID, int layer, const Position3D& start, const
 //-------------------------------------------------------------------------------------
 PyObject* Cellapp::__py_raycast(PyObject* self, PyObject* args)
 {
-	uint16 currargsSize = PyTuple_Size(args);
+	uint16 currargsSize = (uint16)PyTuple_Size(args);
 
 	int layer = 0;
 	SPACE_ID spaceID = 0;
@@ -1874,6 +1921,35 @@ PyObject* Cellapp::__py_raycast(PyObject* self, PyObject* args)
 	}
 
 	return pyHitpos;
+}
+
+//-------------------------------------------------------------------------------------
+PyObject* Cellapp::__py_getFlags(PyObject* self, PyObject* args)
+{
+	return PyLong_FromUnsignedLong(Cellapp::getSingleton().flags());
+}
+
+//-------------------------------------------------------------------------------------
+PyObject* Cellapp::__py_setFlags(PyObject* self, PyObject* args)
+{
+	if(PyTuple_Size(args) != 1)
+	{
+		PyErr_Format(PyExc_TypeError, "KBEngine::setFlags: argsSize != 1!");
+		PyErr_PrintEx(0);
+		return NULL;
+	}
+
+	uint32 flags;
+
+	if(PyArg_ParseTuple(args, "I", &flags) == -1)
+	{
+		PyErr_Format(PyExc_TypeError, "KBEngine::setFlags: args is error!");
+		PyErr_PrintEx(0);
+		return NULL;
+	}
+
+	Cellapp::getSingleton().flags(flags);
+	S_Return;
 }
 
 //-------------------------------------------------------------------------------------

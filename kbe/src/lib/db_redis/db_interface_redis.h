@@ -41,16 +41,37 @@ namespace KBEngine {
 
 /*
 	数据库接口
+	tbl_Account_Auto_increment = uint64(1)
+	tbl_Account:1 = hashes(name, password, xxx)
+	tbl_Account:2 = hashes(name, password, xxx)
+	tbl_Account:3 = hashes(name, password, xxx(array))
+
+	// array of type
+	tbl_Account_xxx_values:3:size = uint64(3)
+	tbl_Account_xxx_values:3:1 = val
+	tbl_Account_xxx_values:3:2 = val
+	tbl_Account_xxx_values:3:3 = val	
 */
 class DBInterfaceRedis : public DBInterface
 {
 public:
-	DBInterfaceRedis();
+	DBInterfaceRedis(const char* name);
 	virtual ~DBInterfaceRedis();
 
-	static bool initInterface(DBInterface* dbi);
+	static bool initInterface(DBInterface* pdbi);
 	
 	bool ping(redisContext* pRedisContext = NULL);
+	
+	void inTransaction(bool value)
+	{
+		KBE_ASSERT(inTransaction_ != value);
+		inTransaction_ = value;
+	}
+
+	redisContext* context()				{ return pRedisContext_; }
+	
+	bool hasLostConnection() const		{ return hasLostConnection_; }
+	void hasLostConnection( bool v )	{ hasLostConnection_ = v; }
 	
 	/**
 		检查环境
@@ -66,6 +87,7 @@ public:
 	/**
 		与某个数据库关联
 	*/
+	bool reattach();
 	virtual bool attach(const char* databaseName = NULL);
 	virtual bool detach();
 
@@ -82,10 +104,14 @@ public:
 	/**
 		查询表
 	*/
-	virtual bool query(const char* cmd, uint32 size, bool showExecInfo = true, MemoryStream * result = NULL);
-
-	void write_query_result(redisReply* r, MemoryStream * result);
-	void write_query_result_element(redisReply* r, MemoryStream * result);
+	virtual bool query(const char* cmd, uint32 size, bool printlog = true, MemoryStream * result = NULL);
+	bool query(const std::string& cmd, redisReply** pRedisReply, bool printlog = true);
+	bool query(bool printlog, const char* format, ...);
+	bool queryAppend(bool printlog, const char* format, ...);
+	bool getQueryReply(redisReply **pRedisReply);
+	
+	void write_query_result(redisReply* pRedisReply, MemoryStream * result);
+	void write_query_result_element(redisReply* pRedisReply, MemoryStream * result);
 		
 	/**
 		返回这个接口的描述
@@ -105,13 +131,13 @@ public:
 	/**
 		创建一个entity存储表
 	*/
-	virtual EntityTable* createEntityTable();
+	virtual EntityTable* createEntityTable(EntityTables* pEntityTables);
 
 	/** 
 		从数据库删除entity表
 	*/
 	virtual bool dropEntityTableFromDB(const char* tableName);
-
+	
 	/** 
 		从数据库删除entity表字段
 	*/
@@ -123,6 +149,8 @@ public:
 	virtual bool lock();
 	virtual bool unlock();
 
+	void throwError();
+	
 	/**
 		处理异常
 	*/
@@ -131,6 +159,7 @@ public:
 protected:
 	redisContext* pRedisContext_;
 	bool hasLostConnection_;
+	bool inTransaction_;	
 };
 
 

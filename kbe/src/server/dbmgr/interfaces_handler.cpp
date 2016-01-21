@@ -21,6 +21,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 #include "interfaces_handler.h"
 #include "buffered_dbtasks.h"
 #include "db_interface/db_threadpool.h"
+#include "db_interface/db_interface.h"
 #include "thread/threadpool.h"
 #include "thread/threadguard.h"
 #include "server/serverconfig.h"
@@ -34,26 +35,22 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine{
 
 //-------------------------------------------------------------------------------------
-InterfacesHandler* InterfacesHandlerFactory::create(std::string type, 
-											  thread::ThreadPool& threadPool, 
-											  DBThreadPool& dbThreadPool)
+InterfacesHandler* InterfacesHandlerFactory::create(std::string type)
 {
-	if(type.size() == 0 || type == "normal")
+	if(type.size() == 0 || type == "dbmgr")
 	{
-		return new InterfacesHandler_Normal(threadPool, dbThreadPool);
+		return new InterfacesHandler_Dbmgr();
 	}
-	else if(type == "thirdparty")
+	else if(type == "interfaces")
 	{
-		return new InterfacesHandler_ThirdParty(threadPool, dbThreadPool);
+		return new InterfacesHandler_Interfaces();
 	}
 
 	return NULL;
 }
 
 //-------------------------------------------------------------------------------------
-InterfacesHandler::InterfacesHandler(thread::ThreadPool& threadPool, DBThreadPool& dbThreadPool):
-dbThreadPool_(dbThreadPool),
-threadPool_(threadPool)
+InterfacesHandler::InterfacesHandler()
 {
 }
 
@@ -63,118 +60,211 @@ InterfacesHandler::~InterfacesHandler()
 }
 
 //-------------------------------------------------------------------------------------
-InterfacesHandler_Normal::InterfacesHandler_Normal(thread::ThreadPool& threadPool, DBThreadPool& dbThreadPool):
-InterfacesHandler(threadPool, dbThreadPool)
+InterfacesHandler_Dbmgr::InterfacesHandler_Dbmgr() :
+InterfacesHandler()
 {
 }
 
 //-------------------------------------------------------------------------------------
-InterfacesHandler_Normal::~InterfacesHandler_Normal()
+InterfacesHandler_Dbmgr::~InterfacesHandler_Dbmgr()
 {
 }
 
 //-------------------------------------------------------------------------------------
-bool InterfacesHandler_Normal::createAccount(Network::Channel* pChannel, std::string& registerName, 
+bool InterfacesHandler_Dbmgr::createAccount(Network::Channel* pChannel, std::string& registerName,
 										  std::string& password, std::string& datas, ACCOUNT_TYPE uatype)
 {
-	// 如果是email， 先查询账号是否存在然后将其登记入库
+	std::string dbInterfaceName = Dbmgr::getSingleton().selectAccountDBInterfaceName(registerName);
+
+	thread::ThreadPool* pThreadPool =DBUtil::pThreadPool(dbInterfaceName);
+	if (!pThreadPool)
+	{
+		ERROR_MSG(fmt::format("InterfacesHandler_Dbmgr::createAccount: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return false;
+	}
+
+	// 如果是email，先查询账号是否存在然后将其登记入库
 	if(uatype == ACCOUNT_TYPE_MAIL)
 	{
-		dbThreadPool_.addTask(new DBTaskCreateMailAccount(pChannel->addr(), 
+		pThreadPool->addTask(new DBTaskCreateMailAccount(pChannel->addr(),
 			registerName, registerName, password, datas, datas));
 
 		return true;
 	}
 
-	dbThreadPool_.addTask(new DBTaskCreateAccount(pChannel->addr(), 
+	pThreadPool->addTask(new DBTaskCreateAccount(pChannel->addr(),
 		registerName, registerName, password, datas, datas));
 
 	return true;
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::onCreateAccountCB(KBEngine::MemoryStream& s)
+void InterfacesHandler_Dbmgr::onCreateAccountCB(KBEngine::MemoryStream& s)
 {
 }
 
 //-------------------------------------------------------------------------------------
-bool InterfacesHandler_Normal::loginAccount(Network::Channel* pChannel, std::string& loginName, 
+bool InterfacesHandler_Dbmgr::loginAccount(Network::Channel* pChannel, std::string& loginName,
 										 std::string& password, std::string& datas)
 {
-	dbThreadPool_.addTask(new DBTaskAccountLogin(pChannel->addr(), 
+	std::string dbInterfaceName = Dbmgr::getSingleton().selectAccountDBInterfaceName(loginName);
+
+	thread::ThreadPool* pThreadPool = DBUtil::pThreadPool(dbInterfaceName);
+	if (!pThreadPool)
+	{
+		ERROR_MSG(fmt::format("InterfacesHandler_Dbmgr::loginAccount: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return false;
+	}
+
+	pThreadPool->addTask(new DBTaskAccountLogin(pChannel->addr(),
 		loginName, loginName, password, SERVER_SUCCESS, datas, datas));
 
 	return true;
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::onLoginAccountCB(KBEngine::MemoryStream& s)
+void InterfacesHandler_Dbmgr::onLoginAccountCB(KBEngine::MemoryStream& s)
 {
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::charge(Network::Channel* pChannel, KBEngine::MemoryStream& s)
+void InterfacesHandler_Dbmgr::charge(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 {
-	INFO_MSG("InterfacesHandler_Normal::charge: no implement!\n");
+	INFO_MSG("InterfacesHandler_Dbmgr::charge: no implement!\n");
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::onChargeCB(KBEngine::MemoryStream& s)
+void InterfacesHandler_Dbmgr::onChargeCB(KBEngine::MemoryStream& s)
 {
-	INFO_MSG("InterfacesHandler_Normal::onChargeCB: no implement!\n");
+	INFO_MSG("InterfacesHandler_Dbmgr::onChargeCB: no implement!\n");
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::eraseClientReq(Network::Channel* pChannel, std::string& logkey)
+void InterfacesHandler_Dbmgr::eraseClientReq(Network::Channel* pChannel, std::string& logkey)
 {
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::accountActivate(Network::Channel* pChannel, std::string& scode)
+void InterfacesHandler_Dbmgr::accountActivate(Network::Channel* pChannel, std::string& scode)
 {
-	dbThreadPool_.addTask(new DBTaskActivateAccount(pChannel->addr(), scode));
+	ENGINE_COMPONENT_INFO& dbcfg = g_kbeSrvConfig.getDBMgr();
+	std::vector<DBInterfaceInfo>::iterator dbinfo_iter = dbcfg.dbInterfaceInfos.begin();
+	for (; dbinfo_iter != dbcfg.dbInterfaceInfos.end(); ++dbinfo_iter)
+	{
+		std::string dbInterfaceName = dbinfo_iter->name;
+
+		thread::ThreadPool* pThreadPool = DBUtil::pThreadPool(dbInterfaceName);
+		if (!pThreadPool)
+		{
+			ERROR_MSG(fmt::format("InterfacesHandler_Dbmgr::accountActivate: not found dbInterface({})!\n",
+				dbInterfaceName));
+
+			return;
+		}
+
+		pThreadPool->addTask(new DBTaskActivateAccount(pChannel->addr(), scode));
+	}
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::accountReqResetPassword(Network::Channel* pChannel, std::string& accountName)
+void InterfacesHandler_Dbmgr::accountReqResetPassword(Network::Channel* pChannel, std::string& accountName)
 {
-	dbThreadPool_.addTask(new DBTaskReqAccountResetPassword(pChannel->addr(), accountName));
+	std::string dbInterfaceName = Dbmgr::getSingleton().selectAccountDBInterfaceName(accountName);
+
+	thread::ThreadPool* pThreadPool = DBUtil::pThreadPool(dbInterfaceName);
+	if (!pThreadPool)
+	{
+		ERROR_MSG(fmt::format("InterfacesHandler_Dbmgr::accountReqResetPassword: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return;
+	}
+
+	pThreadPool->addTask(new DBTaskReqAccountResetPassword(pChannel->addr(), accountName));
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::accountResetPassword(Network::Channel* pChannel, std::string& accountName, std::string& newpassword, std::string& scode)
+void InterfacesHandler_Dbmgr::accountResetPassword(Network::Channel* pChannel, std::string& accountName, std::string& newpassword, std::string& scode)
 {
-	dbThreadPool_.addTask(new DBTaskAccountResetPassword(pChannel->addr(), accountName, newpassword, scode));
+	std::string dbInterfaceName = Dbmgr::getSingleton().selectAccountDBInterfaceName(accountName);
+
+	thread::ThreadPool* pThreadPool = DBUtil::pThreadPool(dbInterfaceName);
+	if (!pThreadPool)
+	{
+		ERROR_MSG(fmt::format("InterfacesHandler_Dbmgr::accountResetPassword: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return;
+	}
+
+	pThreadPool->addTask(new DBTaskAccountResetPassword(pChannel->addr(), accountName, newpassword, scode));
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::accountReqBindMail(Network::Channel* pChannel, ENTITY_ID entityID, std::string& accountName, 
+void InterfacesHandler_Dbmgr::accountReqBindMail(Network::Channel* pChannel, ENTITY_ID entityID, std::string& accountName,
 											   std::string& password, std::string& email)
 {
-	dbThreadPool_.addTask(new DBTaskReqAccountBindEmail(pChannel->addr(), entityID, accountName, password, email));
+	std::string dbInterfaceName = Dbmgr::getSingleton().selectAccountDBInterfaceName(accountName);
+
+	thread::ThreadPool* pThreadPool = DBUtil::pThreadPool(dbInterfaceName);
+	if (!pThreadPool)
+	{
+		ERROR_MSG(fmt::format("InterfacesHandler_Dbmgr::accountReqBindMail: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return;
+	}
+
+	pThreadPool->addTask(new DBTaskReqAccountBindEmail(pChannel->addr(), entityID, accountName, password, email));
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::accountBindMail(Network::Channel* pChannel, std::string& username, std::string& scode)
+void InterfacesHandler_Dbmgr::accountBindMail(Network::Channel* pChannel, std::string& username, std::string& scode)
 {
-	dbThreadPool_.addTask(new DBTaskAccountBindEmail(pChannel->addr(), username, scode));
+	std::string dbInterfaceName = Dbmgr::getSingleton().selectAccountDBInterfaceName(username);
+
+	thread::ThreadPool* pThreadPool = DBUtil::pThreadPool(dbInterfaceName);
+	if (!pThreadPool)
+	{
+		ERROR_MSG(fmt::format("InterfacesHandler_Dbmgr::accountBindMail: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return;
+	}
+
+	pThreadPool->addTask(new DBTaskAccountBindEmail(pChannel->addr(), username, scode));
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_Normal::accountNewPassword(Network::Channel* pChannel, ENTITY_ID entityID, std::string& accountName, 
+void InterfacesHandler_Dbmgr::accountNewPassword(Network::Channel* pChannel, ENTITY_ID entityID, std::string& accountName,
 											   std::string& password, std::string& newpassword)
 {
-	dbThreadPool_.addTask(new DBTaskAccountNewPassword(pChannel->addr(), entityID, accountName, password, newpassword));
+	std::string dbInterfaceName = Dbmgr::getSingleton().selectAccountDBInterfaceName(accountName);
+
+	thread::ThreadPool* pThreadPool = DBUtil::pThreadPool(dbInterfaceName);
+	if (!pThreadPool)
+	{
+		ERROR_MSG(fmt::format("InterfacesHandler_Dbmgr::accountNewPassword: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return;
+	}
+
+	pThreadPool->addTask(new DBTaskAccountNewPassword(pChannel->addr(), entityID, accountName, password, newpassword));
 }
 
 //-------------------------------------------------------------------------------------
-InterfacesHandler_ThirdParty::InterfacesHandler_ThirdParty(thread::ThreadPool& threadPool, DBThreadPool& dbThreadPool):
-InterfacesHandler_Normal(threadPool, dbThreadPool)
+InterfacesHandler_Interfaces::InterfacesHandler_Interfaces() :
+InterfacesHandler_Dbmgr()
 {
 }
 
 //-------------------------------------------------------------------------------------
-InterfacesHandler_ThirdParty::~InterfacesHandler_ThirdParty()
+InterfacesHandler_Interfaces::~InterfacesHandler_Interfaces()
 {
 	Network::Channel* pInterfacesChannel = Dbmgr::getSingleton().networkInterface().findChannel(g_kbeSrvConfig.interfacesAddr());
 	if(pInterfacesChannel)
@@ -186,7 +276,7 @@ InterfacesHandler_ThirdParty::~InterfacesHandler_ThirdParty()
 }
 
 //-------------------------------------------------------------------------------------
-bool InterfacesHandler_ThirdParty::createAccount(Network::Channel* pChannel, std::string& registerName, 
+bool InterfacesHandler_Interfaces::createAccount(Network::Channel* pChannel, std::string& registerName,
 											  std::string& password, std::string& datas, ACCOUNT_TYPE uatype)
 {
 	Network::Channel* pInterfacesChannel = Dbmgr::getSingleton().networkInterface().findChannel(g_kbeSrvConfig.interfacesAddr());
@@ -213,7 +303,7 @@ bool InterfacesHandler_ThirdParty::createAccount(Network::Channel* pChannel, std
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::onCreateAccountCB(KBEngine::MemoryStream& s)
+void InterfacesHandler_Interfaces::onCreateAccountCB(KBEngine::MemoryStream& s)
 {
 	std::string registerName, accountName, password, postdatas, getdatas;
 	COMPONENT_ID cid;
@@ -231,16 +321,27 @@ void InterfacesHandler_ThirdParty::onCreateAccountCB(KBEngine::MemoryStream& s)
 	Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(LOGINAPP_TYPE, cid);
 	if(cinfos == NULL || cinfos->pChannel == NULL)
 	{
-		ERROR_MSG("InterfacesHandler_ThirdParty::onCreateAccountCB: loginapp not found!\n");
+		ERROR_MSG("InterfacesHandler_Interfaces::onCreateAccountCB: loginapp not found!\n");
 		return;
 	}
 
-	dbThreadPool_.addTask(new DBTaskCreateAccount(cinfos->pChannel->addr(), 
+	std::string dbInterfaceName = Dbmgr::getSingleton().selectAccountDBInterfaceName(accountName);
+
+	thread::ThreadPool* pThreadPool = DBUtil::pThreadPool(dbInterfaceName);
+	if (!pThreadPool)
+	{
+		ERROR_MSG(fmt::format("InterfacesHandler_Interfaces::onCreateAccountCB: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return;
+	}
+
+	pThreadPool->addTask(new DBTaskCreateAccount(cinfos->pChannel->addr(),
 		registerName, accountName, password, postdatas, getdatas));
 }
 
 //-------------------------------------------------------------------------------------
-bool InterfacesHandler_ThirdParty::loginAccount(Network::Channel* pChannel, std::string& loginName, 
+bool InterfacesHandler_Interfaces::loginAccount(Network::Channel* pChannel, std::string& loginName,
 											 std::string& password, std::string& datas)
 {
 	Network::Channel* pInterfacesChannel = Dbmgr::getSingleton().networkInterface().findChannel(g_kbeSrvConfig.interfacesAddr());
@@ -263,7 +364,7 @@ bool InterfacesHandler_ThirdParty::loginAccount(Network::Channel* pChannel, std:
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::onLoginAccountCB(KBEngine::MemoryStream& s)
+void InterfacesHandler_Interfaces::onLoginAccountCB(KBEngine::MemoryStream& s)
 {
 	std::string loginName, accountName, password, postdatas, getdatas;
 	COMPONENT_ID cid;
@@ -281,25 +382,37 @@ void InterfacesHandler_ThirdParty::onLoginAccountCB(KBEngine::MemoryStream& s)
 	Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(LOGINAPP_TYPE, cid);
 	if(cinfos == NULL || cinfos->pChannel == NULL)
 	{
-		ERROR_MSG("InterfacesHandler_ThirdParty::onCreateAccountCB: loginapp not found!\n");
+		ERROR_MSG("InterfacesHandler_Interfaces::onLoginAccountCB: loginapp not found!\n");
 		return;
 	}
 
-	dbThreadPool_.addTask(new DBTaskAccountLogin(cinfos->pChannel->addr(), 
+	std::string dbInterfaceName = Dbmgr::getSingleton().selectAccountDBInterfaceName(accountName);
+
+	thread::ThreadPool* pThreadPool = DBUtil::pThreadPool(dbInterfaceName);
+	if (!pThreadPool)
+	{
+		ERROR_MSG(fmt::format("InterfacesHandler_Interfaces::onLoginAccountCB: not found dbInterface({})!\n",
+			dbInterfaceName));
+
+		return;
+	}
+
+	pThreadPool->addTask(new DBTaskAccountLogin(cinfos->pChannel->addr(),
 		loginName, accountName, password, success, postdatas, getdatas));
 }
 
 //-------------------------------------------------------------------------------------
-bool InterfacesHandler_ThirdParty::initialize()
+bool InterfacesHandler_Interfaces::initialize()
 {
 	Network::Channel* pInterfacesChannel = Dbmgr::getSingleton().networkInterface().findChannel(g_kbeSrvConfig.interfacesAddr());
 	if(pInterfacesChannel)
 		return true;
+
 	return reconnect();
 }
 
 //-------------------------------------------------------------------------------------
-bool InterfacesHandler_ThirdParty::reconnect()
+bool InterfacesHandler_Interfaces::reconnect()
 {
 	Network::Channel* pInterfacesChannel = Dbmgr::getSingleton().networkInterface().findChannel(g_kbeSrvConfig.interfacesAddr());
 
@@ -319,7 +432,7 @@ bool InterfacesHandler_ThirdParty::reconnect()
 	pEndPoint->socket(SOCK_STREAM);
 	if (!pEndPoint->good())
 	{
-		ERROR_MSG("InterfacesHandler_ThirdParty::initialize: couldn't create a socket\n");
+		ERROR_MSG("InterfacesHandler_Interfaces::initialize: couldn't create a socket\n");
 		return true;
 	}
 
@@ -330,7 +443,7 @@ bool InterfacesHandler_ThirdParty::reconnect()
 	bool ret = pInterfacesChannel->initialize(Dbmgr::getSingleton().networkInterface(), pEndPoint, Network::Channel::INTERNAL);
 	if(!ret)
 	{
-		ERROR_MSG(fmt::format("InterfacesHandler_ThirdParty::initialize: initialize({}) is failed!\n",
+		ERROR_MSG(fmt::format("InterfacesHandler_Interfaces::initialize: initialize({}) is failed!\n",
 			pInterfacesChannel->c_str()));
 
 		pInterfacesChannel->destroy();
@@ -362,7 +475,7 @@ bool InterfacesHandler_ThirdParty::reconnect()
 
 		if(!connected)
 		{
-			ERROR_MSG(fmt::format("InterfacesHandler_ThirdParty::reconnect(): couldn't connect to:{}\n", 
+			ERROR_MSG(fmt::format("InterfacesHandler_Interfaces::reconnect(): couldn't connect to:{}\n", 
 				pInterfacesChannel->pEndPoint()->addr().c_str()));
 
 			pInterfacesChannel->destroy();
@@ -378,13 +491,13 @@ bool InterfacesHandler_ThirdParty::reconnect()
 }
 
 //-------------------------------------------------------------------------------------
-bool InterfacesHandler_ThirdParty::process()
+bool InterfacesHandler_Interfaces::process()
 {
 	return true;
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::charge(Network::Channel* pChannel, KBEngine::MemoryStream& s)
+void InterfacesHandler_Interfaces::charge(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 {
 	Network::Channel* pInterfacesChannel = Dbmgr::getSingleton().networkInterface().findChannel(g_kbeSrvConfig.interfacesAddr());
 	KBE_ASSERT(pInterfacesChannel);
@@ -405,7 +518,7 @@ void InterfacesHandler_ThirdParty::charge(Network::Channel* pChannel, KBEngine::
 	s.readBlob(datas);
 	s >> cbid;
 
-	INFO_MSG(fmt::format("InterfacesHandler_ThirdParty::charge: chargeID={0}, dbid={3}, cbid={1}, datas={2}!\n",
+	INFO_MSG(fmt::format("InterfacesHandler_Interfaces::charge: chargeID={0}, dbid={3}, cbid={1}, datas={2}!\n",
 		chargeID, cbid, datas, dbid));
 
 	Network::Bundle* pBundle = Network::Bundle::ObjPool().createObject();
@@ -420,7 +533,7 @@ void InterfacesHandler_ThirdParty::charge(Network::Channel* pChannel, KBEngine::
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::onChargeCB(KBEngine::MemoryStream& s)
+void InterfacesHandler_Interfaces::onChargeCB(KBEngine::MemoryStream& s)
 {
 	std::string chargeID;
 	std::string datas;
@@ -436,13 +549,13 @@ void InterfacesHandler_ThirdParty::onChargeCB(KBEngine::MemoryStream& s)
 	s >> cbid;
 	s >> retcode;
 
-	INFO_MSG(fmt::format("InterfacesHandler_ThirdParty::onChargeCB: chargeID={0}, dbid={3}, cbid={1}, cid={4}, datas={2}!\n",
+	INFO_MSG(fmt::format("InterfacesHandler_Interfaces::onChargeCB: chargeID={0}, dbid={3}, cbid={1}, cid={4}, datas={2}!\n",
 		chargeID, cbid, datas, dbid, cid));
 
 	Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(BASEAPP_TYPE, cid);
 	if(cinfos == NULL || cinfos->pChannel == NULL || cinfos->pChannel->isDestroyed())
 	{
-		ERROR_MSG(fmt::format("InterfacesHandler_ThirdParty::onChargeCB: baseapp not found!, chargeID={}, cid={}.\n", 
+		ERROR_MSG(fmt::format("InterfacesHandler_Interfaces::onChargeCB: baseapp not found!, chargeID={}, cid={}.\n", 
 			chargeID, cid));
 
 		return;
@@ -461,7 +574,7 @@ void InterfacesHandler_ThirdParty::onChargeCB(KBEngine::MemoryStream& s)
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::eraseClientReq(Network::Channel* pChannel, std::string& logkey)
+void InterfacesHandler_Interfaces::eraseClientReq(Network::Channel* pChannel, std::string& logkey)
 {
 	Network::Channel* pInterfacesChannel = Dbmgr::getSingleton().networkInterface().findChannel(g_kbeSrvConfig.interfacesAddr());
 	KBE_ASSERT(pInterfacesChannel);
@@ -479,36 +592,35 @@ void InterfacesHandler_ThirdParty::eraseClientReq(Network::Channel* pChannel, st
 	pInterfacesChannel->send(pBundle);
 }
 
-
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::accountActivate(Network::Channel* pChannel, std::string& scode)
+void InterfacesHandler_Interfaces::accountActivate(Network::Channel* pChannel, std::string& scode)
 {
 }
 
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::accountReqResetPassword(Network::Channel* pChannel, std::string& accountName)
+void InterfacesHandler_Interfaces::accountReqResetPassword(Network::Channel* pChannel, std::string& accountName)
 {
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::accountResetPassword(Network::Channel* pChannel, std::string& accountName, std::string& newpassword, std::string& scode)
+void InterfacesHandler_Interfaces::accountResetPassword(Network::Channel* pChannel, std::string& accountName, std::string& newpassword, std::string& scode)
 {
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::accountReqBindMail(Network::Channel* pChannel, ENTITY_ID entityID, std::string& accountName, 
+void InterfacesHandler_Interfaces::accountReqBindMail(Network::Channel* pChannel, ENTITY_ID entityID, std::string& accountName,
 												   std::string& password, std::string& email)
 {
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::accountBindMail(Network::Channel* pChannel, std::string& username, std::string& scode)
+void InterfacesHandler_Interfaces::accountBindMail(Network::Channel* pChannel, std::string& username, std::string& scode)
 {
 }
 
 //-------------------------------------------------------------------------------------
-void InterfacesHandler_ThirdParty::accountNewPassword(Network::Channel* pChannel, ENTITY_ID entityID, std::string& accountName, 
+void InterfacesHandler_Interfaces::accountNewPassword(Network::Channel* pChannel, ENTITY_ID entityID, std::string& accountName,
 												   std::string& password, std::string& newpassword)
 {
 }

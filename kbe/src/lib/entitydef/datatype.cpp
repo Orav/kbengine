@@ -18,7 +18,6 @@ You should have received a copy of the GNU Lesser General Public License
 along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "blob.h"
 #include "datatype.h"
 #include "datatypes.h"
 #include "entitydef.h"
@@ -30,6 +29,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 #include "pyscript/vector3.h"
 #include "pyscript/vector4.h"
 #include "pyscript/copy.h"
+#include "pyscript/py_memorystream.h"
 
 #ifndef CODE_INLINE
 #include "datatype.inl"
@@ -48,7 +48,7 @@ aliasName_()
 
 	DataTypes::addDataType(id_, this);
 
-	EntityDef::md5().append((void*)this->aliasName(), strlen(this->aliasName()));
+	EntityDef::md5().append((void*)this->aliasName(), (int)strlen(this->aliasName()));
 	EntityDef::md5().append((void*)&id_, sizeof(DATATYPE_UID));
 }
 
@@ -913,7 +913,7 @@ void UnicodeType::addToStream(MemoryStream* mstream, PyObject* pyValue)
 		return;
 	}	
 
-	mstream->appendBlob(PyBytes_AS_STRING(pyobj), PyBytes_GET_SIZE(pyobj));
+	mstream->appendBlob(PyBytes_AS_STRING(pyobj), (ArraySize)PyBytes_GET_SIZE(pyobj));
 	Py_DECREF(pyobj);
 }
 
@@ -1157,7 +1157,8 @@ bool BlobType::isSameType(PyObject* pyValue)
 		return false;
 	}
 
-	if(!PyBytes_Check(pyValue))
+	if (!PyBytes_Check(pyValue) && 
+		!PyObject_TypeCheck(pyValue, script::PyMemoryStream::getScriptType()))
 	{
 		OUT_TYPE_ERROR("BLOB");
 		return false;
@@ -1175,9 +1176,18 @@ PyObject* BlobType::parseDefaultStr(std::string defaultVal)
 //-------------------------------------------------------------------------------------
 void BlobType::addToStream(MemoryStream* mstream, PyObject* pyValue)
 {
-	Py_ssize_t datasize = PyBytes_GET_SIZE(pyValue);
-	char* datas = PyBytes_AsString(pyValue);
-	mstream->appendBlob(datas, datasize);
+	if (!PyBytes_Check(pyValue))
+	{
+		script::PyMemoryStream* pPyMemoryStream = static_cast<script::PyMemoryStream*>(pyValue);
+		MemoryStream& m = pPyMemoryStream->stream();
+		mstream->appendBlob((const char*)m.data() + m.rpos(), (ArraySize)m.length());
+	}
+	else
+	{
+		Py_ssize_t datasize = PyBytes_GET_SIZE(pyValue);
+		char* datas = PyBytes_AsString(pyValue);
+		mstream->appendBlob(datas, (ArraySize)datasize);
+	}
 }
 
 //-------------------------------------------------------------------------------------
@@ -1434,7 +1444,7 @@ bool FixedArrayType::initialize(XML* xml, TiXmlNode* node)
 
 	DATATYPE_UID uid = dataType_->id();
 	EntityDef::md5().append((void*)&uid, sizeof(DATATYPE_UID));
-	EntityDef::md5().append((void*)strType.c_str(), strType.size());
+	EntityDef::md5().append((void*)strType.c_str(), (int)strType.size());
 	return true;
 }
 
@@ -1488,7 +1498,7 @@ void FixedArrayType::addToStream(MemoryStream* mstream, PyObject* pyValue)
 //-------------------------------------------------------------------------------------
 void FixedArrayType::addToStreamEx(MemoryStream* mstream, PyObject* pyValue, bool onlyPersistents)
 {
-	ArraySize size = PySequence_Size(pyValue);
+	ArraySize size = (ArraySize)PySequence_Size(pyValue);
 	(*mstream) << size;
 
 	for(ArraySize i=0; i<size; ++i)
@@ -1711,8 +1721,8 @@ bool FixedDictType::initialize(XML* xml, TiXmlNode* node)
 				{
 					DATATYPE_UID uid = dataType->id();
 					EntityDef::md5().append((void*)&uid, sizeof(DATATYPE_UID));
-					EntityDef::md5().append((void*)strType.c_str(), strType.size());
-					EntityDef::md5().append((void*)typeName.c_str(), typeName.size());
+					EntityDef::md5().append((void*)strType.c_str(), (int)strType.size());
+					EntityDef::md5().append((void*)typeName.c_str(), (int)typeName.size());
 
 					keyTypes_.push_back(std::pair< std::string, DictItemDataTypePtr >(typeName, pDictItemDataType));
 					dataType->incRef();
@@ -1744,8 +1754,8 @@ bool FixedDictType::initialize(XML* xml, TiXmlNode* node)
 				{
 					DATATYPE_UID uid = dataType->id();
 					EntityDef::md5().append((void*)&uid, sizeof(DATATYPE_UID));
-					EntityDef::md5().append((void*)strType.c_str(), strType.size());
-					EntityDef::md5().append((void*)typeName.c_str(), typeName.size());
+					EntityDef::md5().append((void*)strType.c_str(), (int)strType.size());
+					EntityDef::md5().append((void*)typeName.c_str(), (int)typeName.size());
 
 					keyTypes_.push_back(std::pair< std::string, DictItemDataTypePtr >(typeName, pDictItemDataType));
 					dataType->incRef();
@@ -1785,7 +1795,7 @@ bool FixedDictType::initialize(XML* xml, TiXmlNode* node)
 		}
 
 		if(strType.size() > 0)
-			EntityDef::md5().append((void*)strType.c_str(), strType.size());
+			EntityDef::md5().append((void*)strType.c_str(), (int)strType.size());
 	}
 
 	return true;
