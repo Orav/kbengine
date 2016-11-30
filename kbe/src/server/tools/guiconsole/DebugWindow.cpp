@@ -1,4 +1,4 @@
-﻿// DebugWindow.cpp : implementation file
+// DebugWindow.cpp : implementation file
 //
 
 #include "stdafx.h"

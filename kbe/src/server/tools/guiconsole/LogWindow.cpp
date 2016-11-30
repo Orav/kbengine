@@ -1,4 +1,4 @@
-ï»¿// LogWindow.cpp : implementation file
+// LogWindow.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -13,14 +13,14 @@
 IMPLEMENT_DYNAMIC(CLogWindow, CDialog)
 
 CString  state_flags[8] = {
-	L"â†–",
-	L"â†‘",
-	L"â†—",
-	L"â†’",
-	L"â†˜ ",
-	L"â†“",
-	L"â†™",
-	L"â†",
+	L"¨I",
+	L"¡ü",
+	L"¨J",
+	L"¡ú",
+	L"¨K ",
+	L"¡ı",
+	L"¨L",
+	L"¡û",
 };
 
 int state_flags_idx = 0;
@@ -350,7 +350,7 @@ void CLogWindow::onConnectStatus(bool success, KBEngine::Network::Address addr)
 void CLogWindow::OnBnClickedButton1()
 {
 	// TODO: Add your control notification handler code here
-	// è¯·æ±‚æœåŠ¡å™¨æ‹‰å–æ—¥å¿—
+	// ÇëÇó·şÎñÆ÷À­È¡ÈÕÖ¾
 	CguiconsoleDlg* dlg = static_cast<CguiconsoleDlg*>(theApp.m_pMainWnd);
 	
 	HTREEITEM item = dlg->hasCheckApp(LOGGER_TYPE);

@@ -37,14 +37,14 @@ class EventDispatcher;
 }
 
 /*
-	如果在app上没有找到任何cellapp或者baseapp这个模块将一些消息缓存起来， 
-	等待有新的cellapp或者baseapp加入则开始将指令转发。
+	If you don't find any app on cellapp or baseapp the module caches, 
+	Waiting for the new cellapp or join baseapp began forwarding the instruction.
 */
 
 
 /*
-	当一个消息被成功转寄则调用这个handler处理剩余的事情
-	需要重写process
+	When a message is successfully forwarded the calls the handler
+	to handle the remaining matters Needs rewriting process
 */
 class ForwardMessageOverHandler
 {
@@ -75,7 +75,7 @@ public:
 };
 
 /*
-	转发缓存消息到指定组件上
+	Message to the forwarding cache on the specified component
 */
 class ForwardComponent_MessageBuffer : public Task, 
 						public Singleton<ForwardComponent_MessageBuffer>
@@ -103,7 +103,7 @@ private:
 };
 
 /*
-	转发缓存消息到同类型任意组件上
+	On the forwarding cache messages to any component of the same type
 */
 class ForwardAnywhere_MessageBuffer : public Task, 
 						public Singleton<ForwardAnywhere_MessageBuffer>

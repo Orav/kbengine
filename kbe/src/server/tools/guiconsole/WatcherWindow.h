@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "afxcmn.h"
 #include "common/memorystream.h"
 #include "helper/watcher.h"

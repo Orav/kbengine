@@ -1,4 +1,4 @@
-﻿// LineChartCtrl.cpp : implementation file
+// LineChartCtrl.cpp : implementation file
 //
 
 #include "stdafx.h"

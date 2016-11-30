@@ -1,4 +1,4 @@
-ï»¿// MultiLineListBox.cpp : implementation file
+// MultiLineListBox.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -332,9 +332,9 @@ void CMultiLineListBox::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBa
 	bool done = false;
 	switch(nSBCode)
 	{
-	case SB_THUMBPOSITION:	//æ‹–åŠ¨æ»‘å—
-	case SB_LINELEFT:		//ç‚¹å‡»å·¦è¾¹çš„ç®­å¤´
-	case SB_LINERIGHT:		//ç‚¹å‡»å³è¾¹çš„ç®­å¤´
+	case SB_THUMBPOSITION:	//ÍÏ¶¯»¬¿é
+	case SB_LINELEFT:		//µã»÷×ó±ßµÄ¼ıÍ·
+	case SB_LINERIGHT:		//µã»÷ÓÒ±ßµÄ¼ıÍ·
 		done = true;
 		break;
 	} 

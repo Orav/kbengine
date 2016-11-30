@@ -76,29 +76,29 @@ public:
 	~EntityApp();
 	
 	/** 
-		相关处理接口 
+		Associated with the interface 
 	*/
 	virtual void handleTimeout(TimerHandle handle, void * arg);
 	virtual void handleGameTick();
 
 	/**
-		通过entityID寻找到对应的实例 
+		By entity instance iD found 
 	*/
 	E* findEntity(ENTITY_ID entityID);
 
 	/** 
-		通过entityID销毁一个entity 
+		By entity iD destroy a entity 
 	*/
 	virtual bool destroyEntity(ENTITY_ID entityID, bool callScript);
 
 	/**
-		由mailbox来尝试获取一个entity的实例
-		因为这个组件上不一定存在这个entity。
+		By the mailbox in an attempt to get an instance of the entity 
+		Because this component is not necessarily the existence of this entity.
 	*/
 	PyObject* tryGetEntityByMailbox(COMPONENT_ID componentID, ENTITY_ID eid);
 
 	/**
-		由mailbox来尝试获取一个channel的实例
+		By the mailbox in an attempt to get an instance of a channel
 	*/
 	Network::Channel* findChannelByMailbox(EntityMailbox& mailbox);
 
@@ -132,94 +132,94 @@ public:
 	EntityIDClient& idClient(){ return idClient_; }
 
 	/**
-		创建一个entity 
+		Create an entity 
 	*/
 	E* createEntity(const char* entityType, PyObject* params,
 		bool isInitializeScript = true, ENTITY_ID eid = 0, bool initProperty = true);
 
 	virtual E* onCreateEntity(PyObject* pyEntity, ScriptDefModule* sm, ENTITY_ID eid);
 
-	/** 网络接口
-		请求分配一个ENTITY_ID段的回调
+	/** Network interface 
+	    Request a callback ENTITY ID
 	*/
 	void onReqAllocEntityID(Network::Channel* pChannel, ENTITY_ID startID, ENTITY_ID endID);
 
-	/** 网络接口
-		dbmgr发送初始信息
-		startID: 初始分配ENTITY_ID 段起始位置
-		endID: 初始分配ENTITY_ID 段结束位置
-		startGlobalOrder: 全局启动顺序 包括各种不同组件
-		startGroupOrder: 组内启动顺序， 比如在所有baseapp中第几个启动。
+	/** Network interface
+		DbMgr sent initial information
+		Start iD: initial allocation of start position ENTITY ID
+		End iD: initial allocation ENTITY ID end position
+		Start global order: global startup sequence consists of various components 
+		Start group order: boot sequence within the group, which started in all baseapp.
 	*/
 	void onDbmgrInitCompleted(Network::Channel* pChannel, 
 		GAME_TIME gametime, ENTITY_ID startID, ENTITY_ID endID, COMPONENT_ORDER startGlobalOrder, 
 		COMPONENT_ORDER startGroupOrder, const std::string& digest);
 
-	/** 网络接口
-		dbmgr广播global数据的改变
+	/** Network interface 
+	    DbMgr broadcast global data changes
 	*/
 	void onBroadcastGlobalDataChanged(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
 
-	/** 网络接口
-		请求执行一段python指令
+	/** Network interface
+		Requests executing a Python instructions
 	*/
 	void onExecScriptCommand(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
 	/** 
-		console请求开始profile
+		Console request profile
 	*/
 	virtual void startProfile_(Network::Channel* pChannel, std::string profileName, int8 profileType, uint32 timelen);
 
 	/**
-		获取apps发布状态, 可在脚本中获取该值
+		State gets apps released, in a script, you can get the value
 	*/
 	static PyObject* __py_getAppPublish(PyObject* self, PyObject* args);
 
 	/**
-		设置脚本输出类型前缀
+		Set the type of the script prefix
 	*/
 	static PyObject* __py_setScriptLogType(PyObject* self, PyObject* args);
 
 	/**
-		获取watcher值
+		Get the watcher
 	*/
 	static PyObject* __py_getWatcher(PyObject* self, PyObject* args);
 	static PyObject* __py_getWatcherDir(PyObject* self, PyObject* args);
 
 	/**
-		重新导入所有的脚本
+		Re-import all scripts
 	*/
 	virtual void reloadScript(bool fullReload);
 	virtual void onReloadScript(bool fullReload);
 
 	/**
-		通过相对路径获取资源的全路径
+		Get resources through the relative path full path
 	*/
 	static PyObject* __py_getResFullPath(PyObject* self, PyObject* args);
 
 	/**
-		通过相对路径判断资源是否存在
+		By relative paths to determine whether resources exist
 	*/
 	static PyObject* __py_hasRes(PyObject* self, PyObject* args);
 
 	/**
-		open文件
+		Open file
 	*/
 	static PyObject* __py_kbeOpen(PyObject* self, PyObject* args);
 
 	/**
-		列出目录下所有文件
+		Directory all the files that are listed
 	*/
 	static PyObject* __py_listPathRes(PyObject* self, PyObject* args);
 
 	/**
-		匹配相对路径获得全路径 
+		Relative full path match 
 	*/
 	static PyObject* __py_matchPath(PyObject* self, PyObject* args);
 
 	/**
-		更新负载情况
+		Updates loading
 	*/
 	int tickPassedPercent(uint64 curr = timestamp());
 	float getLoad() const { return load_; }
@@ -236,7 +236,7 @@ protected:
 
 	EntityIDClient											idClient_;
 
-	// 存储所有的entity的容器
+	// Storing all container entity
 	Entities<E>*											pEntities_;
 
 	TimerHandle												gameTimer_;
@@ -248,7 +248,7 @@ protected:
 
 	uint64													lastTimestamp_;
 
-	// 进程当前负载
+	// Process the current load
 	float													load_;
 };
 
@@ -273,11 +273,11 @@ load_(0.f)
 	ScriptTimers::initialize(*this);
 	idClient_.pApp(this);
 
-	// 初始化mailbox模块获取entity实体函数地址
+	// Initialize the mailbox function module Gets the entity entity address
 	EntityMailbox::setGetEntityFunc(std::tr1::bind(&EntityApp<E>::tryGetEntityByMailbox, this, 
 		std::tr1::placeholders::_1, std::tr1::placeholders::_2));
 
-	// 初始化mailbox模块获取channel函数地址
+	// Initialize mailbox module channel function address
 	EntityMailbox::setFindChannelFunc(std::tr1::bind(&EntityApp<E>::findChannelByMailbox, this, 
 		std::tr1::placeholders::_1));
 }
@@ -347,7 +347,7 @@ bool EntityApp<E>::installEntityDef()
 	if(!EntityDef::installScript(this->getScript().getModule()))
 		return false;
 
-	// 初始化所有扩展模块
+	// Initialize all expansion modules
 	// assets/scripts/
 	if(!EntityDef::initialize(scriptBaseTypes_, componentType_)){
 		return false;
@@ -457,7 +457,7 @@ bool EntityApp<E>::installPyModules()
 	pEntities_ = new Entities<E>();
 	registerPyObjectToScript("entities", pEntities_);
 
-	// 安装入口模块
+	// Install entry module
 	PyObject *entryScriptFileName = NULL;
 	if(componentType() == BASEAPP_TYPE)
 	{
@@ -470,43 +470,43 @@ bool EntityApp<E>::installPyModules()
 		entryScriptFileName = PyUnicode_FromString(info.entryScriptFile);
 	}
 
-	// 添加pywatcher支持
+	// Add support for pywatcher
 	if(!initializePyWatcher(&this->getScript()))
 		return false;
 
-	// 添加globalData, globalBases支持
+	// Add global data, global support bases
 	pGlobalData_ = new GlobalDataClient(DBMGR_TYPE, GlobalDataServer::GLOBAL_DATA);
 	registerPyObjectToScript("globalData", pGlobalData_);
 
-	// 注册创建entity的方法到py
-	// 向脚本注册app发布状态
+	// Registered entity created to py 
+	// Released to the script-registration app status
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	publish,			__py_getAppPublish,						METH_VARARGS,	0);
 
-	// 注册设置脚本输出类型
+	// Registration settings script output type
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	scriptLogType,		__py_setScriptLogType,					METH_VARARGS,	0);
 	
-	// 获得资源全路径
+	// Access the full path
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	getResFullPath,		__py_getResFullPath,					METH_VARARGS,	0);
 
-	// 是否存在某个资源
+	// The existence of a resource
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	hasRes,				__py_hasRes,							METH_VARARGS,	0);
 
-	// 打开一个文件
+	// Open a file
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	open,				__py_kbeOpen,							METH_VARARGS,	0);
 
-	// 列出目录下所有文件
+	// Directory all the files that are listed
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	listPathRes,		__py_listPathRes,						METH_VARARGS,	0);
 
-	// 匹配相对路径获得全路径
+	// Relative full path match
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	matchPath,			__py_matchPath,							METH_VARARGS,	0);
 
-	// 获取watcher值
+	// Get the watcher
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	getWatcher,			__py_getWatcher,						METH_VARARGS,	0);
 
-	// 获取watcher目录
+	// Get the watcher directory
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	getWatcherDir,		__py_getWatcherDir,						METH_VARARGS,	0);
 
-	// debug追踪kbe封装的py对象计数
+	// Debug tracing py objects of the KBE package count
 	APPEND_SCRIPT_MODULE_METHOD(getScript().getModule(),	debugTracing,		script::PyGC::__py_debugTracing,		METH_VARARGS,	0);
 
 	if(PyModule_AddIntConstant(this->getScript().getModule(), "LOG_TYPE_NORMAL", log4cxx::ScriptLevel::SCRIPT_INT))
@@ -587,7 +587,7 @@ template<class E>
 E* EntityApp<E>::createEntity(const char* entityType, PyObject* params,
 										 bool isInitializeScript, ENTITY_ID eid, bool initProperty)
 {
-	// 检查ID是否足够, 不足返回NULL
+	// Check if the ID is sufficient, insufficient return NULL
 	if(eid <= 0 && idClient_.size() == 0)
 	{
 		PyErr_SetString(PyExc_SystemError, "EntityApp::createEntity: is Failed. not enough entityIDs.");
@@ -617,7 +617,7 @@ E* EntityApp<E>::createEntity(const char* entityType, PyObject* params,
 
 	PyObject* obj = sm->createObject();
 
-	// 判断是否要分配一个新的id
+	// Determine whether you want to assign a new ID
 	ENTITY_ID id = eid;
 	if(id <= 0)
 		id = idClient_.alloc();
@@ -627,10 +627,10 @@ E* EntityApp<E>::createEntity(const char* entityType, PyObject* params,
 	if(initProperty)
 		entity->initProperty();
 
-	// 将entity加入entities
+	// Join the entity entities
 	pEntities_->add(id, entity); 
 
-	// 初始化脚本
+	// Initialization script
 	if(isInitializeScript)
 		entity->initializeEntity(params);
 
@@ -651,7 +651,7 @@ E* EntityApp<E>::createEntity(const char* entityType, PyObject* params,
 template<class E>
 E* EntityApp<E>::onCreateEntity(PyObject* pyEntity, ScriptDefModule* sm, ENTITY_ID eid)
 {
-	// 执行Entity的构造函数
+	// Implementation of the Entity's constructor
 	return new(pyEntity) E(eid, sm);
 }
 
@@ -694,7 +694,7 @@ PyObject* EntityApp<E>::tryGetEntityByMailbox(COMPONENT_ID componentID, ENTITY_I
 template<class E>
 Network::Channel* EntityApp<E>::findChannelByMailbox(EntityMailbox& mailbox)
 {
-	// 如果组件ID大于0则查找组件
+	// If the component ID is greater than 0 then the lookup component
 	if(mailbox.componentID() > 0)
 	{
 		Components::ComponentInfos* cinfos = 
@@ -1286,7 +1286,7 @@ void EntityApp<E>::onBroadcastGlobalDataChanged(Network::Channel* pChannel, KBEn
 	{
 		if(pGlobalData_->del(pyKey))
 		{
-			// 通知脚本
+			// Notification script
 			// SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 			SCRIPT_OBJECT_CALL_ARGS1(getEntryScript().get(), const_cast<char*>("onGlobalDataDel"), 
 				const_cast<char*>("O"), pyKey);
@@ -1304,7 +1304,7 @@ void EntityApp<E>::onBroadcastGlobalDataChanged(Network::Channel* pChannel, KBEn
 
 		if(pGlobalData_->write(pyKey, pyValue))
 		{
-			// 通知脚本
+			// Notification script
 			// SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 			SCRIPT_OBJECT_CALL_ARGS2(getEntryScript().get(), const_cast<char*>("onGlobalData"), 
 				const_cast<char*>("OO"), pyKey, pyValue);
@@ -1341,7 +1341,7 @@ void EntityApp<E>::onExecScriptCommand(Network::Channel* pChannel, KBEngine::Mem
 		retbuf = "\r\n";
 	}
 
-	// 将结果返回给客户端
+	// Returns the results to the client
 	Network::Bundle* pBundle = Network::Bundle::createPoolObject();
 	ConsoleInterface::ConsoleExecCommandCBMessageHandler msgHandler;
 	(*pBundle).newMessage(msgHandler);
@@ -1355,13 +1355,13 @@ void EntityApp<E>::onExecScriptCommand(Network::Channel* pChannel, KBEngine::Mem
 template<class E>
 int EntityApp<E>::tickPassedPercent(uint64 curr)
 {
-	// 得到上一个tick到现在所流逝的时间
+	// Get the last tick and now the elapsed time
 	uint64 pass_stamps = (curr - lastTimestamp_) * uint64(1000) / stampsPerSecond();
 
-	// 得到每Hertz的毫秒数
+	// Get number of milliseconds per Hertz
 	static int expected = (1000 / g_kbeSrvConfig.gameUpdateHertz());
 
-	// 得到当前流逝的时间占一个时钟周期的的百分比
+	// The current percentage of elapsed time in one clock cycle
 	return int(pass_stamps) * 100 / expected;
 }
 
@@ -1388,7 +1388,7 @@ void EntityApp<E>::updateLoad()
 {
 	uint64 lastTickInStamps = checkTickPeriod();
 
-	// 获得空闲时间比例
+	// Get free time
 	double spareTime = 1.0;
 	if (lastTickInStamps != 0)
 	{
@@ -1397,7 +1397,7 @@ void EntityApp<E>::updateLoad()
 
 	dispatcher_.clearSpareTime();
 
-	// 如果空闲时间比例小于0 或者大于1则表明计时不准确
+	// If the idle time is less than 0 or greater than 1 indicates that the timing is not accurate
 	if ((spareTime < 0.f) || (1.f < spareTime))
 	{
 		if (g_timingMethod == RDTSC_TIMING_METHOD)
@@ -1421,11 +1421,11 @@ void EntityApp<E>::updateLoad()
 template<class E>
 void EntityApp<E>::calcLoad(float spareTime)
 {
-	// 负载的值为1.0 - 空闲时间比例, 必须在0-1.f之间
+	// Load the value is 1.0-free time must be between 0-1.f
 	float load = KBEClamp(1.f - spareTime, 0.f, 1.f);
 
-	// 此处算法看server_operations_guide.pdf介绍loadSmoothingBias处
-	// loadSmoothingBias 决定本次负载取最后一次负载的loadSmoothingBias剩余比例 + 当前负载的loadSmoothingBias比例
+	// Server Operations Guide.PDF load smoothing introduced bias here algorithms
+	// Load smoothing bias decided to move the load and load last load smoothing remaining bias proportion + load smoothing bias of the current load percentage
 	static float loadSmoothingBias = g_kbeSrvConfig.getConfig().loadSmoothingBias;
 	load_ = (1 - loadSmoothingBias) * load_ + loadSmoothingBias * load;
 }
@@ -1448,7 +1448,7 @@ void EntityApp<E>::reloadScript(bool fullReload)
 
 	// SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 
-	// 所有脚本都加载完毕
+	// All scripts are loaded
 	PyObject* pyResult = PyObject_CallMethod(getEntryScript().get(), 
 										const_cast<char*>("onInit"), 
 										const_cast<char*>("i"), 

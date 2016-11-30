@@ -29,27 +29,27 @@ namespace KBEngine{
 
 class GlobalDataClient : public script::Map
 {	
-	/** 子类化 将一些py操作填充进派生类 */
+	/** Subclass py operations filling in a derived class */
 	INSTANCE_SCRIPT_HREADER(GlobalDataClient, script::Map)
 		
 public:	
 	GlobalDataClient(COMPONENT_TYPE componentType, GlobalDataServer::DATA_TYPE dataType);
 	~GlobalDataClient();
 	
-	/** 写数据 */
+	/** Writing data */
 	bool write(PyObject* pyKey, PyObject* pyValue);
 	
-	/** 删除数据 */
+	/** Delete data */
 	bool del(PyObject* pyKey);
 	
-	/** 数据改变通知 */
+	/** Data change notifications */
 	void onDataChanged(PyObject* key, PyObject* value, bool isDelete = false);
 	
-	/** 设置该全局数据客户端的服务器组件类型 */
+	/** Sets the global data server component of client type */
 	void setServerComponentType(COMPONENT_TYPE ct){ serverComponentType_ = ct; }
 	
 private:
-	COMPONENT_TYPE					serverComponentType_;				// GlobalDataServer所在服务器组件的类型
+	COMPONENT_TYPE					serverComponentType_;				// Global data server component of the server where the type
 	GlobalDataServer::DATA_TYPE 	dataType_;
 } ;
 

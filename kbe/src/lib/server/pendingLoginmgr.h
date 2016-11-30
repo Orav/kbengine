@@ -38,7 +38,7 @@ class EventDispatcher;
 }
 
 /*
-	登录到服务器检测成功， 但还没有进入到游戏世界时， 需要将账号缓存一下便于后续处理
+	Log on to the server test is successful, but not in the gaming world, account needs to be cached for subsequent processing
 */
 class PendingLoginMgr : public Task
 {

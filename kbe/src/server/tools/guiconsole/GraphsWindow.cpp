@@ -1,4 +1,4 @@
-﻿// GraphsWindow.cpp : implementation file
+// GraphsWindow.cpp : implementation file
 //
 
 #include "stdafx.h"

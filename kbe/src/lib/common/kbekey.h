@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -29,7 +29,7 @@ namespace KBEngine
 
 
 /**
- *	ÒıÇæµÄkey¹ÜÀí
+ *	å¼•æ“çš„keyç®¡ç†
  */
 class KBEKey : public KBE_RSA, public Singleton<KBEKey>
 {

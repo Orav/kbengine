@@ -19,41 +19,38 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /*
-	IDAllocate(分配器)
-		用来分配一个本分配器所管理的唯一id。 使用这个分配器必须自己保证， 一个应用只能使用
-		同一个id分配器来获取id才是唯一的。
+	IDAllocate (Distributor) Used to assign a unique ID for this adapter management.
+		Using the Distributor must ensure that an application can use
 		
-		如果是一个 unsigned int类型， 这个分配器会一直向上分配， 当达到类型的最大值之后会
-		从转头又从0开始向上累加分配， 它会从list中寻找， 如果当前要分配的ID没有在list中找到
-		那么这个id将被分配。
+		Same ID distributor to obtain the ID is unique.
+		If the type is an unsigned int, the allocator will always be assigned when the type's maximum value is reached after
+		Cumulative distribution up from turned from 0, it will search from the list, if you want to assign the ID was not found in the list
 
-		用法:
-		IDAllocate<ENTITY_ID>* m_IDAllocPtr = new IDAllocate<ENTITY_ID>;
-		// 分配一个id 
-		m_IDAllocPtr->alloc()
-		// 回收一个id
-		m_IDAllocPtr->reclaim()
+This ID will be assigned.
+		Usage:
+		IDAllocate<ENTITY ID>* m IDAlloc ptr = new IDAllocate<ENTITY ID>;
+		Assign an ID m IDAlloc PTR->alloc ()
+		Recycling just one ID
 		
-	IDServer(服务器)
-		这个主要是提供整个服务器组之间的entityID的分配， 他主要被baseappmgr使用， 每个IDserver
-		请求获取ID的时候， 这个服务器就会分配一个唯一id段给客户端， 那么客户端就可以根据这个段
-		产生所有的唯一id并进行自由的分派。
+	m IDAlloc ptr->reclaim()
+		IDServer (server)
+		This is to provide the entire entity between the server group iD assigned, he mainly used by baseappmgr each IDserver
+		Gets the ID of the request, the server will assign a unique ID to the client, then the client can under this paragraph
 		
-		用法:
-		IDServer<ENTITY_ID>* m_idServer = new IDServer<ENTITY_ID>(1, 400);
-		// 获取一个id段 并传输给IDClient
-		std::pair< unsigned int, unsigned int > idRange = m_idServer->allocRange();
-		g_socketStreamIDClient->send(idRange.first, idRange.second);
+		Generate unique ID for all and free distribution.
+		Usage:
+		IDServer<ENTITY ID>* m id server = new IDServer<ENTITY ID>(1, 400);
+		Gets a ID and transfer to IDClient
+		std::pair< unsigned int, unsigned int > id range = m id server->alloc range();
 		
-	IDClient(客户端)
-		这个模块是配合IDServer进行id申请和接收的， 。
+	g socket stream iDClient->send(id range.first, id range.second);
+		IDClient (client-side)
 		
-		用法:
-		IDClient<ENTITY_ID>* m_idClient = new IDClient<ENTITY_ID>;
-		// 添加IDServer发送过来的id段
-		m_idClient->onAddRange(id_begin, id_end);
-		// 分配一个id 
-		m_idClient->alloc()
+		This module is combined with IDServer ID to apply for and receive.
+		Usage:
+		IDClient<ENTITY ID>* m id client = new IDClient<ENTITY ID>;
+		Add IDServer ID sent
+		m id client->on add range(id begin, id end); Assign an ID m ID client->alloc ()
 */
 #ifndef KBE_IDALLOCATE_H
 #define KBE_IDALLOCATE_H
@@ -72,8 +69,8 @@ namespace KBEngine{
 
 class ServerApp;
 
-// 直接使用一个迭代数， 如果数溢出了类型大小就归零所以需要使用无符号类型
-// 适用于临时分配id， 并且很快归还， 这样才不会ID冲突
+// Using an iteration directly, if the number of overflows the type size will be zero so you need to use unsigned types
+// Applies to the temporary allocation of ID, and return soon, so as not to ID conflict
 template<typename T>
 class IDAllocate
 {
@@ -87,7 +84,7 @@ public:
 	}	
 	
 	/** 
-		分配一个id 
+		Assign an ID 
 	*/
 	T alloc(void)
 	{
@@ -99,7 +96,7 @@ public:
 	}
 	
 	/** 
-		回收一个id 
+		Recycling just one ID 
 	*/
 	virtual void reclaim(T id)
 	{
@@ -109,11 +106,11 @@ public:
 	void lastID(T v){ last_id_ = v; }
 
 protected:
-	// 最后一次申请到的ID
+	// Last apply to ID
 	T last_id_;
 };
 
-// 分配的id用完会存储在列表中， 下次使用会从中获取
+// Assigned ID run out of the store in the list, the next time you will get
 template< typename T >
 class IDAllocateFromList : public IDAllocate<T>
 {
@@ -127,7 +124,7 @@ public:
 	}	
 	
 	/** 
-		分配一个id 
+		Assign an ID 
 	*/
 	T alloc(void)
 	{
@@ -146,7 +143,7 @@ public:
 	}
 	
 	/** 
-		回收一个id 
+		Recycling just one ID 
 	*/
 	void reclaim(T id)
 	{
@@ -154,7 +151,7 @@ public:
 	}
 
 protected:
-	// id列表， 所有ID都存在这个列表里
+	// ID list, all ID there is this list
 	typename std::queue< T > id_list_;
 };
 
@@ -174,7 +171,7 @@ public:
 	}
 	
 	/** 
-		分配一个id段 
+		Assign an ID 
 	*/
 	std::pair< T, T > allocRange(void)
 	{
@@ -187,10 +184,10 @@ public:
 	}
 
 protected:
-	// 最后一次申请到的ID段的起始位置
+	// Applications for the last time to the beginning of ID
 	T last_id_range_begin_;
 	
-	// id段的一个段长度
+	// ID of a length
 	T range_step_;	
 };
 
@@ -206,7 +203,7 @@ public:
 	}
 	
 	/** 
-		析构时不会通知IDServer进行回收， 请使用者自己进行这方面的维护 
+		IDServer is not notified when the destructor for recycling, use it yourself maintenance 
 	*/
 	virtual ~IDClient()
 	{
@@ -225,7 +222,7 @@ public:
 		size_t nCount = last_id_range_end_ - last_id_range_begin_; 
 		if(nCount <= 0)
 		{
-			// 看看是否有缓存的ID段（会在id快用尽时向服务器申请缓存到这里）
+			// See if a cache ID (ID to the server when the application cache to here)
 			if(id_list_.size() > 0)
 			{
 				std::pair< T, T > n = id_list_.front();
@@ -240,14 +237,14 @@ public:
 	}
 	
 	/**
-		检查entityID是否够用 
-		注意：一个tick内使用ID数量不要超过ID_ENOUGH_LIMIT
+		Check whether the entity iD 
+		Note: use a tick ID never go longer than ID ENOUGH LIMIT
 	*/
 	virtual void onAlloc(void) {
 	};
 	
 	/** 
-		idserver 分配过来的一个id段 
+		idserver Assign an ID of 
 	*/
 	void onAddRange(T id_begin, T id_end)
 	{
@@ -264,7 +261,7 @@ public:
 	}
 	
 	/** 
-		分配一个id 
+		Assign an ID 
 	*/
 	T alloc(void)
 	{
@@ -274,7 +271,7 @@ public:
 
 		if(last_id_range_begin_ > last_id_range_end_)
 		{
-			// 看看是否有缓存的ID段（会在id快用尽时向服务器申请缓存到这里）
+			// See if a cache ID (ID to the server when the application cache to here)
 			if(id_list_.size() > 0)
 			{
 				std::pair< T, T > n = id_list_.front();
@@ -293,21 +290,21 @@ public:
 	}
 	
 	/** 
-		回收一个id
+		Recycling just one ID
 	*/
 	void onReclaim(T id)
 	{
 	}
 	
 protected:
-	// id列表， 所有ID段都存在这个列表里
+	// ID list, all ID there is this list
 	typename std::queue< std::pair< T, T > > id_list_;
 
-	// 最后一次申请到的ID段的起始位置
+	// Applications for the last time to the beginning of ID
 	T last_id_range_begin_;
 	T last_id_range_end_;
 
-	// 是否已经请求ID服务端分配ID
+	// Whether it has requested the ID server assigned ID
 	bool requested_idserver_alloc_;	
 };
 

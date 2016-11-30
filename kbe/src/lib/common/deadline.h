@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -27,7 +27,7 @@ namespace KBEngine
 {
 
 /**
- *	ÆÚÏŞ
+ *	æœŸé™
  */
 class Deadline
 {

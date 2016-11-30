@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -31,14 +31,14 @@ namespace KBEngine {
 class KBEBlowfish
 {
 public:
-	// Ã¿¿é´óÐ¡
+	// Each block size
 	static const int BLOCK_SIZE = 64 / 8;
 
-	// keyµÄ×îÐ¡ºÍ×î´ó´óÐ¡
+	// The minimum and maximum key sizes
 	static const int MIN_KEY_SIZE = 32 / 8;
 	static const int MAX_KEY_SIZE = 448 / 8;
 
-	// Ä¬ÈÏkeyµÄ´óÐ¡
+	// The default key size
 	static const int DEFAULT_KEY_SIZE = 128 / 8;
 
 	typedef std::string Key;

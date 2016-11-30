@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -53,8 +53,8 @@ inline bool operator==( TimerHandle h1, TimerHandle h2 )
 
 
 /**
- *	±ØÐë¼Ì³ÐÕâ¸ö½Ó¿Ú
- *	À´½ÓÊÕtimer->handleTimeoutÊÂ¼þ
+ *	å¿…é¡»ç»§æ‰¿è¿™ä¸ªæŽ¥å£
+ *	æ¥æŽ¥æ”¶timer->handleTimeoutäº‹ä»¶
  */
 class TimerHandler
 {

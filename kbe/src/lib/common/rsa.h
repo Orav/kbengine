@@ -1,4 +1,4 @@
-/*
+﻿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -28,7 +28,7 @@ namespace KBEngine
 
 
 /**
- *	openssl rsa�ķ�װ
+ *	openssl rsa的封装
  */
 class KBE_RSA
 {

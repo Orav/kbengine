@@ -52,7 +52,7 @@ protected:
 };
 
 /*
-	账号激活邮件发送线程任务
+	Account activation mail sending thread task
 */
 
 class SendActivateEMailTask : public SendEMailTask
@@ -74,7 +74,7 @@ protected:
 };
 
 /*
-	忘记密码邮件发送线程任务
+	Forgot password mail sending thread task
 */
 
 class SendResetPasswordEMailTask : public SendEMailTask
@@ -96,7 +96,7 @@ protected:
 };
 
 /*
-	账号绑定邮箱邮件发送线程任务
+	Account bound mailbox mail sending thread task
 */
 
 class SendBindEMailTask : public SendEMailTask

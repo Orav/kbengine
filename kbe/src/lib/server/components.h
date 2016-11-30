@@ -38,7 +38,7 @@ class Address;
 class NetworkInterface;
 }
 
-// ComponentInfos.flags标志
+// Component infos.flags logo
 #define COMPONENT_FLAG_NORMAL 0x00000000
 #define COMPONENT_FLAG_SHUTTINGDOWN 0x00000001
 
@@ -71,8 +71,8 @@ public:
 			logTime = timestamp();
 		}
 
-		KBEShared_ptr<Network::Address> pIntAddr, pExtAddr;		// 内部和外部地址
-		char externalAddressEx[MAX_NAME + 1];					// 强制暴露给外部的公网地址, 详见配置中的externalAddressEx
+		KBEShared_ptr<Network::Address> pIntAddr, pExtAddr;		// Internal and external addresses
+		char externalAddressEx[MAX_NAME + 1];					// Forced exposure to external public network address, as described in configuring the external address ex
 
 		int32 uid;
 		COMPONENT_ID cid;
@@ -83,7 +83,7 @@ public:
 		COMPONENT_TYPE componentType;
 		uint32 flags;
 
-		// 进程状态
+		// Process status
 		COMPONENT_STATE state;
 
 		float cpu;
@@ -96,7 +96,7 @@ public:
 
 	typedef std::vector<ComponentInfos> COMPONENTS;
 
-	/** 组件添加删除handler */
+	/** Component add remove handler */
 	class ComponentsNotificationHandler
 	{
 	public:
@@ -134,7 +134,7 @@ public:
 	Components::COMPONENTS& getComponents(COMPONENT_TYPE componentType);
 
 	/** 
-		查找组件
+		Find component
 	*/
 	Components::ComponentInfos* findComponent(COMPONENT_TYPE componentType, int32 uid, COMPONENT_ID componentID);
 	Components::ComponentInfos* findComponent(COMPONENT_TYPE componentType, COMPONENT_ID componentID);
@@ -143,7 +143,7 @@ public:
 	Components::ComponentInfos* findComponent(Network::Address* pAddress);
 
 	/** 
-		通过进程id寻找本地组件
+		By process ID will search component
 	*/
 	Components::ComponentInfos* findLocalComponent(uint32 pid);
 
@@ -156,27 +156,27 @@ public:
 	ORDER_LOG& getLoginappGroupOrderLog(){ return _loginappGrouplOrderLog; }
 	
 	/** 
-		检查所有的组件， 防止有重复的uuid， 此时应该报错.
+		Check that all the components to prevent duplicate UUID, you should complain.
 	*/
 	bool checkComponents(int32 uid, COMPONENT_ID componentID, uint32 pid);
 
 	/** 
-		设置用于接收组件通知的处理器实例
+		Sets the processor to receive notification component instance
 	*/
 	void pHandler(ComponentsNotificationHandler* ph){ _pHandler = ph; };
 
 	/** 
-		检查某个组件端口是否有效.
+		Check ports of a component is valid.
 	*/
 	bool updateComponentInfos(const Components::ComponentInfos* info);
 
 	/** 
-		是否是本地组件.
+		Local components.
 	*/
 	bool isLocalComponent(const Components::ComponentInfos* info);
 
 	/** 
-		是否本地组件是否在运行中.
+		Whether in the local component is running.
 	*/
 	const Components::ComponentInfos* lookupLocalComponentRunning(uint32 pid);
 
@@ -192,12 +192,12 @@ public:
 	Network::Channel* getLoggerChannel();
 
 	/**
-		统计某个UID下的所有组件数量
+		Statistics, the number of all components under a UID
 	*/
 	size_t getGameSrvComponentsSize(int32 uid);
 
 	/** 
-		获取游戏服务端必要组件的注册数量。
+		Get game server registration number of necessary components。
 	*/
 	size_t getGameSrvComponentsSize();
 
@@ -238,8 +238,8 @@ private:
 
 	Network::NetworkInterface*				_pNetworkInterface;
 	
-	// 组件的全局启动次序log和组(相同的组件为一组， 如：所有baseapp为一个组)启动次序log
-	// 注意:中途有死掉的app组件这里log并不去做减操作, 从使用意图来看也没有必要做这个匹配。
+	// Global start order log and group component (the same components as a set, such as all baseapp group) boot order log
+	// Note: died midway through the app log component here is not to do the operation reduction, judging from the intended use and there is no need to do the matching.
 	ORDER_LOG								_globalOrderLog;
 	ORDER_LOG								_baseappGrouplOrderLog;
 	ORDER_LOG								_cellappGrouplOrderLog;
@@ -247,10 +247,10 @@ private:
 
 	ComponentsNotificationHandler*			_pHandler;
 
-	// 本组件的类别
+	// The component category
 	COMPONENT_TYPE							componentType_;
 
-	// 本组件的ID
+	// The component ID
 	COMPONENT_ID							componentID_;	
 
 	uint8									state_;

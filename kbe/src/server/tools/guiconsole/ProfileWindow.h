@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "afxwin.h"
 #include "afxcmn.h"
 #include "common/memorystream.h"

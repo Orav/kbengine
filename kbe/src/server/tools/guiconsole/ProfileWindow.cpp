@@ -1,4 +1,4 @@
-ï»¿// ProfileWindow.cpp : implementation file
+// ProfileWindow.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -42,10 +42,10 @@ BOOL CProfileWindow::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	DWORD dwStyle = m_profileShowList.GetExtendedStyle();
-	dwStyle |= LVS_EX_FULLROWSELECT;					//é€‰ä¸­æŸè¡Œä½¿æ•´è¡Œé«˜äº®ï¼ˆåªé€‚ç”¨ä¸reporté£æ ¼çš„listctrlï¼‰
-	dwStyle |= LVS_EX_GRIDLINES;						//ç½‘æ ¼çº¿ï¼ˆåªé€‚ç”¨ä¸reporté£æ ¼çš„listctrlï¼‰
+	dwStyle |= LVS_EX_FULLROWSELECT;					//Ñ¡ÖĞÄ³ĞĞÊ¹ÕûĞĞ¸ßÁÁ£¨Ö»ÊÊÓÃÓëreport·ç¸ñµÄlistctrl£©
+	dwStyle |= LVS_EX_GRIDLINES;						//Íø¸ñÏß£¨Ö»ÊÊÓÃÓëreport·ç¸ñµÄlistctrl£©
 	//dwStyle |= LVS_EX_ONECLICKACTIVATE;
-	m_profileShowList.SetExtendedStyle(dwStyle);				//è®¾ç½®æ‰©å±•é£æ ¼
+	m_profileShowList.SetExtendedStyle(dwStyle);				//ÉèÖÃÀ©Õ¹·ç¸ñ
 
 	std::stringstream ss;
 	ss << KBEngine::genUUID64();

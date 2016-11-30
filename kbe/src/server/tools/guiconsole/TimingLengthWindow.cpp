@@ -1,4 +1,4 @@
-﻿// TimingLengthWindow.cpp : implementation file
+// TimingLengthWindow.cpp : implementation file
 //
 
 #include "stdafx.h"

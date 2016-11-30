@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -20,11 +20,11 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 
 /*
-	ÓÃ·¨:
+	ç”¨æ³•:
 		class A:public Singleton<A>
 		{
 		};
-		ÔÚcppÎÄ¼þÖÐ:
+		åœ¨cppæ–‡ä»¶ä¸­:
 		template<> A* Singleton<A>::singleton_ = 0;
 */
 #ifndef KBE_SINGLETON_H

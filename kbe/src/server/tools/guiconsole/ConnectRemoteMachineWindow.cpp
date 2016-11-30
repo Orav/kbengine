@@ -1,4 +1,4 @@
-ï»¿// ConnectRemoteMachineWindow.cpp : implementation file
+// ConnectRemoteMachineWindow.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -210,7 +210,7 @@ END:
 
 void CConnectRemoteMachineWindow::saveHistory()
 {
-    //åˆ›å»ºä¸€ä¸ªXMLçš„æ–‡æ¡£å¯¹è±¡ã€‚
+    //´´½¨Ò»¸öXMLµÄÎÄµµ¶ÔÏó¡£
     TiXmlDocument *pDocument = new TiXmlDocument();
 
 	int i = 0;

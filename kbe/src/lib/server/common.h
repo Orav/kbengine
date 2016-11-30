@@ -28,33 +28,33 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace KBEngine { 
 
-// 消息转发到某个组件
+// Forwards the message to a component
 #define NETWORK_MESSAGE_FORWARD(SEND_INTERFACE, SENDBUNDLE, FORWARDBUNDLE, MYCOMPONENT_ID, FORWARD_COMPONENT_ID)						\
 	SENDBUNDLE.newMessage(SEND_INTERFACE::forwardMessage);																				\
 	SENDBUNDLE << MYCOMPONENT_ID << FORWARD_COMPONENT_ID;																				\
 	FORWARDBUNDLE.finiMessage(true);																									\
 	SENDBUNDLE.append(FORWARDBUNDLE);																									\
 
-// cellapp转发消息给客户端
+// cellapp Forwards messages to the client
 #define NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT(ENTITYID, SENDBUNDLE, FORWARDBUNDLE)														\
 	SENDBUNDLE.newMessage(BaseappInterface::forwardMessageToClientFromCellapp);															\
 	SENDBUNDLE << ENTITYID;																												\
 	FORWARDBUNDLE.finiMessage(true);																									\
 	SENDBUNDLE.append(FORWARDBUNDLE);																									\
 
-// cellapp转发消息给cellapp
+// Cellapp forwards the message to cellapp
 #define NETWORK_ENTITY_MESSAGE_FORWARD_CELLAPP(ENTITYID, SENDBUNDLE, FORWARDBUNDLE)														\
 	SENDBUNDLE.newMessage(BaseappInterface::forwardMessageToCellappFromCellapp);														\
 	SENDBUNDLE << ENTITYID;																												\
 	FORWARDBUNDLE.finiMessage(true);																									\
 	SENDBUNDLE.append(FORWARDBUNDLE);	
 
-// cellapp转发消息给客户端开始
+// Cellapp forwards the message to the client started
 #define NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_START(ENTITYID, SENDBUNDLE)																\
 	SENDBUNDLE.newMessage(BaseappInterface::forwardMessageToClientFromCellapp);															\
 	SENDBUNDLE << ENTITYID;																												\
 
-// cellapp转发消息给客户端消息包追加消息
+// Message appended message cellapp forwarded a message to the client
 #define NETWORK_ENTITY_MESSAGE_FORWARD_CLIENT_APPEND(SENDBUNDLE, FORWARDBUNDLE)															\
 	FORWARDBUNDLE.finiMessage(true);																									\
 	SENDBUNDLE.append(FORWARDBUNDLE);																									\
@@ -98,7 +98,7 @@ namespace KBEngine {
 }																																		\
 
 
-// cellapp转发消息给客户端消息包追加消息(直接在SENDBUNDLE追加)
+// Message appended message cellapp forwarded a message to the client (direct in SENDBUNDLE append)
 #define ENTITY_MESSAGE_FORWARD_CLIENT_START(SENDBUNDLE, MESSAGEHANDLE, ACTIONNAME)														\
 	(*SENDBUNDLE) << MESSAGEHANDLE.msgID;																								\
 	size_t currMsgLengthPos_##ACTIONNAME = 0;																							\
@@ -120,7 +120,7 @@ namespace KBEngine {
 	size_t messageLength_last_##ACTIONNAME = SENDBUNDLE->currMsgLength();																\
 
 
-// 公共消息
+// Public message
 #define COMMON_NETWORK_MESSAGE(COMPONENTTYPE, BUNDLE, MESSAGENAME)											\
 		switch(COMPONENTTYPE)																				\
 		{																									\
@@ -193,13 +193,12 @@ namespace KBEngine {
 		};																									\
 
 /**
-将秒转换为tick
-@lowerBound: 最少不低于Ntick
+Converts the seconds to tick @Lower bound: no less than Ntick
 */
 int32 secondsToTicks(float seconds, int lowerBound);
 
 /**
-	将秒为单位的时间转换为每秒所耗的stamps
+	Convert the time in seconds for every second spent in stamps
 */
 inline uint64 secondsToStamps(float seconds)
 {
@@ -207,18 +206,18 @@ inline uint64 secondsToStamps(float seconds)
 }
 
 /*
- 账号和密码最大长度
+ Maximum length of account number and password
 */
 #define ACCOUNT_NAME_MAX_LENGTH						1024
 #define ACCOUNT_PASSWD_MAX_LENGTH					1024
 
-// 登录注册时附带的信息最大长度
+// Login information registered with maximum length
 #define ACCOUNT_DATA_MAX_LENGTH						1024
 
-// 被用来描述任何只做一次后自动设置为不做的选项
+// After it has been used to describe any only once the option is automatically set to do not do
 #define KBE_NEXT_ONLY								2
 
-/** c/c++数据类别转换成KBEDataTypeID */
+/** C/c++ data type to KBEData type iD */
 uint16 datatype2id(std::string datatype);
 
 

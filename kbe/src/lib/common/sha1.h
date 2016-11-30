@@ -1,4 +1,4 @@
-
+﻿
 #ifndef _SHA1_H_
 #define _SHA1_H_
 

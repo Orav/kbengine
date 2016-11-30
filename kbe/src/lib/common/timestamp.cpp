@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -223,7 +223,7 @@ static uint64 calcStampsPerSecond()
 
 
 /**
- *	Ã¿ÃëcpuËùºÄÊ±¼ä
+ *	æ¯ç§’cpuæ‰€è€—æ—¶é—´
  */
 uint64 stampsPerSecond()
 {
@@ -232,7 +232,7 @@ uint64 stampsPerSecond()
 }
 
 /**
- *	Ã¿ÃëcpuËùºÄÊ±¼ä double°æ±¾
+ *	æ¯ç§’cpuæ‰€è€—æ—¶é—´ doubleç‰ˆæœ¬
  */
 double stampsPerSecondD()
 {

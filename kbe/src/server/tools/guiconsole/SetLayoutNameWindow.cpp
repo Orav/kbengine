@@ -1,4 +1,4 @@
-﻿// SetLayoutNameWindow.cpp : implementation file
+// SetLayoutNameWindow.cpp : implementation file
 //
 
 #include "stdafx.h"

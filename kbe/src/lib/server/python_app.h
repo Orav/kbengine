@@ -54,7 +54,7 @@ public:
 	{
 		TIMEOUT_GAME_TICK = TIMEOUT_SERVERAPP_MAX + 1,
 
-		// 这个必须放在最后面，表示当前最大的枚举值是多少
+		// This must be placed last, enumeration value that represents the current maximum is
 		TIMEOUT_PYTHONAPP_MAX = TIMEOUT_GAME_TICK
 	};
 
@@ -85,58 +85,58 @@ public:
 
 	virtual void handleTimeout(TimerHandle, void * arg);
 
-	/** 网络接口
-		请求执行一段python指令
+	/** Network interface
+		Requests executing a Python instructions
 	*/
 	void onExecScriptCommand(Network::Channel* pChannel, KBEngine::MemoryStream& s);
 
 	/** 
-		console请求开始profile
+		Console request profile
 	*/
 	virtual void startProfile_(Network::Channel* pChannel, std::string profileName, int8 profileType, uint32 timelen);
 
 	/**
-		获取apps发布状态, 可在脚本中获取该值
+		State gets apps released, in a script, you can get the value
 	*/
 	static PyObject* __py_getAppPublish(PyObject* self, PyObject* args);
 
 	/**
-		设置脚本输出类型前缀
+		Set the type of the script prefix
 	*/
 	static PyObject* __py_setScriptLogType(PyObject* self, PyObject* args);
 
 	/**
-		重新导入所有的脚本
+		Re-import all scripts
 	*/
 	virtual void reloadScript(bool fullReload);
 	virtual void onReloadScript(bool fullReload);
 
 	/**
-		通过相对路径获取资源的全路径
+		Get resources through the relative path full path
 	*/
 	static PyObject* __py_getResFullPath(PyObject* self, PyObject* args);
 
 	/**
-		通过相对路径判断资源是否存在
+		By relative paths to determine whether resources exist
 	*/
 	static PyObject* __py_hasRes(PyObject* self, PyObject* args);
 
 	/**
-		open文件
+		Open file
 	*/
 	static PyObject* __py_kbeOpen(PyObject* self, PyObject* args);
 
 	/**
-		列出目录下所有文件
+		Directory all the files that are listed
 	*/
 	static PyObject* __py_listPathRes(PyObject* self, PyObject* args);
 
 	/**
-		匹配相对路径获得全路径 
+		Relative full path match 
 	*/
 	static PyObject* __py_matchPath(PyObject* self, PyObject* args);
 
-	/** Timer操作
+	/** Timer operation
 	*/
 	static PyObject* __py_addTimer(PyObject* self, PyObject* args);
 	static PyObject* __py_delTimer(PyObject* self, PyObject* args);
