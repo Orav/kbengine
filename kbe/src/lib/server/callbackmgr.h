@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -20,15 +20,14 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 	
 /*
-	CallbackMgr( »Øµ÷¹ÜÀíÆ÷ )
-		ÓÉÓÚÒ»Ğ©»Øµ÷²Ù×÷¶¼ÊÇÒì²½µÄ£¬ ÎÒÃÇÍ¨¹ıÒ»¸ö¹ÜÀíÆ÷½«ÕâĞ©»Øµ÷¹ÜÀíÆğÀ´£¬ ²¢¶ÔÍâ·µ»ØÒ»¸ö
-		±êÊ¶¸Ã»Øµ÷µÄÎ¨Ò»id£¬ Íâ²¿¿ÉÒÔÍ¨¹ı¸ÃidÀ´´¥·¢Õâ¸ö»Øµ÷¡£
+	Callback Mgr (callback Manager)
+		Because some callback operations are asynchronous, we use these callbacks to manage a Manager and external returns a
 		
-	ÓÃ·¨:
-	typedef CallbackMgr<std::tr1::function<void(Base*, int64, bool)>> CALLBACK_MGR;
-	CALLBACK_MGR callbackMgr;
-	void xxx(Base*, int64, bool){}
-	CALLBACK_ID callbackID = callbackMgr.save(&xxx); // ¿ÉÒÔÊ¹ÓÃbindÀ´°ó¶¨Ò»¸öÀà³ÉÔ±º¯Êı
+	ID that uniquely identifies the callback, external can use the ID to trigger the callback.
+	Usage:
+	typedef Callback mgr<std::tr1::function<void(Base*, int64, bool)>> CALLBACK MGR;
+	CALLBACK MGR callback mgr;
+	void xxx(Base*, int64, bool){} CALLBACK ID callback iD = callback mgr.save(&xxx); You can use bind to bind a class member function
 */
 
 #ifndef KBE_CALLBACKMGR_H
@@ -75,7 +74,7 @@ public:
 	void createFromStream(KBEngine::MemoryStream& s);
 
 	/** 
-		Ïò¹ÜÀíÆ÷Ìí¼ÓÒ»¸ö»Øµ÷ 
+		Manager to add a callback 
 	*/
 	CALLBACK_ID save(T callback, uint64 timeout = 0/*secs*/)
 	{
@@ -91,7 +90,7 @@ public:
 	}
 	
 	/** 
-		Í¨¹ıcallbackIDÈ¡×ß»Øµ÷ 
+		Through the callback iD take a callback 
 	*/
 	T take(CALLBACK_ID cbID)
 	{
@@ -134,7 +133,7 @@ public:
 	}
 
 	/**
-		³¬Ê±µÄcallback
+		Timed out callback
 	*/
 	bool processTimeout(CALLBACK_ID cbID, T callback)
 	{
@@ -143,8 +142,8 @@ public:
 	}
 
 protected:
-	CALLBACKS cbMap_;									// ËùÓĞµÄ»Øµ÷¶¼´æ´¢ÔÚÕâ¸ömapÖĞ
-	IDAllocate<CALLBACK_ID> idAlloc_;					// »Øµ÷µÄid·ÖÅäÆ÷
+	CALLBACKS cbMap_;									// All callbacks are stored in this map
+	IDAllocate<CALLBACK_ID> idAlloc_;					// The callback ID distributor
 	uint64 lastTimestamp_;
 };
 

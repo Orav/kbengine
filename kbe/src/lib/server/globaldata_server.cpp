@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -41,7 +41,7 @@ GlobalDataServer::~GlobalDataServer()
 bool GlobalDataServer::write(Network::Channel* pChannel, COMPONENT_TYPE componentType, 
 	const std::string& key, const std::string& value)
 {
-	// ¹ã²¥Ëù×öµÄ¸Ä±ä
+	// å¹¿æ’­æ‰€åšçš„æ”¹å˜
 	broadcastDataChanged(pChannel, componentType, key, value);
 
 	DATA_MAP_KEY iter = dict_.find(key);

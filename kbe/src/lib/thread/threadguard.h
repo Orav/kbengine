@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -19,16 +19,16 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /*
-	Ïß³ÌÊØ»¤Ìå£º
-		±ÜÃâÏß³ÌÖ®¼ä¶ñÒâ¾ºÕù²úÉúËÀËøÎÊÌâ¡£
-	ÓÃ·¨:
-		ÔÚÒ»¸öÀàÖĞ¶¨Òå»¥ËßÌå³ÉÔ±
+	çº¿ç¨‹å®ˆæŠ¤ä½“ï¼š
+		é¿å…çº¿ç¨‹ä¹‹é—´æ¶æ„ç«äº‰äº§ç”Ÿæ­»é”é—®é¢˜ã€‚
+	ç”¨æ³•:
+		åœ¨ä¸€ä¸ªç±»ä¸­å®šä¹‰äº’è¯‰ä½“æˆå‘˜
 		ThreadMutex tm;
-		ÔÚĞèÒª±£»¤µÄµØ·½:
+		åœ¨éœ€è¦ä¿æŠ¤çš„åœ°æ–¹:
 		void XXCLASS::foo(void)
 		{
 			ThreadGuard tg(this->tm);
-			ÏÂÃæµÄ´úÂë¶¼ÊÇ°²È«µÄ
+			ä¸‹é¢çš„ä»£ç éƒ½æ˜¯å®‰å…¨çš„
 			...
 		}
 */

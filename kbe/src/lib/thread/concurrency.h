@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -34,7 +34,7 @@ namespace KBEConcurrency
 {
 
 /**
-	Ö÷Ïß³Ì´¦ÓÚ¿ÕÏĞÊ±´¥·¢
+	ä¸»çº¿ç¨‹å¤„äºç©ºé—²æ—¶è§¦å‘
 */
 inline void onStartMainThreadIdling()
 {
@@ -43,7 +43,7 @@ inline void onStartMainThreadIdling()
 }
 
 /**
-	Ö÷Ïß³Ì½áÊø¿ÕÏĞ¿ªÊ¼·±Ã¦Ê±´¥·¢
+	ä¸»çº¿ç¨‹ç»“æŸç©ºé—²å¼€å§‹ç¹å¿™æ—¶è§¦å‘
 */
 inline void onEndMainThreadIdling()
 {
@@ -52,8 +52,8 @@ inline void onEndMainThreadIdling()
 }
 
 /**
-	ÉèÖÃ»Øµ÷º¯Êı
-	µ±»Øµ÷´¥·¢Ê±Í¨ÖªËûÃÇ
+	è®¾ç½®å›è°ƒå‡½æ•°
+	å½“å›è°ƒè§¦å‘æ—¶é€šçŸ¥ä»–ä»¬
 */
 inline void setMainThreadIdleCallbacks(void (*pStartCallback)(), void (*pEndCallback)())
 {

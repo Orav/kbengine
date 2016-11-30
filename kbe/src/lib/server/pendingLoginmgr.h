@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -38,7 +38,7 @@ class EventDispatcher;
 }
 
 /*
-	µÇÂ¼µ½·şÎñÆ÷¼ì²â³É¹¦£¬ µ«»¹Ã»ÓĞ½øÈëµ½ÓÎÏ·ÊÀ½çÊ±£¬ ĞèÒª½«ÕËºÅ»º´æÒ»ÏÂ±ãÓÚºóĞø´¦Àí
+	ç™»å½•åˆ°æœåŠ¡å™¨æ£€æµ‹æˆåŠŸï¼Œ ä½†è¿˜æ²¡æœ‰è¿›å…¥åˆ°æ¸¸æˆä¸–ç•Œæ—¶ï¼Œ éœ€è¦å°†è´¦å·ç¼“å­˜ä¸€ä¸‹ä¾¿äºåç»­å¤„ç†
 */
 class PendingLoginMgr : public Task
 {

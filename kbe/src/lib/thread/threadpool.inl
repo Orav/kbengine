@@ -1,4 +1,4 @@
-namespace KBEngine { 
+﻿namespace KBEngine { 
 namespace thread
 {
 

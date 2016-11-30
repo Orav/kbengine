@@ -1,4 +1,4 @@
-LIB =	thread
+﻿LIB =	thread
 
 SRCS =				\
 	threadpool		\

@@ -1,4 +1,4 @@
-LIB =	server
+﻿LIB =	server
 
 SRCS =				\
 	common			\

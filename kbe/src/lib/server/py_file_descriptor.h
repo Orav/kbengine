@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -35,7 +35,7 @@ public:
 	virtual ~PyFileDescriptor();
 	
 	/** 
-		½Å±¾ÇëÇó(×¢²á/×¢Ïú)ÎÄ¼şÃèÊö·û(¶ÁºÍĞ´)
+		è„šæœ¬è¯·æ±‚(æ³¨å†Œ/æ³¨é”€)æ–‡ä»¶æè¿°ç¬¦(è¯»å’Œå†™)
 	*/
 	static PyObject* __py_registerReadFileDescriptor(PyObject* self, PyObject* args);
 	static PyObject* __py_registerWriteFileDescriptor(PyObject* self, PyObject* args);

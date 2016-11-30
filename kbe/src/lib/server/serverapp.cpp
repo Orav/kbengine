@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -76,15 +76,15 @@ threadPool_()
 	networkInterface_.pChannelTimeOutHandler(this);
 	networkInterface_.pChannelDeregisterHandler(this);
 
-	// ¹ã²¥×Ô¼ºµÄµØÖ·¸øÍøÉÏÉÏµÄËùÓĞkbemachine
-	// ²¢ÇÒ´Ókbemachine»ñÈ¡basappmgrºÍcellappmgrÒÔ¼°dbmgrµØÖ·
+	// å¹¿æ’­è‡ªå·±çš„åœ°å€ç»™ç½‘ä¸Šä¸Šçš„æ‰€æœ‰kbemachine
+	// å¹¶ä¸”ä»kbemachineè·å–basappmgrå’Œcellappmgrä»¥åŠdbmgråœ°å€
 	Components::getSingleton().pHandler(this);
 	this->dispatcher().addTask(&Components::getSingleton());
 	
 	pActiveTimerHandle_ = new ComponentActiveReportHandler(this);
 	pActiveTimerHandle_->startActiveTick(KBE_MAX(1.f, Network::g_channelInternalTimeout / 2.0f));
 
-	// Ä¬ÈÏËùÓĞapp¶¼ÉèÖÃÎªÕâ¸öÖµ£¬ Èç¹ûĞèÒªµ÷ÕûÔò¸÷×ÔÔÚÅÉÉúÀàÖØĞÂ¸³Öµ
+	// é»˜è®¤æ‰€æœ‰appéƒ½è®¾ç½®ä¸ºè¿™ä¸ªå€¼ï¼Œ å¦‚æœéœ€è¦è°ƒæ•´åˆ™å„è‡ªåœ¨æ´¾ç”Ÿç±»é‡æ–°èµ‹å€¼
 	ProfileVal::setWarningPeriod(stampsPerSecond() / g_kbeSrvConfig.gameUpdateHertz());
 }
 

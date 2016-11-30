@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -66,7 +66,7 @@ bool GlobalDataClient::write(PyObject* pyKey, PyObject* pyValue)
 		{
 			ret = true;
 
-			// ´Ë´¦²»ÄÜ¼õÒıÓÃ£¬ÒòÎªĞèÒª±»pyDict_ÒıÓÃ
+			// æ­¤å¤„ä¸èƒ½å‡å¼•ç”¨ï¼Œå› ä¸ºéœ€è¦è¢«pyDict_å¼•ç”¨
 			// Py_XDECREF(pyKey);
 			// Py_XDECREF(pyValue);
 		}
@@ -100,7 +100,7 @@ bool GlobalDataClient::del(PyObject* pyKey)
 			ret = true;
 		}
 
-		// PyDict_GetItemÎªÈõÒıÓÃ
+		// PyDict_GetItemä¸ºå¼±å¼•ç”¨
 		// Py_XDECREF(pyVal);
 	}
 	else

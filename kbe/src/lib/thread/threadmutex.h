@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -19,21 +19,21 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /*
-	Ïß³Ì»¥ËßÌå£º
-	ÓÃ·¨:
+	çº¿ç¨‹äº’è¯‰ä½“ï¼š
+	ç”¨æ³•:
 		ThreadMutex tm;
 		tm.lockMutex();
-		....°²È«´úÂë
+		....å®‰å…¨ä»£ç 
 		tm.unlockMutex();
 		
-		×îºÃÊÇÅäºÏThreadGuardÀ´Ê¹ÓÃ
-		ÔÚÒ»¸öÀàÖĞ¶¨Òå»¥ËßÌå³ÉÔ±
+		æœ€å¥½æ˜¯é…åˆThreadGuardæ¥ä½¿ç”¨
+		åœ¨ä¸€ä¸ªç±»ä¸­å®šä¹‰äº’è¯‰ä½“æˆå‘˜
 		ThreadMutex tm;
-		ÔÚĞèÒª±£»¤µÄµØ·½:
+		åœ¨éœ€è¦ä¿æŠ¤çš„åœ°æ–¹:
 		void XXCLASS::func(void)
 		{
 			ThreadGuard tg(this->tm);
-			ÏÂÃæµÄ´úÂë¶¼ÊÇ°²È«µÄ
+			ä¸‹é¢çš„ä»£ç éƒ½æ˜¯å®‰å…¨çš„
 			...
 		}
 */
@@ -75,8 +75,8 @@ public:
 
 	ThreadMutex(const ThreadMutex& v)
 	{
-		// ÕâÀï²»ÔÊĞí¿½±´¹¹Ôìmutex_£¬ÕâÊÇ·Ç³£Î£ÏÕµÄ
-		// »áÔì³É¶à´ÎTHREAD_MUTEX_DELETE
+		// è¿™é‡Œä¸å…è®¸æ‹·è´æ„é€ mutex_ï¼Œè¿™æ˜¯éå¸¸å±é™©çš„
+		// ä¼šé€ æˆå¤šæ¬¡THREAD_MUTEX_DELETE
 		THREAD_MUTEX_INIT(mutex_);
 	}
 
