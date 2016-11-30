@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -64,7 +64,7 @@ void FMH_Baseapp_onEntityGetCellFrom_onCreateInNewSpaceFromBaseapp::process()
 	Py_XDECREF(_params);
 	_params = NULL;
 
-	// Ìí¼Óµ½space
+	// æ·»åŠ åˆ°space
 	space->addEntityToNode(_e);
 
 	if (_e->clientMailbox())

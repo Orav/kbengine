@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -72,7 +72,7 @@ bool InitProgressHandler::process()
 
 	if(PyObject_HasAttrString(Cellapp::getSingleton().getEntryScript().get(), "onReadyForLogin") > 0)
 	{
-		// ËùÓĞ½Å±¾¶¼¼ÓÔØÍê±Ï
+		// æ‰€æœ‰è„šæœ¬éƒ½åŠ è½½å®Œæ¯•
 		PyObject* pyResult = PyObject_CallMethod(Cellapp::getSingleton().getEntryScript().get(), 
 											const_cast<char*>("onReadyForLogin"), 
 											const_cast<char*>("i"), 

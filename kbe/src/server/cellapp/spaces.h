@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -40,22 +40,22 @@ public:
 	typedef std::map<SPACE_ID, KBEShared_ptr<Space> > SPACES;
 
 	/** 
-		´´½¨Ò»¸öĞÂµÄspace 
+		åˆ›å»ºä¸€ä¸ªæ–°çš„space 
 	*/
 	static Space* createNewSpace(SPACE_ID spaceID, const std::string& scriptModuleName);
 	
 	/**
-		Ïú»ÙÒ»¸öspace
+		é”€æ¯ä¸€ä¸ªspace
 	*/
 	static bool destroySpace(SPACE_ID spaceID, ENTITY_ID entityID);
 
 	/** 
-		Ñ°ÕÒÒ»¸öÖ¸¶¨space 
+		å¯»æ‰¾ä¸€ä¸ªæŒ‡å®šspace 
 	*/
 	static Space* findSpace(SPACE_ID spaceID);
 	
 	/** 
-		¸üĞÂËùÓĞµÄspace 
+		æ›´æ–°æ‰€æœ‰çš„space 
 	*/
 	static void update();
 

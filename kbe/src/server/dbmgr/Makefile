@@ -1,4 +1,4 @@
-BIN  = dbmgr
+﻿BIN  = dbmgr
 SRCS =						\
 	buffered_dbtasks			\
 	dbmgr					\

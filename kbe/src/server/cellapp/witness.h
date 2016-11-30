@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -49,7 +49,7 @@ class MemoryStream;
 class AOITrigger;
 class Space;
 
-/** ¹Û²ìÕßĞÅÏ¢½á¹¹ */
+/** è§‚å¯Ÿè€…ä¿¡æ¯ç»“æ„ */
 struct WitnessInfo
 {
 	WitnessInfo(const int8& lv, Entity* e, const float& r):
@@ -64,17 +64,17 @@ struct WitnessInfo
 				detailLevelLog[i] = false;
 	}
 	
-	int8 detailLevel;							// µ±Ç°ËùÔÚÏêÇé¼¶±ğ
-	Entity* entity;								// Ëù±í´ïµÄentity
-	float range;								// µ±Ç°ÓëÕâ¸öentityµÄ¾àÀë
-	bool detailLevelLog[3];						// ±íÊ¾Õâ¸öentity¶¼½øÈë¹ı¸ÃentityµÄÄÄĞ©ÏêÇé¼¶±ğ£¬ Ìá¹©ÊôĞÔ¹ã²¥ÓÅ»¯ÓÃµÄ
-												// µ±Ã»ÓĞ½øÈë¹ıÄ³¼¶±ğÊ±£¬ »á½«ËùÓĞÕâ¸ö¼¶±ğµÄÊôĞÔ¸üĞÂ¸øËû£¬ ·ñÔòÖ»¸üĞÂ½ü¶ÎÊ±¼äÔø¾­¸Ä±ä¹ıµÄÊôĞÔ
-	std::vector<uint32> changeDefDataLogs[3];	// entityÀë¿ªÁËÄ³¸öÏêÇé¼¶±ğ(Ã»ÓĞÍÑÀëwitness)ºó£¬ ÕâÆÚ¼äÓĞÄ³¸öÏêÇé¼¶±ğµÄÊôĞÔ¸Ä±ä¾ù¼ÇÂ¼ÔÚÕâÀï
+	int8 detailLevel;							// å½“å‰æ‰€åœ¨è¯¦æƒ…çº§åˆ«
+	Entity* entity;								// æ‰€è¡¨è¾¾çš„entity
+	float range;								// å½“å‰ä¸è¿™ä¸ªentityçš„è·ç¦»
+	bool detailLevelLog[3];						// è¡¨ç¤ºè¿™ä¸ªentityéƒ½è¿›å…¥è¿‡è¯¥entityçš„å“ªäº›è¯¦æƒ…çº§åˆ«ï¼Œ æä¾›å±æ€§å¹¿æ’­ä¼˜åŒ–ç”¨çš„
+												// å½“æ²¡æœ‰è¿›å…¥è¿‡æŸçº§åˆ«æ—¶ï¼Œ ä¼šå°†æ‰€æœ‰è¿™ä¸ªçº§åˆ«çš„å±æ€§æ›´æ–°ç»™ä»–ï¼Œ å¦åˆ™åªæ›´æ–°è¿‘æ®µæ—¶é—´æ›¾ç»æ”¹å˜è¿‡çš„å±æ€§
+	std::vector<uint32> changeDefDataLogs[3];	// entityç¦»å¼€äº†æŸä¸ªè¯¦æƒ…çº§åˆ«(æ²¡æœ‰è„±ç¦»witness)åï¼Œ è¿™æœŸé—´æœ‰æŸä¸ªè¯¦æƒ…çº§åˆ«çš„å±æ€§æ”¹å˜å‡è®°å½•åœ¨è¿™é‡Œ
 };
 
 /**
-	Õâ¸öÄ£¿éÓÃÀ´¼àÊÓÎÒÃÇ¸ĞĞËÈ¤µÄentityÊı¾İ£¬ Èç£ºaoi£¬ ÊôĞÔ¸üĞÂ£¬ µ÷ÓÃentityµÄ·½·¨
-	²¢½«Æä´«Êä¸ø¼àÊÓÕß¡£
+	è¿™ä¸ªæ¨¡å—ç”¨æ¥ç›‘è§†æˆ‘ä»¬æ„Ÿå…´è¶£çš„entityæ•°æ®ï¼Œ å¦‚ï¼šaoiï¼Œ å±æ€§æ›´æ–°ï¼Œ è°ƒç”¨entityçš„æ–¹æ³•
+	å¹¶å°†å…¶ä¼ è¾“ç»™ç›‘è§†è€…ã€‚
 */
 class Witness : public PoolObject, public Updatable
 {
@@ -124,12 +124,12 @@ public:
 	bool pushBundle(Network::Bundle* pBundle);
 
 	/**
-		»ù´¡Î»ÖÃ£¬ Èç¹ûÓĞ×øÆï»ù´¡Î»ÖÃ¿ÉÄÜÊÇ×øÆïµÈ
+		åŸºç¡€ä½ç½®ï¼Œ å¦‚æœæœ‰åéª‘åŸºç¡€ä½ç½®å¯èƒ½æ˜¯åéª‘ç­‰
 	*/
 	INLINE const Position3D& basePos();
 
 	/**
-	»ù´¡³¯Ïò£¬ Èç¹ûÓĞ×øÆï»ù´¡³¯Ïò¿ÉÄÜÊÇ×øÆïµÈ
+	åŸºç¡€æœå‘ï¼Œ å¦‚æœæœ‰åéª‘åŸºç¡€æœå‘å¯èƒ½æ˜¯åéª‘ç­‰
 	*/
 	INLINE const Direction3D& baseDir();
 
@@ -143,7 +143,7 @@ public:
 	void _onLeaveAOI(EntityRef* pEntityRef);
 
 	/**
-		»ñµÃÊµÌå±¾´ÎÍ¬²½VolatileÊı¾İµÄ±ê¼Ç
+		è·å¾—å®ä½“æœ¬æ¬¡åŒæ­¥Volatileæ•°æ®çš„æ ‡è®°
 	*/
 	uint32 getEntityVolatileDataUpdateFlags(Entity* otherEntity);
 	
@@ -154,17 +154,17 @@ public:
 	bool entityID2AliasID(ENTITY_ID id, uint8& aliasID);
 
 	/**
-		Ê¹ÓÃºÎÖÖĞ­ÒéÀ´¸üĞÂ¿Í»§¶Ë
+		ä½¿ç”¨ä½•ç§åè®®æ¥æ›´æ–°å®¢æˆ·ç«¯
 	*/
 	void addUpdateToStream(Network::Bundle* pForwardBundle, uint32 flags, EntityRef* pEntityRef);
 
 	/**
-		Ìí¼Ó»ù´¡Î»ÖÃµ½¸üĞÂ°ü
+		æ·»åŠ åŸºç¡€ä½ç½®åˆ°æ›´æ–°åŒ…
 	*/
 	void addBaseDataToStream(Network::Bundle* pSendBundle);
 
 	/**
-		Ïòwitness¿Í»§¶ËÍÆËÍÒ»ÌõÏûÏ¢
+		å‘witnesså®¢æˆ·ç«¯æ¨é€ä¸€æ¡æ¶ˆæ¯
 	*/
 	bool sendToClient(const Network::MessageHandler& msgHandler, Network::Bundle* pBundle);
 	Network::Channel* pChannel();
@@ -172,10 +172,10 @@ public:
 	INLINE AOI_ENTITIES_MAP& aoiEntitiesMap();
 	INLINE AOI_ENTITIES& aoiEntities();
 
-	/** »ñµÃaoientityµÄÒıÓÃ */
+	/** è·å¾—aoientityçš„å¼•ç”¨ */
 	INLINE EntityRef* getAOIEntityRef(ENTITY_ID entityID);
 
-	/** entityIDÊÇ·ñÔÚaoiÄÚ */
+	/** entityIDæ˜¯å¦åœ¨aoiå†… */
 	INLINE bool entityInAOI(ENTITY_ID entityID);
 
 	INLINE AOITrigger* pAOITrigger();
@@ -185,27 +185,27 @@ public:
 	void uninstallAOITrigger();
 
 	/**
-		ÖØÖÃAOI·¶Î§ÄÚµÄentities£¬ Ê¹ÆäÍ¬²½×´Ì¬»Ö¸´µ½×î³õÎ´Í¬²½µÄ×´Ì¬
+		é‡ç½®AOIèŒƒå›´å†…çš„entitiesï¼Œ ä½¿å…¶åŒæ­¥çŠ¶æ€æ¢å¤åˆ°æœ€åˆæœªåŒæ­¥çš„çŠ¶æ€
 	*/
 	void resetAOIEntities();
 
 private:
 	/**
-		Èç¹ûaoiÖĞentityÊıÁ¿Ğ¡ÓÚ256ÔòÖ»·¢ËÍË÷ÒıÎ»ÖÃ
+		å¦‚æœaoiä¸­entityæ•°é‡å°äº256åˆ™åªå‘é€ç´¢å¼•ä½ç½®
 	*/
 	INLINE void _addAOIEntityIDToBundle(Network::Bundle* pBundle, EntityRef* pEntityRef);
 	
 	/**
-		µ±updateÖ´ĞĞÊ±aoiÁĞ±íÓĞ¸Ä±äµÄÊ±ºòĞèÒª¸üĞÂentityRefµÄaliasID
+		å½“updateæ‰§è¡Œæ—¶aoiåˆ—è¡¨æœ‰æ”¹å˜çš„æ—¶å€™éœ€è¦æ›´æ–°entityRefçš„aliasID
 	*/
 	void updateEntitiesAliasID();
 		
 private:
 	Entity*									pEntity_;
 
-	// µ±Ç°entityµÄaoi°ë¾¶
+	// å½“å‰entityçš„aoiåŠå¾„
 	float									aoiRadius_;
-	// µ±Ç°entityAoiµÄÒ»¸öÖÍºó·¶Î§
+	// å½“å‰entityAoiçš„ä¸€ä¸ªæ»åèŒƒå›´
 	float									aoiHysteresisArea_;
 
 	AOITrigger*								pAOITrigger_;

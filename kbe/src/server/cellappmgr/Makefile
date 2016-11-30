@@ -1,4 +1,4 @@
-BIN  = cellappmgr
+﻿BIN  = cellappmgr
 SRCS =						\
 	cell					\
 	cells					\

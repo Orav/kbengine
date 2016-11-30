@@ -1,4 +1,4 @@
-// EditSendbuffer.cpp : implementation file
+﻿// EditSendbuffer.cpp : implementation file
 //
 
 #include "stdafx.h"

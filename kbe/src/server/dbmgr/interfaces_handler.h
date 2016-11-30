@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -37,7 +37,7 @@ namespace Network{
 }
 
 /*
-	´¦Àí¼Æ·Ñ¡¢µÚÈı·½ÔËÓªÕËºÅ¡¢×¢²áµÇÂ¼ÏµÍ³µÈ¹Ò½Ó
+	å¤„ç†è®¡è´¹ã€ç¬¬ä¸‰æ–¹è¿è¥è´¦å·ã€æ³¨å†Œç™»å½•ç³»ç»Ÿç­‰æŒ‚æ¥
 */
 class InterfacesHandler
 {

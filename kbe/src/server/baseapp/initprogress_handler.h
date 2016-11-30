@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -38,8 +38,8 @@ public:
 
 	void setAutoLoadState(int8 state);
 
-	/** ÍøÂç½Ó¿Ú
-		Êı¾İ¿âÖĞ²éÑ¯µÄ×Ô¶¯entity¼ÓÔØĞÅÏ¢·µ»Ø
+	/** ç½‘ç»œæ¥å£
+		æ•°æ®åº“ä¸­æŸ¥è¯¢çš„è‡ªåŠ¨entityåŠ è½½ä¿¡æ¯è¿”å›
 	*/
 	void onEntityAutoLoadCBFromDBMgr(Network::Channel* pChannel, MemoryStream& s);
 

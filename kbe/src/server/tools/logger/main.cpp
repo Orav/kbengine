@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -18,7 +18,7 @@ You should have received a copy of the GNU Lesser General Public License
 along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// loggerĞèÒªÔö¼ÓÍÌÍÂÁ¿
+// loggeréœ€è¦å¢åŠ ååé‡
 #define PACKET_MAX_SIZE_TCP 65535
 
 #include "common/common.h"

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -110,7 +110,7 @@ PyObject* RealEntityMethod::callmethod(PyObject* args, PyObject* kwds)
 				DebugHelper::getSingleton().changeLogger(COMPONENT_NAME_EX(g_componentType));
 		}
 
-		// ¼ÇÂ¼Õâ¸öÊÂ¼þ²úÉúµÄÊý¾ÝÁ¿´óÐ¡
+		// è®°å½•è¿™ä¸ªäº‹ä»¶äº§ç”Ÿçš„æ•°æ®é‡å¤§å°
 		g_publicCellEventHistoryStats.trackEvent(scriptName_, 
 			methodDescription->getName(), 
 			pForwardBundle->currMsgLength(), 

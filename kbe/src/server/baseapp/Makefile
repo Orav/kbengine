@@ -1,4 +1,4 @@
-BIN  = baseapp
+﻿BIN  = baseapp
 SRCS =						\
 	archiver				\
 	base					\

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -62,7 +62,7 @@ bool Controllers::add(KBEShared_ptr<Controller> pController)
 	}
 	else
 	{
-		// Ë¢ÐÂid¼ÆÊýÆ÷
+		// åˆ·æ–°idè®¡æ•°å™¨
 		if(lastid_ < id)
 			lastid_ = id;
 	}

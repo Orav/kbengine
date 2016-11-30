@@ -1,4 +1,4 @@
-BIN  = loginapp
+﻿BIN  = loginapp
 SRCS =						\
 	http_cb_handler				\
 	loginapp				\

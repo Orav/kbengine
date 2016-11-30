@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -140,7 +140,7 @@ void Dbmgr::onShutdownBegin()
 {
 	PythonApp::onShutdownBegin();
 
-	// Í¨Öª½Å±¾
+	// é€šçŸ¥è„šæœ¬
 	SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 	SCRIPT_OBJECT_CALL_ARGS0(getEntryScript().get(), const_cast<char*>("onDBMgrShutDown"));
 }
@@ -223,7 +223,7 @@ bool Dbmgr::initializeBegin()
 //-------------------------------------------------------------------------------------
 bool Dbmgr::inInitialize()
 {
-	// ³õÊ¼»¯ËùÓĞÀ©Õ¹Ä£¿é
+	// åˆå§‹åŒ–æ‰€æœ‰æ‰©å±•æ¨¡å—
 	// assets/scripts/
 	if (!PythonApp::inInitialize())
 		return false;
@@ -241,14 +241,14 @@ bool Dbmgr::initializeEnd()
 {
 	PythonApp::initializeEnd();
 
-	// Ìí¼ÓÒ»¸ötimer£¬ Ã¿Ãë¼ì²éÒ»Ğ©×´Ì¬
+	// æ·»åŠ ä¸€ä¸ªtimerï¼Œ æ¯ç§’æ£€æŸ¥ä¸€äº›çŠ¶æ€
 	loopCheckTimerHandle_ = this->dispatcher().addTimer(1000000, this,
 							reinterpret_cast<void *>(TIMEOUT_CHECK_STATUS));
 
 	mainProcessTimer_ = this->dispatcher().addTimer(1000000 / 50, this,
 							reinterpret_cast<void *>(TIMEOUT_TICK));
 
-	// Ìí¼ÓglobalData, baseAppData, cellAppDataÖ§³Ö
+	// æ·»åŠ globalData, baseAppData, cellAppDataæ”¯æŒ
 	pGlobalData_ = new GlobalDataServer(GlobalDataServer::GLOBAL_DATA);
 	pBaseAppData_ = new GlobalDataServer(GlobalDataServer::BASEAPP_DATA);
 	pCellAppData_ = new GlobalDataServer(GlobalDataServer::CELLAPP_DATA);
@@ -262,7 +262,7 @@ bool Dbmgr::initializeEnd()
 	
 	SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 
-	// ËùÓĞ½Å±¾¶¼¼ÓÔØÍê±Ï
+	// æ‰€æœ‰è„šæœ¬éƒ½åŠ è½½å®Œæ¯•
 	PyObject* pyResult = PyObject_CallMethod(getEntryScript().get(), 
 										const_cast<char*>("onDBMgrReady"), 
 										const_cast<char*>(""));
@@ -394,7 +394,7 @@ void Dbmgr::onReqAllocEntityID(Network::Channel* pChannel, COMPONENT_ORDER compo
 {
 	KBEngine::COMPONENT_TYPE ct = static_cast<KBEngine::COMPONENT_TYPE>(componentType);
 
-	// »ñÈ¡Ò»¸öid¶Î ²¢´«Êä¸øIDClient
+	// è·å–ä¸€ä¸ªidæ®µ å¹¶ä¼ è¾“ç»™IDClient
 	std::pair<ENTITY_ID, ENTITY_ID> idRange = idServer_.allocRange();
 	Network::Bundle* pBundle = Network::Bundle::createPoolObject();
 
@@ -433,9 +433,9 @@ void Dbmgr::onRegisterNewApp(Network::Channel* pChannel, int32 uid, std::string&
 	if(pSyncAppDatasHandler_ == NULL)
 		pSyncAppDatasHandler_ = new SyncAppDatasHandler(this->networkInterface());
 
-	// ÏÂÒ»²½:
-	// Èç¹ûÊÇÁ¬½Óµ½dbmgrÔòĞèÒªµÈ´ı½ÓÊÕapp³õÊ¼ĞÅÏ¢
-	// ÀıÈç£º³õÊ¼»á·ÖÅäentityID¶ÎÒÔ¼°Õâ¸öappÆô¶¯µÄË³ĞòĞÅÏ¢£¨ÊÇ·ñµÚÒ»¸öbaseappÆô¶¯£©
+	// ä¸‹ä¸€æ­¥:
+	// å¦‚æœæ˜¯è¿æ¥åˆ°dbmgråˆ™éœ€è¦ç­‰å¾…æ¥æ”¶appåˆå§‹ä¿¡æ¯
+	// ä¾‹å¦‚ï¼šåˆå§‹ä¼šåˆ†é…entityIDæ®µä»¥åŠè¿™ä¸ªappå¯åŠ¨çš„é¡ºåºä¿¡æ¯ï¼ˆæ˜¯å¦ç¬¬ä¸€ä¸ªbaseappå¯åŠ¨ï¼‰
 	if(tcomponentType == BASEAPP_TYPE || 
 		tcomponentType == CELLAPP_TYPE || 
 		tcomponentType == LOGINAPP_TYPE)
@@ -466,7 +466,7 @@ void Dbmgr::onRegisterNewApp(Network::Channel* pChannel, int32 uid, std::string&
 
 	pSyncAppDatasHandler_->pushApp(componentID, startGroupOrder, startGlobalOrder);
 
-	// Èç¹ûÊÇbaseapp»òÕßcellappÔò½«×Ô¼º×¢²áµ½ËùÓĞÆäËûbaseappºÍcellapp
+	// å¦‚æœæ˜¯baseappæˆ–è€…cellappåˆ™å°†è‡ªå·±æ³¨å†Œåˆ°æ‰€æœ‰å…¶ä»–baseappå’Œcellapp
 	if(tcomponentType == BASEAPP_TYPE || 
 		tcomponentType == CELLAPP_TYPE)
 	{
@@ -914,7 +914,7 @@ std::string Dbmgr::selectAccountDBInterfaceName(const std::string& name)
 {
 	std::string dbInterfaceName = "default";
 
-	// °ÑÇëÇó½»ÓÉ½Å±¾´¦Àí
+	// æŠŠè¯·æ±‚äº¤ç”±è„šæœ¬å¤„ç†
 	SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 	PyObject* pyResult = PyObject_CallMethod(getEntryScript().get(),
 		const_cast<char*>("onSelectAccountDBInterface"),

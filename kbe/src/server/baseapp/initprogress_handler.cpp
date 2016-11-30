@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -95,7 +95,7 @@ bool InitProgressHandler::process()
 	if(delayTicks_++ < 1)
 		return true;
 
-	// Ö»ÓĞµÚÒ»¸öbaseappÉÏ»á´´½¨EntityAutoLoaderÀ´×Ô¶¯¼ÓÔØÊı¾İ¿âÊµÌå
+	// åªæœ‰ç¬¬ä¸€ä¸ªbaseappä¸Šä¼šåˆ›å»ºEntityAutoLoaderæ¥è‡ªåŠ¨åŠ è½½æ•°æ®åº“å®ä½“
 	if(g_componentGroupOrder == 1)
 	{
 		if(autoLoadState_ == -1)
@@ -106,8 +106,8 @@ bool InitProgressHandler::process()
 		}
 		else if(autoLoadState_ == 0)
 		{
-			// ±ØĞëµÈ´ıEntityAutoLoaderÖ´ĞĞÍê±Ï
-			// EntityAutoLoaderÖ´ĞĞÍê±Ï»áÉèÖÃautoLoadState_ = 1
+			// å¿…é¡»ç­‰å¾…EntityAutoLoaderæ‰§è¡Œå®Œæ¯•
+			// EntityAutoLoaderæ‰§è¡Œå®Œæ¯•ä¼šè®¾ç½®autoLoadState_ = 1
 			if(!pEntityAutoLoader_->process())
 				setAutoLoadState(1);
 			
@@ -123,7 +123,7 @@ bool InitProgressHandler::process()
 
 		SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 
-		// ËùÓĞ½Å±¾¶¼¼ÓÔØÍê±Ï
+		// æ‰€æœ‰è„šæœ¬éƒ½åŠ è½½å®Œæ¯•
 		PyObject* pyResult = PyObject_CallMethod(Baseapp::getSingleton().getEntryScript().get(), 
 											const_cast<char*>("onBaseAppReady"), 
 											const_cast<char*>("O"), 
@@ -144,7 +144,7 @@ bool InitProgressHandler::process()
 	{
 		SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 
-		// »Øµ÷»ñµÃÊÇ·ñÄÜ¹»µÇÂ¼
+		// å›è°ƒè·å¾—æ˜¯å¦èƒ½å¤Ÿç™»å½•
 		PyObject* pyResult = PyObject_CallMethod(Baseapp::getSingleton().getEntryScript().get(), 
 											const_cast<char*>("onReadyForLogin"), 
 											const_cast<char*>("O"), 

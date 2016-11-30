@@ -1,4 +1,4 @@
-/*
+﻿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -47,7 +47,7 @@ bool Updatables::add(Updatable* updatable)
 	static uint32 idx = 1;
 	objects_[idx] = updatable;
 
-	// ��¼�洢λ��
+	// 记录存储位置
 	updatable->removeIdx = idx++;
 
 	return true;

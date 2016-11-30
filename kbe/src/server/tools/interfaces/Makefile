@@ -1,4 +1,4 @@
-BIN  = interfaces
+﻿BIN  = interfaces
 SRCS =						\
 	interfaces				\
 	interfaces_tasks			\

@@ -1,4 +1,4 @@
-BIN  = machine
+﻿BIN  = machine
 SRCS =						\
 	machine					\
 	machine_interface			\

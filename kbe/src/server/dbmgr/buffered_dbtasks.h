@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -32,7 +32,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine{ 
 
 /*
-	Êı¾İ¿âÏß³ÌÈÎÎñbuffer
+	æ•°æ®åº“çº¿ç¨‹ä»»åŠ¡buffer
 */
 
 class Buffered_DBTasks
@@ -54,7 +54,7 @@ public:
 	const std::string& dbInterfaceName() { return dbInterfaceName_; }
 
 	/**
-		Ìá¹©¸øwatcherÊ¹ÓÃ
+		æä¾›ç»™watcherä½¿ç”¨
 	*/
 	uint32 dbid_tasksSize()
 	{ 
@@ -65,7 +65,7 @@ public:
 	}
 
 	/**
-		Ìá¹©¸øwatcherÊ¹ÓÃ
+		æä¾›ç»™watcherä½¿ç”¨
 	*/
 	uint32 entityid_tasksSize()
 	{ 
@@ -76,7 +76,7 @@ public:
 	}
 
 	/**
-		Ìá¹©¸øwatcherÊ¹ÓÃ
+		æä¾›ç»™watcherä½¿ç”¨
 	*/
 	std::string printBuffered_dbid();
 	std::string printBuffered_entityID();

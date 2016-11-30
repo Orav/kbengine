@@ -1,4 +1,4 @@
-BIN  = baseappmgr
+﻿BIN  = baseappmgr
 SRCS =						\
 	baseapp					\
 	baseappmgr				\

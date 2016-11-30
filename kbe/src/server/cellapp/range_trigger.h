@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -47,19 +47,19 @@ public:
 	INLINE void origin(CoordinateNode* pCoordinateNode);
 
 	/**
-		¸üĞÂ·¶Î§Êı¾İ
+		æ›´æ–°èŒƒå›´æ•°æ®
 	*/
 	virtual void update(float xz, float y);
 
 	/**
-		Ä³¸ö½Úµã½øÈë»òÕßÀë¿ªÁËrangeTrigger
+		æŸä¸ªèŠ‚ç‚¹è¿›å…¥æˆ–è€…ç¦»å¼€äº†rangeTrigger
 	*/
 	virtual void onEnter(CoordinateNode * pNode) = 0;
 	virtual void onLeave(CoordinateNode * pNode) = 0;
 
 	/**
-		Ä³¸ö½Úµã±ä¶¯¾­¹ıÁË±¾½Úµã
-		@isfront: ÏòÇ°ÒÆ¶¯»¹ÊÇÏòºóÒÆ¶¯
+		æŸä¸ªèŠ‚ç‚¹å˜åŠ¨ç»è¿‡äº†æœ¬èŠ‚ç‚¹
+		@isfront: å‘å‰ç§»åŠ¨è¿˜æ˜¯å‘åç§»åŠ¨
 	*/
 	virtual void onNodePassX(RangeTriggerNode* pRangeTriggerNode, CoordinateNode* pNode, bool isfront);
 	virtual void onNodePassY(RangeTriggerNode* pRangeTriggerNode, CoordinateNode* pNode, bool isfront);

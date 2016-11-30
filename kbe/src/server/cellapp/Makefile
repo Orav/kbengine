@@ -1,4 +1,4 @@
-BIN  = cellapp
+﻿BIN  = cellapp
 SRCS =						\
 	all_clients				\
 	aoi_trigger				\

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -56,7 +56,7 @@ class ScriptDefModule;
 
 class AllClients : public script::ScriptObject
 {
-	/** ×ÓÀà»¯ ½«Ò»Ğ©py²Ù×÷Ìî³ä½øÅÉÉúÀà */
+	/** å­ç±»åŒ– å°†ä¸€äº›pyæ“ä½œå¡«å……è¿›æ´¾ç”Ÿç±» */
 	INSTANCE_SCRIPT_HREADER(AllClients, ScriptObject)
 public:
 	AllClients(const ScriptDefModule* pScriptModule, 
@@ -66,12 +66,12 @@ public:
 	~AllClients();
 	
 	/** 
-		½Å±¾ÇëÇó»ñÈ¡ÊôĞÔ»òÕß·½·¨ 
+		è„šæœ¬è¯·æ±‚è·å–å±æ€§æˆ–è€…æ–¹æ³• 
 	*/
 	PyObject* onScriptGetAttribute(PyObject* attr);						
 			
 	/** 
-		»ñµÃ¶ÔÏóµÄÃèÊö 
+		è·å¾—å¯¹è±¡çš„æè¿° 
 	*/
 	PyObject* tp_repr();
 	PyObject* tp_str();
@@ -79,7 +79,7 @@ public:
 	void c_str(char* s, size_t size);
 	
 	/** 
-		»ñÈ¡entityID 
+		è·å–entityID 
 	*/
 	ENTITY_ID id() const{ return id_; }
 	void setID(int id){ id_ = id; }
@@ -90,11 +90,11 @@ public:
 	}
 
 protected:
-	const ScriptDefModule*					pScriptModule_;			// ¸ÃentityËùÊ¹ÓÃµÄ½Å±¾Ä£¿é¶ÔÏó
+	const ScriptDefModule*					pScriptModule_;			// è¯¥entityæ‰€ä½¿ç”¨çš„è„šæœ¬æ¨¡å—å¯¹è±¡
 
 	ENTITY_ID								id_;					// entityID
 
-	bool									otherClients_;			// ÊÇ·ñÖ»ÊÇÆäËû¿Í»§¶Ë£¬ ²»°üÀ¨×Ô¼º
+	bool									otherClients_;			// æ˜¯å¦åªæ˜¯å…¶ä»–å®¢æˆ·ç«¯ï¼Œ ä¸åŒ…æ‹¬è‡ªå·±
 };
 
 }

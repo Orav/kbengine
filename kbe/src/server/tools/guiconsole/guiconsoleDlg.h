@@ -1,4 +1,4 @@
-
+ï»¿
 // guiconsoleDlg.h : header file
 //
 
@@ -35,7 +35,7 @@ public:
 
 // Implementation
 public:
-	/** ·şÎñÆ÷Ö´ĞĞÖ¸ÁîÍê±Ï»ØÏÔ */
+	/** æœåŠ¡å™¨æ‰§è¡ŒæŒ‡ä»¤å®Œæ¯•å›æ˜¾ */
 	void onExecScriptCommandCB(Network::Channel* pChannel, std::string& command);
 
 	BOOL PreTranslateMessage(MSG* pMsg);
@@ -127,7 +127,7 @@ private:
 	CToolBar m_ToolBar;
 	CImageList m_ImageList;
 
-	// Ïß³Ì³Ø
+	// çº¿ç¨‹æ± 
 	thread::ThreadPool threadPool_;	
 public:
 	afx_msg void OnTcnSelchangeTab1(NMHDR *pNMHDR, LRESULT *pResult);

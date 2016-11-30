@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -45,7 +45,7 @@ public:
 
 	bool backup(Base& base, MemoryStream& s);
 private:
-	// ÔÚ´ËÁĞ±íÖĞµÄentity½«½øĞĞ±¸·İ²Ù×÷
+	// åœ¨æ­¤åˆ—è¡¨ä¸­çš„entityå°†è¿›è¡Œå¤‡ä»½æ“ä½œ
 	std::vector<ENTITY_ID>		backupEntityIDs_;
 
 	float						backupRemainder_;

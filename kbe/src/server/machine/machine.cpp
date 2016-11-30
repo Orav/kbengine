@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -84,7 +84,7 @@ void Machine::onBroadcastInterface(Network::Channel* pChannel, int32 uid, std::s
 									float cpu, float mem, uint32 usedmem, int8 state, uint32 machineID, uint64 extradata,
 									uint64 extradata1, uint64 extradata2, uint64 extradata3, uint32 backRecvAddr, uint16 backRecvPort)
 {
-	// ÏÈ²éÑ¯Ò»ÏÂÊÇ·ñ´æÔÚÏàÍ¬Éí·İ£¬Èç¹ûÊÇÏàÍ¬Éí·İÇÒ²»ÊÇÒ»¸ö½ø³ÌÎÒÃÇĞèÒª¸æÖª¶Ô·½Æô¶¯·Ç·¨
+	// å…ˆæŸ¥è¯¢ä¸€ä¸‹æ˜¯å¦å­˜åœ¨ç›¸åŒèº«ä»½ï¼Œå¦‚æœæ˜¯ç›¸åŒèº«ä»½ä¸”ä¸æ˜¯ä¸€ä¸ªè¿›ç¨‹æˆ‘ä»¬éœ€è¦å‘ŠçŸ¥å¯¹æ–¹å¯åŠ¨éæ³•
 	const Components::ComponentInfos* pinfos = Components::getSingleton().findComponent(componentID);
 	if(pinfos && isGameServerComponentType((COMPONENT_TYPE)componentType) && checkComponentUsable(pinfos, false, true))
 	{
@@ -122,7 +122,7 @@ void Machine::onBroadcastInterface(Network::Channel* pChannel, int32 uid, std::s
 		}
 	}
 
-	// Ö»¼ÇÂ¼±¾»úÆô¶¯µÄ½ø³Ì
+	// åªè®°å½•æœ¬æœºå¯åŠ¨çš„è¿›ç¨‹
 	if(this->networkInterface().intaddr().ip == intaddr ||
 				this->networkInterface().extaddr().ip == intaddr)
 	{
@@ -138,7 +138,7 @@ void Machine::onBroadcastInterface(Network::Channel* pChannel, int32 uid, std::s
 			}
 		}
 
-		// Ò»Ì¨Ó²¼şÉÏÖ»ÄÜ´æÔÚÒ»¸ömachine
+		// ä¸€å°ç¡¬ä»¶ä¸Šåªèƒ½å­˜åœ¨ä¸€ä¸ªmachine
 		if(componentType == MACHINE_TYPE)
 		{
 			WARNING_MSG("Machine::onBroadcastInterface: machine is already running!\n");
@@ -180,7 +180,7 @@ void Machine::onFindInterfaceAddr(Network::Channel* pChannel, int32 uid, std::st
 	KBEngine::COMPONENT_TYPE tfindComponentType = (KBEngine::COMPONENT_TYPE)findComponentType;
 	KBEngine::COMPONENT_TYPE tComponentType = (KBEngine::COMPONENT_TYPE)componentType;
 
-	// Èç¹û²»ÊÇguiconsole·¢³öµÄ, uidÒ²²»µÈÓÚµ±Ç°·şÎñÆ÷µÄuidÔò²»Àí»á¡£
+	// å¦‚æœä¸æ˜¯guiconsoleå‘å‡ºçš„, uidä¹Ÿä¸ç­‰äºå½“å‰æœåŠ¡å™¨çš„uidåˆ™ä¸ç†ä¼šã€‚
 	if(tComponentType != CONSOLE_TYPE)
 	{
 		std::vector<int32>::iterator iter = std::find(localuids_.begin(), localuids_.end(), uid);
@@ -255,8 +255,8 @@ void Machine::onFindInterfaceAddr(Network::Channel* pChannel, int32 uid, std::st
 
 	if(!found)
 	{
-		// Èç¹ûÊÇ¿ØÖÆÌ¨£¬ ÇÒuid²»ÊÇÒ»ÖÂµÄÔòÎŞĞè·µ»ØÕÒ²»µ½ÏûÏ¢
-		// ¿ØÖÆÌ¨¿ÉÄÜ¹ã²¥µ½ÆäËû×éÈ¥ÁË
+		// å¦‚æœæ˜¯æ§åˆ¶å°ï¼Œ ä¸”uidä¸æ˜¯ä¸€è‡´çš„åˆ™æ— éœ€è¿”å›æ‰¾ä¸åˆ°æ¶ˆæ¯
+		// æ§åˆ¶å°å¯èƒ½å¹¿æ’­åˆ°å…¶ä»–ç»„å»äº†
 		if(tComponentType == CONSOLE_TYPE)
 		{
 			std::vector<int32>::iterator iter = std::find(localuids_.begin(), localuids_.end(), uid);
@@ -293,7 +293,7 @@ bool Machine::checkComponentUsable(const Components::ComponentInfos* info, bool 
 	else
 		ret = Components::getSingleton().updateComponentInfos(info);
 
-	// Èç¹ûÒÑ¾­²»¿ÉÓÃÇÒÔÊĞí×Ô¶¯²Á³ıÔò²Á³ıËü
+	// å¦‚æœå·²ç»ä¸å¯ç”¨ä¸”å…è®¸è‡ªåŠ¨æ“¦é™¤åˆ™æ“¦é™¤å®ƒ
 	if(!ret && autoerase)
 		Components::getSingleton().delComponent(info->uid, info->componentType, info->cid);
 
@@ -387,7 +387,7 @@ void Machine::onQueryAllInterfaceInfos(Network::Channel* pChannel, int32 uid, st
 		}
 	}
 
-	// uid²»µÈÓÚµ±Ç°·şÎñÆ÷µÄuidÔò²»Àí»á¡£
+	// uidä¸ç­‰äºå½“å‰æœåŠ¡å™¨çš„uidåˆ™ä¸ç†ä¼šã€‚
 	if (uid > 0)
 	{
 		std::vector<int32>::iterator iter = std::find(localuids_.begin(), localuids_.end(), uid);
@@ -663,7 +663,7 @@ bool Machine::inInitialize()
 //-------------------------------------------------------------------------------------
 bool Machine::initializeEnd()
 {
-	pActiveTimerHandle_->cancel(); // machine²»ĞèÒªÓëÆäËû×é¼ş±£³Ö»î¶¯×´Ì¬¹ØÏµ
+	pActiveTimerHandle_->cancel(); // machineä¸éœ€è¦ä¸å…¶ä»–ç»„ä»¶ä¿æŒæ´»åŠ¨çŠ¶æ€å…³ç³»
 	return true;
 }
 
@@ -757,7 +757,7 @@ void Machine::stopserver(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 	s >> uid;
 	s >> componentType;
 	
-	// Èç¹û×é¼şID´óÓÚ0Ôò½öÍ£Ö¹Ö¸¶¨IDµÄ×é¼ş
+	// å¦‚æœç»„ä»¶IDå¤§äº0åˆ™ä»…åœæ­¢æŒ‡å®šIDçš„ç»„ä»¶
 	s >> componentID;
 	
 	if(s.length() > 0)
@@ -864,7 +864,7 @@ void Machine::stopserver(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 			int selgot = select(ep1+1, &fds, NULL, NULL, &tv);
 			if(selgot == 0)
 			{
-				// ³¬Ê±, ¿ÉÄÜ¶Ô·½·±Ã¦
+				// è¶…æ—¶, å¯èƒ½å¯¹æ–¹ç¹å¿™
 				ERROR_MSG(fmt::format("--> stop {}({}), addr={}, timeout!\n", 
 					(*iter).cid, COMPONENT_NAME[componentType], (cinfos->pIntAddr != NULL ? 
 					cinfos->pIntAddr->c_str() : "unknown")));
@@ -942,7 +942,7 @@ void Machine::killserver(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 	s >> uid;
 	s >> componentType;
 
-	// Èç¹û×é¼şID´óÓÚ0Ôò½öÍ£Ö¹Ö¸¶¨IDµÄ×é¼ş
+	// å¦‚æœç»„ä»¶IDå¤§äº0åˆ™ä»…åœæ­¢æŒ‡å®šIDçš„ç»„ä»¶
 	s >> componentID;
 
 	if (s.length() > 0)
@@ -997,7 +997,7 @@ void Machine::killserver(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 
 			while (killtry++ < 10)
 			{
-				// É±ËÀ½ø³Ì
+				// æ€æ­»è¿›ç¨‹
 				std::string killcmd;
 
 #if KBE_PLATFORM == PLATFORM_WIN32
@@ -1129,7 +1129,7 @@ uint16 Machine::startLinuxProcess(int32 uid, COMPONENT_TYPE componentType, uint6
 
 		std::string cmdLine = bin_path + COMPONENT_NAME_EX(componentType);
 
-		// ¸Ä±äµ±Ç°Ä¿Â¼£¬ÒÔÈÃ³öÎÊÌâµÄÊ±ºòcoreÄÜÔÚ´Ë´¦Éú³É
+		// æ”¹å˜å½“å‰ç›®å½•ï¼Œä»¥è®©å‡ºé—®é¢˜çš„æ—¶å€™coreèƒ½åœ¨æ­¤å¤„ç”Ÿæˆ
 		//chdir(bin_path.c_str());
 
 		const char *argv[6];
@@ -1142,7 +1142,7 @@ uint16 Machine::startLinuxProcess(int32 uid, COMPONENT_TYPE componentType, uint6
 		*pArgv++ = sgus.c_str();
 		*pArgv = NULL;
 
-		// ¹Ø±Õ¸¸ÀàµÄsocket
+		// å…³é—­çˆ¶ç±»çš„socket
 		ep_.close();
 		epBroadcast_.close();
 		epLocal_.close();
@@ -1178,17 +1178,17 @@ DWORD Machine::startWindowsProcess(int32 uid, COMPONENT_TYPE componentType, uint
 	str += COMPONENT_NAME_EX(componentType);
 	str += ".exe";
 
-	// ÓÃË«ÒıºÅ°ÑÃüÁîĞĞÀ¨ÆğÀ´£¬ÒÔ±ÜÃâÂ·¾¶ÖĞ´æÔÚ¿Õ¸ñ£¬´Ó¶øÖ´ĞĞ´íÎó
+	// ç”¨åŒå¼•å·æŠŠå‘½ä»¤è¡Œæ‹¬èµ·æ¥ï¼Œä»¥é¿å…è·¯å¾„ä¸­å­˜åœ¨ç©ºæ ¼ï¼Œä»è€Œæ‰§è¡Œé”™è¯¯
 	str = "\"" + str + "\"";
 
-	// ‰ˆ¼Ó²ÎÊı
+	// å¢—åŠ å‚æ•°
 	str += fmt::format(" --cid={}", cid);
 	str += fmt::format(" --gus={}", gus);
 
 	wchar_t* szCmdline = KBEngine::strutil::char2wchar(str.c_str());
 
-	// Ê¹ÓÃmachineµ±Ç°µÄ¹¤×÷Ä¿Â¼×÷ÎªĞÂ½ø³ÌµÄ¹¤×÷Ä¿Â¼£¬
-	// ÎªÒ»Ğ©ÓëÏà¶ÔÄ¿Â¼µÄÎÄ¼ş²Ù×÷²Ù×÷Ò»ÖÂµÄ¹¤×÷Ä¿Â¼£¨ÈçÈÕÖ¾£©
+	// ä½¿ç”¨machineå½“å‰çš„å·¥ä½œç›®å½•ä½œä¸ºæ–°è¿›ç¨‹çš„å·¥ä½œç›®å½•ï¼Œ
+	// ä¸ºä¸€äº›ä¸ç›¸å¯¹ç›®å½•çš„æ–‡ä»¶æ“ä½œæ“ä½œä¸€è‡´çš„å·¥ä½œç›®å½•ï¼ˆå¦‚æ—¥å¿—ï¼‰
 	wchar_t currdir[1024];
 	GetCurrentDirectory(sizeof(currdir), currdir);
 

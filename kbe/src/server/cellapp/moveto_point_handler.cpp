@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -107,7 +107,7 @@ bool MoveToPointHandler::requestMoveOver(const Position3D& oldPos)
 		if(pController_->pEntity())
 			pController_->pEntity()->onMoveOver(pController_->id(), layer_, oldPos, pyuserarg_);
 
-		// Èç¹ûÔÚonMoveOverÖÐµ÷ÓÃcancelController£¨id£©»áµ¼ÖÂMoveControllerÎö¹¹µ¼ÖÂpController_ÎªNULL
+		// å¦‚æžœåœ¨onMoveOverä¸­è°ƒç”¨cancelControllerï¼ˆidï¼‰ä¼šå¯¼è‡´MoveControlleræžæž„å¯¼è‡´pController_ä¸ºNULL
 		pController_->destroy();
 	}
 
@@ -143,7 +143,7 @@ bool MoveToPointHandler::update()
 
 		if (distance_ > 0.0f)
 		{
-			// µ¥Î»»¯ÏòÁ¿
+			// å•ä½åŒ–å‘é‡
 			KBEVec3Normalize(&movement, &movement); 
 				
 			if(dist_len > distance_)
@@ -164,15 +164,15 @@ bool MoveToPointHandler::update()
 	}
 	else
 	{
-		// µ¥Î»»¯ÏòÁ¿
+		// å•ä½åŒ–å‘é‡
 		KBEVec3Normalize(&movement, &movement); 
 
-		// ÒÆ¶¯Î»ÖÃ
+		// ç§»åŠ¨ä½ç½®
 		movement *= velocity_;
 		currpos += movement;
 	}
 	
-	// ÊÇ·ñÐèÒª¸Ä±äÃæÏò
+	// æ˜¯å¦éœ€è¦æ”¹å˜é¢å‘
 	if (faceMovement_)
 	{
 		if (movement.x != 0.f || movement.z != 0.f)
@@ -182,19 +182,19 @@ bool MoveToPointHandler::update()
 		//	direction.pitch(movement.pitch());
 	}
 	
-	// ÉèÖÃentityµÄÐÂÎ»ÖÃºÍÃæÏò
+	// è®¾ç½®entityçš„æ–°ä½ç½®å’Œé¢å‘
 	if(!isDestroyed_)
 		pEntity->setPositionAndDirection(currpos, direction);
 
-	// ·Çnavigate¶¼²»ÄÜÈ·¶¨ÆäÔÚµØÃæÉÏ
+	// éžnavigateéƒ½ä¸èƒ½ç¡®å®šå…¶åœ¨åœ°é¢ä¸Š
 	if(!isDestroyed_)
 		pEntity->isOnGround(isOnGround());
 
-	// Í¨Öª½Å±¾
+	// é€šçŸ¥è„šæœ¬
 	if(!isDestroyed_)
 		pEntity->onMove(pController_->id(), layer_, currpos_backup, pyuserarg_);
 
-	// Èç¹û´ïµ½Ä¿µÄµØÔò·µ»Øtrue
+	// å¦‚æžœè¾¾åˆ°ç›®çš„åœ°åˆ™è¿”å›žtrue
 	if (!ret && requestMoveOver(currpos_backup))
 	{
 		Py_DECREF(pEntity);

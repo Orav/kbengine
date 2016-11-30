@@ -1,4 +1,4 @@
-/*
+Ôªø/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -30,7 +30,7 @@ class TrapTrigger;
 class CoordinateNode;
 
 /*
-	π‹¿Ìtrap°£
+	ÁÆ°ÁêÜtrap„ÄÇ
 */
 class ProximityController : public Controller
 {

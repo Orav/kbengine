@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -83,7 +83,7 @@ void MoveController::destroy()
 {
 	Controller::destroy();
 
-	// ¼ÈÈ»×Ô¼ºÒªÏú»ÙÁË£¬ÄÇÃ´Óë×Ô¼ºÏàÁªµÄupdatableÒ²Ó¦¸ÃÍ£Ö¹ÁË
+	// æ—¢ç„¶è‡ªå·±è¦é”€æ¯äº†ï¼Œé‚£ä¹ˆä¸Žè‡ªå·±ç›¸è”çš„updatableä¹Ÿåº”è¯¥åœæ­¢äº†
 	if (pMoveToPointHandler_)
 	{
 		pMoveToPointHandler_->destroy();

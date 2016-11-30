@@ -1,4 +1,4 @@
-// ColorListBox.cpp : implementation file
+﻿// ColorListBox.cpp : implementation file
 //
 
 #include "stdafx.h"

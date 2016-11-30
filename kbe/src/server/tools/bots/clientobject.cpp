@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -145,7 +145,7 @@ bool ClientObject::initCreate()
 	pTCPPacketReceiverEx_ = new Network::TCPPacketReceiverEx(*pEndpoint, this->networkInterface_, this);
 	Bots::getSingleton().networkInterface().dispatcher().registerReadFileDescriptor((*pEndpoint), pTCPPacketReceiverEx_);
 	
-	//²»ÔÚÕâÀï×¢²á
+	//ä¸åœ¨è¿™é‡Œæ³¨å†Œ
 	//Bots::getSingleton().networkInterface().dispatcher().registerWriteFileDescriptor((*pEndpoint), pTCPPacketSenderEx_);
 	pServerChannel_->pPacketSender(pTCPPacketSenderEx_);
 
@@ -213,7 +213,7 @@ bool ClientObject::initLoginBaseapp()
 	pTCPPacketReceiverEx_ = new Network::TCPPacketReceiverEx(*pEndpoint, this->networkInterface_, this);
 	Bots::getSingleton().networkInterface().dispatcher().registerReadFileDescriptor((*pEndpoint), pTCPPacketReceiverEx_);
 
-	//²»ÔÚÕâÀï×¢²á
+	//ä¸åœ¨è¿™é‡Œæ³¨å†Œ
 	//Bots::getSingleton().networkInterface().dispatcher().registerWriteFileDescriptor((*pEndpoint), pTCPPacketSenderEx_);
 	pServerChannel_->pPacketSender(pTCPPacketSenderEx_);
 
@@ -356,7 +356,7 @@ void ClientObject::onCreateAccountResult(Network::Channel * pChannel, MemoryStre
 	{
 		//error_ = C_ERROR_CREATE_FAILED;
 
-		// ¼ÌĞø³¢ÊÔµÇÂ¼
+		// ç»§ç»­å°è¯•ç™»å½•
 		state_ = C_STATE_LOGIN;
 		
 		INFO_MSG(fmt::format("ClientObject::onCreateAccountResult: {} create is failed! code={}.\n", 
@@ -398,7 +398,7 @@ void ClientObject::onLoginFailed(Network::Channel * pChannel, MemoryStream& s)
 
 	// error_ = C_ERROR_LOGIN_FAILED;
 
-	// ¼ÌĞø³¢ÊÔµÇÂ¼
+	// ç»§ç»­å°è¯•ç™»å½•
 	state_ = C_STATE_LOGIN;
 }
 

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -35,8 +35,8 @@ public:
 	virtual ~EntityCoordinateNode();
 
 	/**
-		(À©Õ¹×ø±ê)
-		x && zÓÉ²»Í¬µÄÓ¦ÓÃÊµÏÖ(´Ó²»Í¬´¦»ñÈ¡)
+		(æ‰©å±•åæ ‡)
+		x && zç”±ä¸åŒçš„åº”ç”¨å®ç°(ä»ä¸åŒå¤„è·å–)
 	*/
 	virtual float xx() const;
 	virtual float yy() const;

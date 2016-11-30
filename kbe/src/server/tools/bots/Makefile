@@ -1,4 +1,4 @@
-BIN  = bots
+﻿BIN  = bots
 SRCS =						\
 	bots					\
 	bots_interface				\

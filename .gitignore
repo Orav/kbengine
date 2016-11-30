@@ -26,3 +26,11 @@ ehthumbs.db
 Thumbs.db
 
 *.pyc
+*.lib
+*.tlog
+*.log
+*.obj
+*.sbr
+*.bsc
+*.pyd
+*.h

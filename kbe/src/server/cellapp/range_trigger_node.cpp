@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -68,7 +68,7 @@ void RangeTriggerNode::onRemove()
 {
 	CoordinateNode::onRemove();
 
-	// ¼ÈÈ»×Ô¼º¶¼ÒªÉ¾³ýÁË£¬Í¨ÖªpRangeTrigger_Ð¶ÔØ
+	// æ—¢ç„¶è‡ªå·±éƒ½è¦åˆ é™¤äº†ï¼Œé€šçŸ¥pRangeTrigger_å¸è½½
 	if (pRangeTrigger_)
 		pRangeTrigger_->uninstall();
 }
@@ -76,7 +76,7 @@ void RangeTriggerNode::onRemove()
 //-------------------------------------------------------------------------------------
 void RangeTriggerNode::onParentRemove(CoordinateNode* pParentNode)
 {
-	// ¼ÈÈ»×Ô¼º¶¼ÒªÉ¾³ýÁË£¬Í¨ÖªpRangeTrigger_Ð¶ÔØ
+	// æ—¢ç„¶è‡ªå·±éƒ½è¦åˆ é™¤äº†ï¼Œé€šçŸ¥pRangeTrigger_å¸è½½
 	if (pRangeTrigger_)
 		pRangeTrigger_->uninstall();
 }

@@ -1,4 +1,4 @@
-#ifndef _MyMEMDC_H_
+﻿#ifndef _MyMEMDC_H_
 #define _MyMEMDC_H_
 
 class CMyMemDC : public CDC {

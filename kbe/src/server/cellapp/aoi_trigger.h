@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -34,7 +34,7 @@ public:
 	virtual ~AOITrigger();
 	
 	/**
-		Ä³¸ö½Úµã½øÈë»òÕßÀë¿ªÁËrangeTrigger
+		æŸä¸ªèŠ‚ç‚¹è¿›å…¥æˆ–è€…ç¦»å¼€äº†rangeTrigger
 	*/
 	virtual void onEnter(CoordinateNode * pNode);
 	virtual void onLeave(CoordinateNode * pNode);

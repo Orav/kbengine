@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -58,7 +58,7 @@ protected:
 
 	Network::Address addr_;
 
-	// µ±Ç°Ëù²é¿´µÄspace
+	// å½“å‰æ‰€æŸ¥çœ‹çš„space
 	SPACE_ID spaceID_;
 };
 

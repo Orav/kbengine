@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -62,7 +62,7 @@ Network::Bundle* GhostManager::createSendBundle(COMPONENT_ID componentID)
 			Network::Bundle* pBundle = iter->second.back();
 			if (pBundle->packetHaveSpace())
 			{
-				// ÏÈ´Ó¶ÓÁÐÉ¾³ý
+				// å…ˆä»Žé˜Ÿåˆ—åˆ é™¤
 				iter->second.pop_back();
 				pBundle->pChannel(NULL);
 				pBundle->pCurrMsgHandler(NULL);
@@ -175,7 +175,7 @@ void GhostManager::syncMessages()
 
 		for(; iter1 != iter->second.end(); ++iter1)
 		{
-			// ½«ÏûÏ¢Í¬²½µ½ghost
+			// å°†æ¶ˆæ¯åŒæ­¥åˆ°ghost
 			cinfos->pChannel->send((*iter1));
 		}
 			
@@ -194,7 +194,7 @@ void GhostManager::syncGhosts()
 		COMPONENT_ID ghostCell = iter->second->ghostCell();
 		if(ghostCell > 0)
 		{
-			// ½«Î»ÖÃµÈÐÅÏ¢Í¬²½µ½ghost
+			// å°†ä½ç½®ç­‰ä¿¡æ¯åŒæ­¥åˆ°ghost
 			Components::ComponentInfos* cinfos = Components::getSingleton().findComponent(ghostCell);
 			if(cinfos == NULL || cinfos->pChannel == NULL)
 			{

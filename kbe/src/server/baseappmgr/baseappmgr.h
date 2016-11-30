@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -57,7 +57,7 @@ public:
 	void handleTimeout(TimerHandle handle, void * arg);
 	void handleGameTick();
 
-	/* ³õÊ¼»¯Ïà¹Ø½Ó¿Ú */
+	/* åˆå§‹åŒ–ç›¸å…³æ¥å£ */
 	bool initializeBegin();
 	bool inInitialize();
 	bool initializeEnd();
@@ -66,78 +66,76 @@ public:
 	COMPONENT_ID findFreeBaseapp();
 	void updateBestBaseapp();
 
-	/** ÍøÂç½Ó¿Ú
-		baseapp::createBaseAnywhere²éÑ¯µ±Ç°×îºÃµÄ×é¼şID
+	/** ç½‘ç»œæ¥å£
+		baseapp::createBaseAnywhereæŸ¥è¯¢å½“å‰æœ€å¥½çš„ç»„ä»¶ID
 	*/
 	void reqCreateBaseAnywhereFromDBIDQueryBestBaseappID(Network::Channel* pChannel, MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		ÊÕµ½baseapp::createBaseAnywhereÇëÇóÔÚÄ³¸ö¿ÕÏĞµÄbaseappÉÏ´´½¨Ò»¸öbaseEntity
-		@param sp: Õâ¸öÊı¾İ°üÖĞ´æ´¢µÄÊÇ entityType	: entityµÄÀà±ğ£¬ entities.xmlÖĞµÄ¶¨ÒåµÄ¡£
-										strInitData	: Õâ¸öentity±»´´½¨ºóÓ¦¸Ã¸øËû³õÊ¼»¯µÄÒ»Ğ©Êı¾İ£¬ 
-													  ĞèÒªÊ¹ÓÃpickle.loads½â°ü.
-										componentID	: ÇëÇó´´½¨entityµÄbaseappµÄ×é¼şID
+	/** ç½‘ç»œæ¥å£
+		æ”¶åˆ°baseapp::createBaseAnywhereè¯·æ±‚åœ¨æŸä¸ªç©ºé—²çš„baseappä¸Šåˆ›å»ºä¸€ä¸ªbaseEntity
+		@param sp: è¿™ä¸ªæ•°æ®åŒ…ä¸­å­˜å‚¨çš„æ˜¯ entityType	: entityçš„ç±»åˆ«ï¼Œ entities.xmlä¸­çš„å®šä¹‰çš„ã€‚
+										strInitData	: è¿™ä¸ªentityè¢«åˆ›å»ºååº”è¯¥ç»™ä»–åˆå§‹åŒ–çš„ä¸€äº›æ•°æ®ï¼Œ 
+													  éœ€è¦ä½¿ç”¨pickle.loadsè§£åŒ….
+										componentID	: è¯·æ±‚åˆ›å»ºentityçš„baseappçš„ç»„ä»¶ID
 	*/
 	void reqCreateBaseAnywhere(Network::Channel* pChannel, MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-	ÊÕµ½baseapp::createBaseRemotelyÇëÇóÔÚÄ³¸ö¿ÕÏĞµÄbaseappÉÏ´´½¨Ò»¸öbaseEntity
-	@param sp: Õâ¸öÊı¾İ°üÖĞ´æ´¢µÄÊÇ entityType	: entityµÄÀà±ğ£¬ entities.xmlÖĞµÄ¶¨ÒåµÄ¡£
-	strInitData	: Õâ¸öentity±»´´½¨ºóÓ¦¸Ã¸øËû³õÊ¼»¯µÄÒ»Ğ©Êı¾İ£¬
-	ĞèÒªÊ¹ÓÃpickle.loads½â°ü.
-	componentID	: ÇëÇó´´½¨entityµÄbaseappµÄ×é¼şID
+	/** Network interface
+	Baseapp::create base remotely requests received on an idle baseapp, create a base entity
+	@Param SP: this entity is stored in the package type:entity class, defined in the entities.Xml.
+	Str init data: this entity was initialized should give him some of the data after it is created,
+	Be pickle.loads solution packs. Component iD: baseapp components requests to create entity ID
 	*/
 	void reqCreateBaseRemotely(Network::Channel* pChannel, MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		ÊÕµ½baseapp::createBaseAnywhereFromDBIDÇëÇóÔÚÄ³¸ö¿ÕÏĞµÄbaseappÉÏ´´½¨Ò»¸öbaseEntity
+	/** Network interface Baseapp::create base anywhere from dBID requests received on an idle baseapp, create a base entity
 	*/
 	void reqCreateBaseAnywhereFromDBID(Network::Channel* pChannel, MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		ÊÕµ½baseapp::createBaseRemotelyFromDBIDÇëÇóÔÚÄ³¸ö¿ÕÏĞµÄbaseappÉÏ´´½¨Ò»¸öbaseEntity
+	/** Network interface
+		æ”¶åˆ°baseapp::createBaseRemotelyFromDBIDè¯·æ±‚åœ¨æŸä¸ªç©ºé—²çš„baseappä¸Šåˆ›å»ºä¸€ä¸ªbaseEntity
 	*/
 	void reqCreateBaseRemotelyFromDBID(Network::Channel* pChannel, MemoryStream& s);
 	
-	/** ÍøÂç½Ó¿Ú
-		ÏûÏ¢×ª·¢£¬ ÓÉÄ³¸öappÏëÍ¨¹ı±¾app½«ÏûÏ¢×ª·¢¸øÄ³¸öapp¡£
+	/** ç½‘ç»œæ¥å£
+		æ¶ˆæ¯è½¬å‘ï¼Œ ç”±æŸä¸ªappæƒ³é€šè¿‡æœ¬appå°†æ¶ˆæ¯è½¬å‘ç»™æŸä¸ªappã€‚
 	*/
 	void forwardMessage(Network::Channel* pChannel, MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		Ò»¸öĞÂµÇÂ¼µÄÕËºÅ»ñµÃºÏ·¨µÇÈëbaseappµÄÈ¨Àû£¬ ÏÖÔÚĞèÒª½«ÕËºÅ×¢²á¸øbaseapp
-		Ê¹ÆäÔÊĞíÔÚ´ËbaseappÉÏµÇÂ¼¡£
+	/** ç½‘ç»œæ¥å£
+		ä¸€ä¸ªæ–°ç™»å½•çš„è´¦å·è·å¾—åˆæ³•ç™»å…¥baseappçš„æƒåˆ©ï¼Œ ç°åœ¨éœ€è¦å°†è´¦å·æ³¨å†Œç»™baseapp
+		ä½¿å…¶å…è®¸åœ¨æ­¤baseappä¸Šç™»å½•ã€‚
 	*/
 	void registerPendingAccountToBaseapp(Network::Channel* pChannel, MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		Ò»¸öĞÂµÇÂ¼µÄÕËºÅ»ñµÃºÏ·¨µÇÈëbaseappµÄÈ¨Àû£¬ ÏÖÔÚĞèÒª½«ÕËºÅ×¢²á¸øÖ¸¶¨µÄbaseapp
-		Ê¹ÆäÔÊĞíÔÚ´ËbaseappÉÏµÇÂ¼¡£
+	/** ç½‘ç»œæ¥å£
+		ä¸€ä¸ªæ–°ç™»å½•çš„è´¦å·è·å¾—åˆæ³•ç™»å…¥baseappçš„æƒåˆ©ï¼Œ ç°åœ¨éœ€è¦å°†è´¦å·æ³¨å†Œç»™æŒ‡å®šçš„baseapp
+		ä½¿å…¶å…è®¸åœ¨æ­¤baseappä¸Šç™»å½•ã€‚
 	*/
 	void registerPendingAccountToBaseappAddr(Network::Channel* pChannel, MemoryStream& s);
 
-	/** ÍøÂç½Ó¿Ú
-		baseapp½«×Ô¼ºµÄµØÖ··¢ËÍ¸øloginapp²¢×ª·¢¸ø¿Í»§¶Ë¡£
+	/** ç½‘ç»œæ¥å£
+		baseappå°†è‡ªå·±çš„åœ°å€å‘é€ç»™loginappå¹¶è½¬å‘ç»™å®¢æˆ·ç«¯ã€‚
 	*/
 	void onPendingAccountGetBaseappAddr(Network::Channel* pChannel, 
 								  std::string& loginName, std::string& accountName, 
 								  std::string& addr, uint16 port);
 
-	/** ÍøÂç½Ó¿Ú
-		¸üĞÂbaseappÇé¿ö¡£
+	/** ç½‘ç»œæ¥å£
+		æ›´æ–°baseappæƒ…å†µã€‚
 	*/
 	void updateBaseapp(Network::Channel* pChannel, COMPONENT_ID componentID,
 								ENTITY_ID numBases, ENTITY_ID numProxices, float load, uint32 flags);
 
-	/** ÍøÂç½Ó¿Ú
-		baseappÍ¬²½×Ô¼ºµÄ³õÊ¼»¯ĞÅÏ¢
-		startGlobalOrder: È«¾ÖÆô¶¯Ë³Ğò °üÀ¨¸÷ÖÖ²»Í¬×é¼ş
-		startGroupOrder: ×éÄÚÆô¶¯Ë³Ğò£¬ ±ÈÈçÔÚËùÓĞbaseappÖĞµÚ¼¸¸öÆô¶¯¡£
+	/** ç½‘ç»œæ¥å£
+		baseappåŒæ­¥è‡ªå·±çš„åˆå§‹åŒ–ä¿¡æ¯
+		startGlobalOrder: å…¨å±€å¯åŠ¨é¡ºåº åŒ…æ‹¬å„ç§ä¸åŒç»„ä»¶
+		startGroupOrder: ç»„å†…å¯åŠ¨é¡ºåºï¼Œ æ¯”å¦‚åœ¨æ‰€æœ‰baseappä¸­ç¬¬å‡ ä¸ªå¯åŠ¨ã€‚
 	*/
 	void onBaseappInitProgress(Network::Channel* pChannel, COMPONENT_ID cid, float progress);
 
 	/** 
-		½«·ÖÅäµÄbaseappµØÖ··¢ËÍ¸øloginapp²¢×ª·¢¸ø¿Í»§¶Ë¡£
+		å°†åˆ†é…çš„baseappåœ°å€å‘é€ç»™loginappå¹¶è½¬å‘ç»™å®¢æˆ·ç«¯ã€‚
 	*/
 	void sendAllocatedBaseappAddr(Network::Channel* pChannel, 
 								  std::string& loginName, std::string& accountName, 
@@ -150,8 +148,8 @@ public:
 
 	uint32 numLoadBalancingApp();
 
-	/** ÍøÂç½Ó¿Ú
-	²éÑ¯ËùÓĞÏà¹Ø½ø³Ì¸ºÔØĞÅÏ¢
+	/** ç½‘ç»œæ¥å£
+	æŸ¥è¯¢æ‰€æœ‰ç›¸å…³è¿›ç¨‹è´Ÿè½½ä¿¡æ¯
 	*/
 	void queryAppsLoads(Network::Channel* pChannel, MemoryStream& s);
 

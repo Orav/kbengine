@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -38,7 +38,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine{
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  ²ÎÊıÎªÁ÷£¬ ĞèÒª×Ô¼º½â¿ª
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  å‚æ•°ä¸ºæµï¼Œ éœ€è¦è‡ªå·±è§£å¼€
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_STREAM
@@ -79,7 +79,7 @@ namespace KBEngine{
 																				\
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞÁã¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰é›¶ä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS0
@@ -121,7 +121,7 @@ namespace KBEngine{
 
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞÒ»¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰ä¸€ä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS1
@@ -165,7 +165,7 @@ namespace KBEngine{
 
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞ¶ş¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰äºŒä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS2
@@ -217,7 +217,7 @@ namespace KBEngine{
 
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞÈı¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰ä¸‰ä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS3
@@ -279,7 +279,7 @@ namespace KBEngine{
 
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞËÄ¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰å››ä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS4
@@ -347,7 +347,7 @@ namespace KBEngine{
 											ARG_TYPE4, ARG_NAME4)				\
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞÎå¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰äº”ä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS5
@@ -424,7 +424,7 @@ namespace KBEngine{
 
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞÁù¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰å…­ä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS6
@@ -508,7 +508,7 @@ namespace KBEngine{
 											ARG_TYPE6, ARG_NAME6)				\
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞ°Ë¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰å…«ä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS8
@@ -610,7 +610,7 @@ namespace KBEngine{
 
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞ¾Å¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰ä¹ä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS9
@@ -720,7 +720,7 @@ namespace KBEngine{
 
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞÊ®¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰åä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS10
@@ -839,7 +839,7 @@ namespace KBEngine{
 
 
 /**
-	CellappmgrÏûÏ¢ºê£¬  Ö»ÓĞÊ®Ò»¸ö²ÎÊıµÄÏûÏ¢
+	Cellappmgræ¶ˆæ¯å®ï¼Œ  åªæœ‰åä¸€ä¸ªå‚æ•°çš„æ¶ˆæ¯
 */
 #if defined(NETWORK_INTERFACE_DECLARE_BEGIN)
 	#undef CELLAPPMGR_MESSAGE_HANDLER_ARGS11

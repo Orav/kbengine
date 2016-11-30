@@ -1,4 +1,4 @@
-// SpaceViewWindow.cpp : implementation file
+﻿// SpaceViewWindow.cpp : implementation file
 //
 
 #include "stdafx.h"

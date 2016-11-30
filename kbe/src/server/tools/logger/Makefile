@@ -1,4 +1,4 @@
-BIN  = logger
+﻿BIN  = logger
 SRCS =						\
 	logger					\
 	logger_interface		\

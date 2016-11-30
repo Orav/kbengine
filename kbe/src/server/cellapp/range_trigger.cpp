@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -73,12 +73,12 @@ bool RangeTrigger::install()
 	origin_->pCoordinateSystem()->insert(negativeBoundary_);
 	
 	/*
-	×¢Òâ£º´Ë´¦±ØÐëÊÇÏÈ°²×°negativeBoundary_ÔÙ°²×°positiveBoundary_£¬Èç¹ûµ÷»»Ë³ÐòÔò»áµ¼ÖÂAOIµÄBUG£¬ÀýÈç£ºÔÚÒ»¸öÊµÌåenterAoi´¥·¢Ê±Ïú»ÙÁË½øÈëAOIµÄÊµÌå
-	´ËÊ±ÊµÌåÏú»ÙÊ±²¢Î´´¥·¢Àë¿ªAOIÊÂ¼þ£¬¶øÎ´´¥·¢AOIÊÂ¼þµ¼ÖÂÆäËûÊµÌåµÄAOIÁÐ±íÖÐÒýÓÃµÄ¸ÃÏú»ÙµÄÊµÌåÊÇÒ»¸öÎÞÐ§Ö¸Õë¡£
+	æ³¨æ„ï¼šæ­¤å¤„å¿…é¡»æ˜¯å…ˆå®‰è£…negativeBoundary_å†å®‰è£…positiveBoundary_ï¼Œå¦‚æžœè°ƒæ¢é¡ºåºåˆ™ä¼šå¯¼è‡´AOIçš„BUGï¼Œä¾‹å¦‚ï¼šåœ¨ä¸€ä¸ªå®žä½“enterAoiè§¦å‘æ—¶é”€æ¯äº†è¿›å…¥AOIçš„å®žä½“
+	æ­¤æ—¶å®žä½“é”€æ¯æ—¶å¹¶æœªè§¦å‘ç¦»å¼€AOIäº‹ä»¶ï¼Œè€Œæœªè§¦å‘AOIäº‹ä»¶å¯¼è‡´å…¶ä»–å®žä½“çš„AOIåˆ—è¡¨ä¸­å¼•ç”¨çš„è¯¥é”€æ¯çš„å®žä½“æ˜¯ä¸€ä¸ªæ— æ•ˆæŒ‡é’ˆã€‚
 
-	Ô­ÒòÈçÏÂ£º
-	ÓÉÓÚ×ÜÊÇÓÅÏÈ°²×°ÔÚpositiveBoundary_£¬¶ø±ß½çÔÚ°²×°¹ý³ÌÖÐµ¼ÖÂÁíÒ»¸öÊµÌå½øÈëAOIÁË£¬ È»ºóËûÔÚÕâ¸ö¹ý³ÌÖÐ¿ÉÄÜÏú»ÙÁË£¬ ¶øÁíÒ»¸ö±ß½çnegativeBoundary_»¹Ã»ÓÐ°²×°£¬ 
-	¶ø½ÚµãÉ¾³ýÊ±»áÉèÖÃ½ÚµãµÄxxÎª-FLT_MAX£¬ÈÃÆäÏònegativeBoundary_·½ÏòÀë¿ª£¬ËùÒÔpositiveBoundary_²»ÄÜ¼ì²éµ½Õâ¸ö±ß½çÒ²¾Í²»»á´¥·¢AOIÀë¿ªÊÂ¼þ¡£
+	åŽŸå› å¦‚ä¸‹ï¼š
+	ç”±äºŽæ€»æ˜¯ä¼˜å…ˆå®‰è£…åœ¨positiveBoundary_ï¼Œè€Œè¾¹ç•Œåœ¨å®‰è£…è¿‡ç¨‹ä¸­å¯¼è‡´å¦ä¸€ä¸ªå®žä½“è¿›å…¥AOIäº†ï¼Œ ç„¶åŽä»–åœ¨è¿™ä¸ªè¿‡ç¨‹ä¸­å¯èƒ½é”€æ¯äº†ï¼Œ è€Œå¦ä¸€ä¸ªè¾¹ç•ŒnegativeBoundary_è¿˜æ²¡æœ‰å®‰è£…ï¼Œ 
+	è€ŒèŠ‚ç‚¹åˆ é™¤æ—¶ä¼šè®¾ç½®èŠ‚ç‚¹çš„xxä¸º-FLT_MAXï¼Œè®©å…¶å‘negativeBoundary_æ–¹å‘ç¦»å¼€ï¼Œæ‰€ä»¥positiveBoundary_ä¸èƒ½æ£€æŸ¥åˆ°è¿™ä¸ªè¾¹ç•Œä¹Ÿå°±ä¸ä¼šè§¦å‘AOIç¦»å¼€äº‹ä»¶ã€‚
 	*/
 	negativeBoundary_->old_xx(-FLT_MAX);
 	negativeBoundary_->old_yy(-FLT_MAX);
@@ -88,7 +88,7 @@ bool RangeTrigger::install()
 	negativeBoundary_->update();
 	negativeBoundary_->removeFlags(COORDINATE_NODE_FLAG_INSTALLING);
 
-	// update¿ÉÄÜµ¼ÖÂÊµÌåÏú»Ù¼ä½Óµ¼ÖÂ×Ô¼º±»ÖØÖÃ£¬´ËÊ±Ó¦¸Ã·µ»Ø°²×°Ê§°Ü
+	// updateå¯èƒ½å¯¼è‡´å®žä½“é”€æ¯é—´æŽ¥å¯¼è‡´è‡ªå·±è¢«é‡ç½®ï¼Œæ­¤æ—¶åº”è¯¥è¿”å›žå®‰è£…å¤±è´¥
 	if (!negativeBoundary_)
 		return false;
 
@@ -119,7 +119,7 @@ bool RangeTrigger::uninstall()
 		negativeBoundary_->pCoordinateSystem()->remove(negativeBoundary_);
 	}
 	
-	// ´Ë´¦²»±Ørelease node£¬ ½ÚµãµÄÊÍ·ÅÍ³Ò»½»¸øCoordinateSystem
+	// æ­¤å¤„ä¸å¿…release nodeï¼Œ èŠ‚ç‚¹çš„é‡Šæ”¾ç»Ÿä¸€äº¤ç»™CoordinateSystem
 	positiveBoundary_ = NULL;
 	negativeBoundary_ = NULL;
 	return true;
@@ -134,14 +134,14 @@ void RangeTrigger::onNodePassX(RangeTriggerNode* pRangeTriggerNode, CoordinateNo
 	bool wasInZ = pRangeTriggerNode->wasInZRange(pNode);
 	bool isInZ = pRangeTriggerNode->isInZRange(pNode);
 
-	// Èç¹ûZÖáÇé¿öÓÐ±ä»¯£¬ÔòZÖáÔÙÅÐ¶Ï£¬ÓÅÏÈ¼¶Îªzyx£¬ÕâÑù²Å¿ÉÒÔ±£Ö¤Ö»ÓÐÒ»´Îenter»òÕßleave
+	// å¦‚æžœZè½´æƒ…å†µæœ‰å˜åŒ–ï¼Œåˆ™Zè½´å†åˆ¤æ–­ï¼Œä¼˜å…ˆçº§ä¸ºzyxï¼Œè¿™æ ·æ‰å¯ä»¥ä¿è¯åªæœ‰ä¸€æ¬¡enteræˆ–è€…leave
 	if(wasInZ != isInZ)
 		return;
 
 	bool wasIn = false;
 	bool isIn = false;
 
-	// ±ØÐëÍ¬Ê±¼ì²éÆäËûÖá£¬ Èç¹û½ÚµãxÖáÔÚ·¶Î§ÄÚ£¬ÀíÂÛÉÏÆäËûÖáÒ²ÔÚ·¶Î§ÄÚ
+	// å¿…é¡»åŒæ—¶æ£€æŸ¥å…¶ä»–è½´ï¼Œ å¦‚æžœèŠ‚ç‚¹xè½´åœ¨èŒƒå›´å†…ï¼Œç†è®ºä¸Šå…¶ä»–è½´ä¹Ÿåœ¨èŒƒå›´å†…
 	if(CoordinateSystem::hasY)
 	{
 		bool wasInY = pRangeTriggerNode->wasInYRange(pNode);
@@ -159,7 +159,7 @@ void RangeTrigger::onNodePassX(RangeTriggerNode* pRangeTriggerNode, CoordinateNo
 		isIn = pRangeTriggerNode->isInXRange(pNode) && isInZ;
 	}
 
-	// Èç¹ûÇé¿öÃ»ÓÐ·¢Éú±ä»¯ÔòºöÂÔ
+	// å¦‚æžœæƒ…å†µæ²¡æœ‰å‘ç”Ÿå˜åŒ–åˆ™å¿½ç•¥
 	if(wasIn == isIn)
 		return;
 
@@ -195,7 +195,7 @@ void RangeTrigger::onNodePassY(RangeTriggerNode* pRangeTriggerNode, CoordinateNo
 	bool wasInZ = pRangeTriggerNode->wasInZRange(pNode);
 	bool isInZ = pRangeTriggerNode->isInZRange(pNode);
 
-	// Èç¹ûZÖáÇé¿öÓÐ±ä»¯£¬ÔòZÖáÔÙÅÐ¶Ï£¬ÓÅÏÈ¼¶Îªzyx£¬ÕâÑù²Å¿ÉÒÔ±£Ö¤Ö»ÓÐÒ»´Îenter»òÕßleave
+	// å¦‚æžœZè½´æƒ…å†µæœ‰å˜åŒ–ï¼Œåˆ™Zè½´å†åˆ¤æ–­ï¼Œä¼˜å…ˆçº§ä¸ºzyxï¼Œè¿™æ ·æ‰å¯ä»¥ä¿è¯åªæœ‰ä¸€æ¬¡enteræˆ–è€…leave
 	if(wasInZ != isInZ)
 		return;
 
@@ -205,7 +205,7 @@ void RangeTrigger::onNodePassY(RangeTriggerNode* pRangeTriggerNode, CoordinateNo
 	if(wasInY == isInY)
 		return;
 
-	// ±ØÐëÍ¬Ê±¼ì²éÆäËûÖá£¬ Èç¹û½ÚµãxÖáÔÚ·¶Î§ÄÚ£¬ÀíÂÛÉÏÆäËûÖáÒ²ÔÚ·¶Î§ÄÚ
+	// å¿…é¡»åŒæ—¶æ£€æŸ¥å…¶ä»–è½´ï¼Œ å¦‚æžœèŠ‚ç‚¹xè½´åœ¨èŒƒå›´å†…ï¼Œç†è®ºä¸Šå…¶ä»–è½´ä¹Ÿåœ¨èŒƒå›´å†…
 	bool wasIn = pRangeTriggerNode->wasInXRange(pNode) && wasInY && wasInZ;
 	bool isIn = pRangeTriggerNode->isInXRange(pNode) && isInY && isInZ;
 

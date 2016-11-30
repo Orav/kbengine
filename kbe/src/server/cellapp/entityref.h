@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -31,9 +31,9 @@ class Entity;
 class MemoryStream;
 
 #define ENTITYREF_FLAG_UNKONWN							0x00000000
-#define ENTITYREF_FLAG_ENTER_CLIENT_PENDING				0x00000001	// ½øÈë¿Í»§¶ËÖĞ±êÖ¾
-#define ENTITYREF_FLAG_LEAVE_CLIENT_PENDING				0x00000002	// Àë¿ª¿Í»§¶ËÖĞ±êÖ¾
-#define ENTITYREF_FLAG_NORMAL							0x00000004	// ³£¹æ×´Ì¬
+#define ENTITYREF_FLAG_ENTER_CLIENT_PENDING				0x00000001	// è¿›å…¥å®¢æˆ·ç«¯ä¸­æ ‡å¿—
+#define ENTITYREF_FLAG_LEAVE_CLIENT_PENDING				0x00000002	// ç¦»å¼€å®¢æˆ·ç«¯ä¸­æ ‡å¿—
+#define ENTITYREF_FLAG_NORMAL							0x00000004	// å¸¸è§„çŠ¶æ€
 
 class EntityRef : public PoolObject
 {

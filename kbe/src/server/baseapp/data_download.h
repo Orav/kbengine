@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -69,7 +69,7 @@ protected:
 
 	uint32 totalBytes_;
 
-	// ×Ü¹²·¢ËÍµÄ×Ö½ÚÊı
+	// æ€»å…±å‘é€çš„å­—èŠ‚æ•°
 	uint32 totalSentBytes_;
 	uint32 remainSent_;
 	uint32 currSent_;
