@@ -223,7 +223,7 @@ static uint64 calcStampsPerSecond()
 
 
 /**
- *	每秒cpu所耗时间
+ *	CPU time consuming per second
  */
 uint64 stampsPerSecond()
 {
@@ -232,7 +232,7 @@ uint64 stampsPerSecond()
 }
 
 /**
- *	每秒cpu所耗时间 double版本
+ *	CPU elapsed time per second double version
  */
 double stampsPerSecondD()
 {
