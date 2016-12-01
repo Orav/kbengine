@@ -29,7 +29,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace KBEngine{ 
 /*---------------------------------------------------------------------------------
-	跨平台接口定义
+	Cross-platform interface definition
 ---------------------------------------------------------------------------------*/
 #if defined( unix )
 
@@ -76,7 +76,7 @@ namespace strutil {
 	int kbe_replace(std::wstring& str,  const std::wstring& pattern,  const std::wstring& newpat);
 
 	/*
-	 转换为大写
+	 Convert to uppercase
 	*/
 	inline char* str_toupper(char* s)
 	{
@@ -92,7 +92,7 @@ namespace strutil {
 	}
 
 	/*
-	 转换为小写
+	 Convert to lowercase
 	*/
 	inline char* str_tolower(char* s)
 	{
@@ -142,7 +142,7 @@ namespace strutil {
 }
 
 namespace strutil {
-	// vector<string>之类的容易使用 std::find_if 来查找是否存在某个字符串
+	// Vector <string> like easy to use STD::find if to find the existence of a string
 	template<typename T>
 	class find_vec_string_exist_handle
 	{

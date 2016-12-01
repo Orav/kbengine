@@ -28,7 +28,7 @@ namespace KBEngine
 {
 
 /**
- *	openssl md5的封装
+ *	OpenSSL MD5 package
  */
 class KBE_MD5
 {

@@ -38,16 +38,16 @@ namespace KBEngine{
 #define OBJECT_POOL_INIT_SIZE			16
 #define OBJECT_POOL_INIT_MAX_SIZE		OBJECT_POOL_INIT_SIZE * 1024
 
-// 每5分钟检查一次瘦身
+// Once every 5 minutes to slim
 #define OBJECT_POOL_REDUCING_TIME_OUT	300 * stampsPerSecondD()
 
 template< typename T >
 class SmartPoolObject;
 
 /*
-	一些对象会非常频繁的被创建， 例如：MemoryStream, Bundle, TCPPacket等等
-	这个对象池对通过服务端峰值有效的预估提前创建出一些对象缓存起来，在用到的时候直接从对象池中
-	获取一个未被使用的对象即可。
+	Some objects will very frequently be created, for example, Memory stream, Bundle, TCPPacket, and so on
+	The object pool through server-side estimates peak effective creates a number of objects cached in advance, when used directly from a pool of objects
+	Gets an object that is not in use。
 */
 template< typename T, typename THREADMUTEX = KBEngine::thread::ThreadMutexNull >
 class ObjectPool
@@ -135,8 +135,8 @@ public:
 	}
 
 	/** 
-		强制创建一个指定类型的对象。 如果缓冲里已经创建则返回现有的，否则
-		创建一个新的， 这个对象必须是继承自T的。
+		Forces the creation of an object of the specified type. Returned if the buffer has been created in the current or
+		Creates a new one, the object must be inherited from t.
 	*/
 	template<typename T1>
 	T* createObject(void)
@@ -165,8 +165,8 @@ public:
 	}
 
 	/** 
-		创建一个对象。 如果缓冲里已经创建则返回现有的，否则
-		创建一个新的。
+		Creates an object. Returned if the buffer has been created in the current or
+		to create a new。
 	*/
 	T* createObject(void)
 	{
@@ -194,7 +194,7 @@ public:
 	}
 
 	/**
-		回收一个对象
+		Recovering an object
 	*/
 	void reclaimObject(T* obj)
 	{
@@ -204,7 +204,7 @@ public:
 	}
 
 	/**
-		回收一个对象容器
+		Recovering an object container
 	*/
 	void reclaimObject(std::list<T*>& objs)
 	{
@@ -222,7 +222,7 @@ public:
 	}
 
 	/**
-		回收一个对象容器
+		Recovering an object container
 	*/
 	void reclaimObject(std::vector< T* >& objs)
 	{
@@ -240,7 +240,7 @@ public:
 	}
 
 	/**
-		回收一个对象容器
+		Recovering an object container
 	*/
 	void reclaimObject(std::queue<T*>& objs)
 	{
@@ -279,13 +279,13 @@ public:
 
 protected:
 	/**
-		回收一个对象
+		Recovering an object
 	*/
 	void reclaimObject_(T* obj)
 	{
 		if(obj != NULL)
 		{
-			// 先重置状态
+			// Reset status
 			obj->onReclaimObject();
 			obj->isEnabledPoolObject(false);
 
@@ -305,12 +305,12 @@ protected:
 
 		if (obj_count_ <= OBJECT_POOL_INIT_SIZE)
 		{
-			// 小于等于则刷新检查时间
+			// Less than or equal to the refresh time
 			lastReducingCheckTime_ = now_timestamp;
 		}
 		else if (lastReducingCheckTime_ - now_timestamp > OBJECT_POOL_REDUCING_TIME_OUT)
 		{
-			// 长时间大于OBJECT_POOL_INIT_SIZE未使用的对象则开始做清理工作
+			// Long time is greater than the OBJECT POOL INIT SIZE began to clean up unused objects
 			size_t reducing = std::min(objects_.size(), std::min((size_t)OBJECT_POOL_INIT_SIZE, (size_t)(obj_count_ - OBJECT_POOL_INIT_SIZE)));
 			
 			while (reducing-- > 0)
@@ -333,25 +333,25 @@ protected:
 
 	bool isDestroyed_;
 
-	// 一些原因导致锁还是有必要的
-	// 例如：dbmgr任务线程中输出log，cellapp中加载navmesh后的线程回调导致的log输出
+	// Some reasons why locking is necessary
+	// For example: dbMgr task output after you load navmesh log,cellapp threads in the thread callback causes the log output
 	THREADMUTEX* pMutex_;
 
 	std::string name_;
 
 	size_t total_allocs_;
 
-	// Linux环境中，list.size()使用的是std::distance(begin(), end())方式来获得
-	// 会对性能有影响，这里我们自己对size做一个记录
+	// In a Linux environment, list.size () is used by std::distance (begin () and end ()) way to get
+	// Will have an impact on performance, we own a record size
 	size_t obj_count_;
 
-	// 最后一次瘦身检查时间
-	// 如果长达OBJECT_POOL_REDUCING_TIME_OUT大于OBJECT_POOL_INIT_SIZE，则最多瘦身OBJECT_POOL_INIT_SIZE个
+	// Slim down for the last time check time
+	// If the OBJECT POOL REDUCING TIME OUT is greater than the OBJECT POOL INIT-long SIZE, up to slim OBJECT POOL INIT SIZE
 	uint64 lastReducingCheckTime_;
 };
 
 /*
-	池对象， 所有使用池的对象必须实现回收功能。
+	A pooled object, all objects must implement recovery using the pool functions.
 */
 class PoolObject
 {
@@ -373,8 +373,7 @@ public:
 	}
 
 	/**
-		池对象被析构前的通知
-		某些对象可以在此做一些工作
+		Pool object is destructed advance notice Some objects can work
 	*/
 	virtual bool destructorPoolObject()
 	{
@@ -393,7 +392,7 @@ public:
 
 protected:
 
-	// 池对象是否处于激活（从池中已经取出）状态
+	// Pool object is active (has been removed from the pool)
 	bool isEnabledPoolObject_;
 };
 

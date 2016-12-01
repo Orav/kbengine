@@ -50,11 +50,11 @@ class MemoryStreamException
 };
 
 /*
-	将常用数据类型二进制序列化与反序列化
-	注意：端与端之间传输可能涉及大小端问题，可以通过如下进行转换进行转换:
-	具体看 MemoryStreamConverter.h
+	Common data types binary serialization and deserialization
+	Note: transport may involve the size between the end and the end-side issues, you can convert convert as follows:
+	Specific MemoryStreamConverter.h
 
-	使用方法:
+	How to use the:
 			MemoryStream stream; 
 			stream << (int64)100000000;
 			stream << (uint8)1;
@@ -68,7 +68,7 @@ class MemoryStreamException
 			stream >> n;
 			stream >> n1;
 			stream >> a;
-			printf("还原: %lld, %d, %d, %s", x, n, n1, a.c_str());
+			printf("Restore: %lld, %d, %d, %s", x, n, n1, a.c_str());
 */
 class MemoryStream : public PoolObject
 {
@@ -459,14 +459,14 @@ public:
 		(*this) >> tv;
 		data |= tv;
 
-		// 复制指数和尾数
+		// Copy the exponent and mantissa
 		xPackData.uv |= (data & 0x7ff000) << 3;
 		zPackData.uv |= (data & 0x0007ff) << 15;
 
 		xPackData.fv -= 2.0f;
 		zPackData.fv -= 2.0f;
 
-		// 设置标记位
+		// Set the marker bit
 		xPackData.uv |= (data & 0x800000) << 8;
 		zPackData.uv |= (data & 0x000800) << 20;
 	}
@@ -487,19 +487,19 @@ public:
     uint8 *data() { return &data_[0]; }
 	const uint8 *data() const { return &data_[0]; }
 	
-	// vector的大小
+	// The size of the vector
     virtual size_t size() const { return data_.size(); }
 
-	// vector是否为空
+	// Whether the vector is empty
     virtual bool empty() const { return data_.empty(); }
 
-	// 读索引到与写索引之间的长度
+	// Read the length between the index and write the index
 	virtual size_t length() const { return rpos() >= wpos() ? 0 : wpos() - rpos(); }
 
-	// 剩余可填充的大小
+	// The size of the surplus can be filled
 	virtual size_t space() const { return wpos() >= size() ? 0 : size() - wpos(); }
 
-	// 将读索引强制设置到写索引，表示操作结束
+	// Read index forced to write the index, said the operation ended
 	void done(){ read_skip(length()); }
 
     void resize(size_t newsize)
@@ -615,8 +615,8 @@ public:
 		y -= minf / 2.f;
 		z -= minf;
 
-		// 最大值不要超过-256~256
-		// y 不要超过-128~128
+		// Do not exceed the maximum value -256~256
+		// Y not more than -128~128
         uint32 packed = 0;
         packed |= ((int)(x / 0.25f) & 0x7FF);
         packed |= ((int)(z / 0.25f) & 0x7FF) << 11;
@@ -632,11 +632,11 @@ public:
 		PackFloatXType zPackData; 
 		zPackData.fv = z;
 		
-		// 0-7位存放尾数, 8-10位存放指数, 11位存放标志
-		// 由于使用了24位来存储2个float， 并且要求能够达到-512~512之间的数
-		// 8位尾数只能放最大值256, 指数只有3位(决定浮点数最大值为2^(2^3)=256) 
-		// 我们舍去第一位使范围达到(-512~-2), (2~512)之间
-		// 因此这里我们保证最小数为-2.f或者2.f
+		// 0-7 store the mantissa, 8-10 storage index, 11 store logo
+		// Due to the use of 24-bit to store 2 float, and -512~512 can be achieved between the number
+		// 8-bit mantissa and only a maximum of 256, the index only 3 (decided to float the maximum value is 2^ (2^3) =256) 
+		// We give the first range ( -512~-2), (2~512),
+		// Therefore we guarantee a minimum number of -2.f or 2.f
 		xPackData.fv += xPackData.iv < 0 ? -2.f : 2.f;
 		zPackData.fv += zPackData.iv < 0 ? -2.f : 2.f;
 
@@ -647,26 +647,26 @@ public:
 		const uint32 xCeilingValues[] = { 0, 0x7ff000 };
 		const uint32 zCeilingValues[] = { 0, 0x0007ff };
 
-		// 这里如果这个浮点数溢出了则设置浮点数为最大数
-		// 这里检查了指数高4位和标记位， 如果高四位不为0则肯定溢出， 如果低4位和8位尾数不为0则溢出
+		// If the floating-point overflow then the float is set to the maximum number of
+		// Checked index 4 and mark here, if the high four bits is 0 the overflow, if the 4-bit and 8-bit mantissa is 0 overflow
 		// 0x7c000000 = 1111100000000000000000000000000
 		// 0x40000000 = 1000000000000000000000000000000
 		// 0x3ffc000  = 0000011111111111100000000000000
 		data |= xCeilingValues[((xPackData.uv & 0x7c000000) != 0x40000000) || ((xPackData.uv & 0x3ffc000) == 0x3ffc000)];
 		data |= zCeilingValues[((zPackData.uv & 0x7c000000) != 0x40000000) || ((zPackData.uv & 0x3ffc000) == 0x3ffc000)];
 		
-		// 复制8位尾数和3位指数， 如果浮点数剩余尾数最高位是1则+1四舍五入, 并且存放到data中
+		// Copy the 8-bit mantissa and 3-bit indices, if floating-point number mantissa remaining the highest bit is 1 +1 rounded, and stored in the data
 		// 0x7ff000 = 11111111111000000000000
 		// 0x0007ff = 00000000000011111111111
 		// 0x4000	= 00000000100000000000000
 		data |= ((xPackData.uv >>  3) & 0x7ff000) + ((xPackData.uv & 0x4000) >> 2);
 		data |= ((zPackData.uv >> 15) & 0x0007ff) + ((zPackData.uv & 0x4000) >> 14);
 		
-		// 确保值在范围内
+		// Ensure that the values in the range
 		// 0x7ff7ff = 11111111111011111111111
 		data &= 0x7ff7ff;
 
-		// 复制标记位
+		// Copy tag
 		// 0x800000 = 100000000000000000000000
 		// 0x000800 = 000000000000100000000000
 		data |=  (xPackData.uv >>  8) & 0x800000;
@@ -707,7 +707,7 @@ public:
         memcpy(&data_[pos], src, cnt);
     }
 
-	/** 输出流数据 */
+	/** Output stream data */
     void print_storage() const
     {
 		char buf[1024];
@@ -729,7 +729,7 @@ public:
 		rpos_ = trpos;
     }
 
-	/** 输出流数据字符串 */
+	/** Output data stream strings */
     void textlike() const
     {
 		char buf[1024];
@@ -924,7 +924,7 @@ inline void MemoryStream::read_skip<std::string>()
     read_skip<char*>();
 }
 
-// 从对象池中创建与回收 
+// From a pool of objects created and recovery 
 #define NEW_MEMORY_STREAM() MemoryStream::createPoolObject()
 #define DELETE_MEMORY_STREAM(obj) { MemoryStream::reclaimPoolObject(obj); obj = NULL; }
 

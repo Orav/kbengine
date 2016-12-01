@@ -92,7 +92,7 @@ const char ENTITY_MAILBOX_TYPE_TO_NAME_TABLE[][8] =
 	"client",
 };
 
-/** mailbox的类别对换为字符串名称 严格和ENTITY_MAILBOX_TYPE索引匹配 */
+/** Mailbox class of transpositions and ENTITY names are stringent MAILBOX TYPE for string index matching */
 const char ENTITY_MAILBOX_TYPE_TO_NAME_TABLE_EX[][14] =
 {
 	"cell",
@@ -104,26 +104,26 @@ const char ENTITY_MAILBOX_TYPE_TO_NAME_TABLE_EX[][14] =
 	"clientViaBase",
 };
 
-/** 定义服务器各组件状态 */
+/** Define server component status */
 enum COMPONENT_STATE
 {
-	// 初始状态
+	// Initial state
 	COMPONENT_STATE_INIT = 0,
 
-	// 进程正在运行中
+	// Process is running
 	COMPONENT_STATE_RUN = 1,
 
-	// 进程开始关闭
+	// Processes started to close
 	COMPONENT_STATE_SHUTTINGDOWN_BEGIN = 2,
 
-	// 进程正在关闭
+	// Process is shutting down
 	COMPONENT_STATE_SHUTTINGDOWN_RUNNING = 3,
 
-	// 进程关闭完成了
+	// Process shutdown complete
 	COMPONENT_STATE_STOP = 4
 };
 
-/** 定义服务器各组件类别 */
+/** Define the server components category */
 enum COMPONENT_TYPE
 {
 	UNKNOWN_COMPONENT_TYPE	= 0,
@@ -143,11 +143,11 @@ enum COMPONENT_TYPE
 	COMPONENT_END_TYPE		= 14,
 };
 
-/** 当前服务器组件类别和ID */
+/** Current server components category andID */
 extern COMPONENT_TYPE g_componentType;
 extern COMPONENT_ID g_componentID;
 
-/** 定义服务器各组件名称 */
+/** Define the name server components */
 const char COMPONENT_NAME[][255] = {
 	"unknown",
 	"dbmgr",
@@ -240,27 +240,27 @@ inline COMPONENT_TYPE ComponentName2ComponentType(const char* name)
 	return UNKNOWN_COMPONENT_TYPE;
 }
 
-// 所有的组件列表
+// List of all components
 const COMPONENT_TYPE ALL_COMPONENT_TYPES[] = {BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, DBMGR_TYPE, CELLAPP_TYPE, 
 						BASEAPP_TYPE, LOGINAPP_TYPE, MACHINE_TYPE, CONSOLE_TYPE, LOGGER_TYPE, 
 						WATCHER_TYPE, INTERFACES_TYPE, BOTS_TYPE, UNKNOWN_COMPONENT_TYPE};
 
-// 所有的后端组件列表
+// List of all back-end components
 const COMPONENT_TYPE ALL_SERVER_COMPONENT_TYPES[] = {BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, DBMGR_TYPE, CELLAPP_TYPE, 
 						BASEAPP_TYPE, LOGINAPP_TYPE, MACHINE_TYPE, LOGGER_TYPE, 
 						WATCHER_TYPE, INTERFACES_TYPE, BOTS_TYPE, UNKNOWN_COMPONENT_TYPE};
 
-// 所有的后端组件列表
+// List of all back-end components
 const COMPONENT_TYPE ALL_GAME_SERVER_COMPONENT_TYPES[] = {BASEAPPMGR_TYPE, CELLAPPMGR_TYPE, DBMGR_TYPE, CELLAPP_TYPE, 
 						BASEAPP_TYPE, LOGINAPP_TYPE, INTERFACES_TYPE, UNKNOWN_COMPONENT_TYPE};
 
-// 所有的辅助性组件
+// All auxiliary components
 const COMPONENT_TYPE ALL_HELPER_COMPONENT_TYPE[] = {LOGGER_TYPE, UNKNOWN_COMPONENT_TYPE};
 
-// 返回是否是一个有效的组件
+// Returned is a valid component
 #define VALID_COMPONENT(C_TYPE) ((C_TYPE) > 0 && (C_TYPE) < COMPONENT_END_TYPE)
 
-/** 检查是否为一个游戏服务端组件类别 */
+/** Check for a game server components category */
 inline bool isGameServerComponentType(COMPONENT_TYPE componentType)
 {
 	int i = 0;
@@ -277,16 +277,14 @@ inline bool isGameServerComponentType(COMPONENT_TYPE componentType)
 	return false;
 }
 
-// 前端应用的类别, All client type
+// Front-end application categories, All client type
 enum COMPONENT_CLIENT_TYPE
 {
 	UNKNOWN_CLIENT_COMPONENT_TYPE	= 0,
 
-	// 移动类，手机，平板电脑
 	// Mobile, Phone, Pad
 	CLIENT_TYPE_MOBILE				= 1,
 
-	// 独立的Windows应用程序
 	// Windows Application program
 	CLIENT_TYPE_WIN					= 2,
 
@@ -294,7 +292,6 @@ enum COMPONENT_CLIENT_TYPE
 	// Linux Application program
 	CLIENT_TYPE_LINUX				= 3,
 		
-	// Mac应用程序
 	// Mac Application program
 	CLIENT_TYPE_MAC					= 4,
 				
@@ -304,14 +301,14 @@ enum COMPONENT_CLIENT_TYPE
 	// bots
 	CLIENT_TYPE_BOTS				= 6,
 
-	// 轻端类
+	// Light side classes
 	CLIENT_TYPE_MINI				= 7,
 
 	// End
 	CLIENT_TYPE_END					= 8
 };
 
-/** 定义前端应用的类别名称 */
+/** Defining front-end application category names */
 const char COMPONENT_CLIENT_NAME[][255] = {
 	"UNKNOWN_CLIENT_COMPONENT_TYPE",
 	"CLIENT_TYPE_MOBILE",
@@ -323,21 +320,21 @@ const char COMPONENT_CLIENT_NAME[][255] = {
 	"CLIENT_TYPE_MINI",
 };
 
-// 所有前端应用的类别
+// All front-end application categories
 const COMPONENT_CLIENT_TYPE ALL_CLIENT_TYPES[] = {CLIENT_TYPE_MOBILE, CLIENT_TYPE_WIN, CLIENT_TYPE_LINUX, CLIENT_TYPE_MAC, 
 												CLIENT_TYPE_BROWSER, CLIENT_TYPE_BOTS, CLIENT_TYPE_MINI, UNKNOWN_CLIENT_COMPONENT_TYPE};
 
 typedef int8 CLIENT_CTYPE;
 
 /*
- APP设置的标志
+ Sign of APP settings
 */
-// 默认的(未设置标记)
+// The default (no tags)
 #define APP_FLAGS_NONE								0x00000000
-// 不参与负载均衡
+// Do not participate in load balancing
 #define APP_FLAGS_NOT_PARTCIPATING_LOAD_BALANCING	0x00000001
 
-// 建立一个通过标记值得到名称的map，提供初始化python暴露给脚本使用
+// Create a tag worthy of names to map and provide exposure to initialize Python for scripting use
 inline std::map<uint32, std::string> createAppFlagsMaps()
 {
 	std::map<uint32, std::string> datas;
@@ -346,17 +343,17 @@ inline std::map<uint32, std::string> createAppFlagsMaps()
 	return datas;
 }
 
-// 前端是否支持浮点数
+// Front end supports floating point numbers
 // #define CLIENT_NO_FLOAT
 
-// 一个cell的默认的边界或者最小大小
+// The default border of a cell or minimum size
 #define CELL_DEF_MIN_AREA_SIZE						500.0f
 
-/** 一个空间的一个chunk大小 */
+/** A space a chunk size */
 #define SPACE_CHUNK_SIZE							100
 
 
-/** 检查用户名合法性 */
+/** Check the user name validity */
 inline bool validName(const char* name, int size)
 {
 	if(size >= 256)
@@ -379,8 +376,8 @@ inline bool validName(const std::string& name)
 	return validName(name.c_str(), (int)name.size());
 }
 
-/** 检查email地址合法性 
-严格匹配请用如下表达式
+/** Check the email address validity 
+Match exactly with the following expression
 [a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?
 */
 #ifdef USE_REGEX

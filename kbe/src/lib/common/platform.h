@@ -55,7 +55,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 #include <time.h> 
 //#define FD_SETSIZE 1024
 #ifndef WIN32_LEAN_AND_MEAN 
-#include <winsock2.h>		// 必须在windows.h之前包含， 否则网络模块编译会出错
+#include <winsock2.h>		// Must be included before in the Windows.h or network module compile errors
 #include <mswsock.h> 
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -109,11 +109,11 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 #define SIGSYS	32
 #endif
 
-/** 定义引擎名字空间 */
+/** Engine name space defined */
 namespace KBEngine
 { 
 
-/** 定义引擎字节序 */
+/** Define engine byte sequence */
 #define KBENGINE_LITTLE_ENDIAN							0
 #define KBENGINE_BIG_ENDIAN								1
 #if !defined(KBENGINE_ENDIAN)
@@ -211,7 +211,7 @@ namespace KBEngine
 #endif
 
 /*---------------------------------------------------------------------------------
-	类型定义
+	Type definition
 ---------------------------------------------------------------------------------*/
 #ifndef TCHAR
 #ifdef _UNICODE
@@ -327,22 +327,22 @@ typedef uint32													uintptr;
 #define PRAppID													PRIu64
 #define PRDBID													PRIu64
 
-typedef uint16													ENTITY_TYPE;											// entity的类别类型定义支持0-65535个类别
-typedef int32													ENTITY_ID;												// entityID的类型
-typedef uint32													SPACE_ID;												// 一个space的id
-typedef uint32													CALLBACK_ID;											// 一个callback由CallbackMgr分配的id
-typedef uint64													COMPONENT_ID;											// 一个服务器组件的id
-typedef int32													COMPONENT_ORDER;										// 一个组件的启动顺序
-typedef int32													COMPONENT_GUS;											// 一个组件的genuuid_sections产生随机数的区间段
-typedef	uint32													TIMER_ID;												// 一个timer的id类型
-typedef uint8													MAIL_TYPE;												// mailbox 所投递的mail类别的类别
+typedef uint16													ENTITY_TYPE;											// Entity class type definition support 0-65535 categories
+typedef int32													ENTITY_ID;												// Type of entity iD
+typedef uint32													SPACE_ID;												// A space ID
+typedef uint32													CALLBACK_ID;											// A callback Callback Mgr-assigned ID
+typedef uint64													COMPONENT_ID;											// A server component ID
+typedef int32													COMPONENT_ORDER;										// A component of the boot sequence
+typedef int32													COMPONENT_GUS;											// Genuuid sections of a component the interval for generating random numbers
+typedef	uint32													TIMER_ID;												// A timer ID type
+typedef uint8													MAIL_TYPE;												// Mailbox delivery mail categories categories
 typedef uint32													GAME_TIME;
 typedef uint32													GameTime;
 typedef int32													ScriptID;
-typedef uint32													ArraySize;												// 任何数组的大小都用这个描述
-typedef uint64													DBID;													// 一个在数据库中的索引用来当做某ID
+typedef uint32													ArraySize;												// Any array with the size of the description
+typedef uint64													DBID;													// An index in a database used as an ID
 typedef uint32													CELL_ID;
-typedef KBEUnordered_map< std::string, std::string >			SPACE_DATA;												// space中存储的数据
+typedef KBEUnordered_map< std::string, std::string >			SPACE_DATA;												// Data stored in the space
 
 #if KBE_PLATFORM == PLATFORM_WIN32
 	#define IFNAMSIZ											16
@@ -373,7 +373,7 @@ typedef KBEUnordered_map< std::string, std::string >			SPACE_DATA;												//
 #endif
 
 /*---------------------------------------------------------------------------------
-	定会多种平台上的多线程相关
+	Will be multi-threaded on multiple platforms
 ---------------------------------------------------------------------------------*/
 #if KBE_PLATFORM == PLATFORM_WIN32
 	#define THREAD_ID											HANDLE
@@ -400,7 +400,7 @@ typedef KBEUnordered_map< std::string, std::string >			SPACE_DATA;												//
 #endif
 
 /*---------------------------------------------------------------------------------
-	跨平台宏定义
+	Cross-platform macro definitions
 ---------------------------------------------------------------------------------*/
 #if 0
 #define ARRAYCLR(v)					memset((v), 0x0, sizeof(v))
@@ -496,20 +496,20 @@ inline const T & max( const T & a, const T & b )
 
 #endif
 
-// 所有名称字符串的最大长度
+// All the maximum length of the name string
 #define MAX_NAME 256	
 
-// ip字符串的最大长度
+// IP maximum string length
 #define MAX_IP 50
 
-// 常规的buf长度
+// General length of buf
 #define MAX_BUF 256
 
 #ifndef MAX_PATH
 #define MAX_PATH 260
 #endif
 
-// 获得系统产生的最后一次错误描述
+// System description of the last error
 inline char* kbe_strerror(int ierrorno = 0)
 {
 #if KBE_PLATFORM == PLATFORM_WIN32
@@ -548,7 +548,7 @@ inline int kbe_lasterror()
 #endif
 }
 
-/** 获取用户UID */
+/** Gets the user UID */
 inline int32 getUserUID()
 {
 	static int32 iuid = 0;
@@ -577,7 +577,7 @@ inline int32 getUserUID()
 	return iuid;
 }
 
-/** 获取用户名 */
+/** Gets the user name */
 inline const char * getUsername()
 {
 #if KBE_PLATFORM == PLATFORM_WIN32
@@ -595,7 +595,7 @@ inline const char * getUsername()
 
 		if(outsize == 0)
 		{
-			// 可能是中文名，不支持中文名称
+			// May be Chinese names, Chinese names are not supported
 			strcpy(username, "error_name");
 		}
 	}
@@ -607,7 +607,7 @@ inline const char * getUsername()
 #endif
 }
 
-/** 获取进程ID */
+/** Obtain the process ID */
 inline int32 getProcessPID()
 {
 #if KBE_PLATFORM != PLATFORM_WIN32
@@ -617,11 +617,11 @@ inline int32 getProcessPID()
 #endif
 }
 
-/** 获取系统时间(精确到毫秒) */
+/** Get the system time (accurate to the millisecond) */
 #if KBE_PLATFORM == PLATFORM_WIN32
 	inline uint32 getSystemTime() 
 	{ 
-		// 注意这个函数windows上只能正确维持49天。
+		// Note that this function only 49 days correctly on Windows.
 		return ::GetTickCount(); 
 	};
 #else
@@ -634,10 +634,10 @@ inline int32 getProcessPID()
 	};
 #endif
 
-/** 获取2个系统时间差 */
+/** Get 2 time difference system */
 inline uint32 getSystemTimeDiff(uint32 oldTime, uint32 newTime)
 {
-    // 防止getSystemTime()溢出的情况
+    // Prevent the get system time (s) overflow condition
     if (oldTime > newTime)
     {
         return (uint32)((int64)0xFFFFFFFF + 1 - (int64)oldTime) + newTime;
@@ -646,7 +646,7 @@ inline uint32 getSystemTimeDiff(uint32 oldTime, uint32 newTime)
 	return newTime - oldTime;
 }
 
-/* 产生一个64位的uuid 
+/* A 64-bit UUID 
 */
 extern COMPONENT_ORDER g_componentGlobalOrder;
 extern COMPONENT_ORDER g_componentGroupOrder;
@@ -673,7 +673,7 @@ inline uint64 genUUID64()
 	
 	if(g_genuuid_sections <= 0)
 	{
-		// 时间戳32位，随机数16位，16位迭代数（最大为65535-1）
+		// 32-bit time stamp, 16-bit random numbers, 16 iterations (up to 65535-1)
 		static uint32 rnd = 0;
 		if(rnd == 0)
 		{
@@ -687,7 +687,7 @@ inline uint64 genUUID64()
 	}
 	else
 	{
-		// 时间戳32位，app组ID16位，16位迭代数（最大为65535-1）
+		// 32-bit time stamp, app ID16, 16 iterations (up to 65535-1)
 		static uint32 sections = g_genuuid_sections << 16;
 		
 		assert(lastNum < 65535 && "genUUID64(): overflow!");
@@ -696,7 +696,7 @@ inline uint64 genUUID64()
 	}
 }
 
-/** sleep 跨平台 */
+/** Sleep across platforms */
 #if KBE_PLATFORM == PLATFORM_WIN32
 	inline void sleep(uint32 ms)
 	{ 
@@ -712,21 +712,21 @@ inline uint64 genUUID64()
 	}	
 #endif
 
-/** 判断平台是否为小端字节序 */
+/** Determine whether the platform is little-endian */
 inline bool isPlatformLittleEndian()
 {
    int n = 1;
    return *((char*)&n) ? true : false;
 }
 
-/** 设置环境变量 */
+/** Set the environment variable */
 #if KBE_PLATFORM == PLATFORM_WIN32
 	inline void setenv(const std::string& name, const std::string& value, int overwrite)
 	{
 		_putenv_s(name.c_str(), value.c_str());
 	}
 #else
-	// Linux下面直接使用setenv
+	// Linux directly use setenv
 #endif
 
 }

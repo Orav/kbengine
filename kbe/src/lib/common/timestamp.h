@@ -25,9 +25,9 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace KBEngine{
 
-// 指示是否可以通过调用RDTSC（时间戳计数器）
-// 计算时间戳。使用此的好处是，它能快速和精确的返回实际的时钟滴答
-// 。不足之处是，这并不使用SpeedStep技术来改变他们的时钟速度的CPU。
+// Indicates whether you can by calling the RDTSC (timestamp counters)
+// Compute the time stamp. The advantage of using this is, it can quickly and accurately return the actual clock ticks
+// . Deficiencies are, it does not use Speed step technology to change the clock speed of the CPU.
 #ifdef unix
 //#define KBE_USE_RDTSC
 #else // unix
@@ -36,7 +36,7 @@ namespace KBEngine{
 
 enum KBETimingMethod
 {
-	RDTSC_TIMING_METHOD, // 自CPU上电以来所经过的时钟周期数,达到纳秒级的计时精度
+	RDTSC_TIMING_METHOD, // Since the CPU is powered on after a number of clock cycles, achieve nanosecond timing accuracy
 	GET_TIME_OF_DAY_TIMING_METHOD,
 	GET_TIME_TIMING_METHOD,
 	NO_TIMING_METHOD,
@@ -59,10 +59,10 @@ inline uint64 timestamp_rdtsc()
 	return uint64(rethi) << 32 | retlo; 
 }
 
-// 使用 gettimeofday. 测试大概比RDTSC20倍-600倍。
-// 此外，有一个问题
-// 2.4内核下，连续两次调用gettimeofday的可能
-// 返回一个结果是倒着走。
+// Using gettimeofday. Test than RDTSC20 times-about 600 times.
+// In addition, there is a problem
+// Under the 2.4 kernel, twice calling gettimeofday may
+// Returns a result that is going backwards.
 #include <sys/time.h>
 
 inline uint64 timestamp_gettimeofday()
