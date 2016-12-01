@@ -49,7 +49,7 @@ namespace client
 
 class Entity : public script::ScriptObject
 {
-	/** 子类化 将一些py操作填充进派生类 */
+	/** Subclass py operations filling in a derived class */
 	BASE_SCRIPT_HREADER(Entity, ScriptObject)	
 	ENTITY_HEADER(Entity)
 		
@@ -58,7 +58,7 @@ public:
 	~Entity();
 	
 	/** 
-		定义属性数据被改变了 
+		Defines the attribute data is changed 
 	*/
 	void onDefDataChanged(const PropertyDescription* propertyDescription, 
 			PyObject* pyData);
@@ -75,7 +75,7 @@ public:
 	INLINE void cellMailbox(EntityMailbox* mailbox);
 
 	/** 
-		脚本获取和设置entity的position 
+		Script to get and set the entity's position 
 	*/
 	INLINE Position3D& position();
 	INLINE Position3D& serverPosition();
@@ -85,7 +85,7 @@ public:
 	DECLARE_PY_GETSET_MOTHOD(pyGetPosition, pySetPosition);
 
 	/** 
-		脚本获取和设置entity的方向 
+		Script gets and sets the direction of the entity 
 	*/
 	INLINE Direction3D& direction();
 	INLINE void direction(const Direction3D& dir);
@@ -93,7 +93,7 @@ public:
 	DECLARE_PY_GETSET_MOTHOD(pyGetDirection, pySetDirection);
 	
 	/**
-		实体客户端的位置和朝向
+		Entity client location and orientation
 	*/
 	INLINE Position3D& clientPos();
 	INLINE void clientPos(const Position3D& pos);
@@ -104,7 +104,7 @@ public:
 	INLINE void clientDir(float roll, float pitch, float yaw);
 
 	/**
-		移动速度
+		Movement speed
 	*/
 	INLINE void moveSpeed(float speed);
 	INLINE float moveSpeed() const;
@@ -121,7 +121,7 @@ public:
 	const EntityAspect* getAspect() const{ return &aspect_; }
 
 	/** 
-		entity移动到某个点 
+		Entity to move to a point 
 	*/
 	uint32 moveToPoint(const Position3D& destination, float velocity, float distance,
 			PyObject* userData, bool faceMovement, bool moveVertically);
@@ -129,33 +129,33 @@ public:
 	DECLARE_PY_MOTHOD_ARG6(pyMoveToPoint, PyObject_ptr, float, float, PyObject_ptr, int32, int32);
 
 	/** 
-		停止任何移动行为
+		Stop any act of moving
 	*/
 	bool stopMove();
 
 	/** 
-		entity的一次移动完成 
+		Entity moves to complete 
 	*/
 	void onMove(uint32 controllerId, int layer, const Position3D& oldPos, PyObject* userarg);
 
 	/** 
-		entity的移动完成 
+		Entity move complete 
 	*/
 	void onMoveOver(uint32 controllerId, int layer, const Position3D& oldPos, PyObject* userarg);
 
 	/** 
-		entity移动失败
+		Entity move failed
 	*/
 	void onMoveFailure(uint32 controllerId, PyObject* userarg);
 
 	/** 
-		删除一个控制器  
+		Delete a controller  
 	*/
 	void cancelController(uint32 id);
 	static PyObject* __py_pyCancelController(PyObject* self, PyObject* args);
 
 	/** 
-		销毁这个entity 
+		Destruction of the entity 
 	*/
 	void onDestroy(bool callScript){};
 
@@ -166,17 +166,17 @@ public:
 	void onLeaveSpace();
 
 	/**
-		远程呼叫本entity的方法 
+		Remote calling methods of the entity 
 	*/
 	void onRemoteMethodCall(Network::Channel* pChannel, MemoryStream& s);
 
 	/**
-		服务器更新entity属性
+		Server Update entity properties
 	*/
 	void onUpdatePropertys(MemoryStream& s);
 	
 	/**
-	    用于Entity的数据第一次设置时，决定是否要回调脚本层的set_*方法
+	    When data used for Entity sets for the first time, decide whether you want to set the callback script *
 	*/
 	void callPropertysSetMethods();
 
@@ -192,14 +192,14 @@ public:
 	INLINE void isInited(bool status);
 
 protected:
-	EntityMailbox*							cellMailbox_;						// 这个entity的cell-mailbox
-	EntityMailbox*							baseMailbox_;						// 这个entity的base-mailbox
+	EntityMailbox*							cellMailbox_;						// The entity cell-mailbox
+	EntityMailbox*							baseMailbox_;						// The entity base-mailbox
 
-	Position3D								position_, serverPosition_;			// entity的当前位置
-	Direction3D								direction_;							// entity的当前方向
+	Position3D								position_, serverPosition_;			// Entity's current position
+	Direction3D								direction_;							// Entity's current orientation
 
-	Position3D								clientPos_;							// 客户端位置，如果实体被客户端控制用于向服务器同步位置
-	Direction3D								clientDir_;							// 客户端朝向，如果实体被客户端控制用于向服务器同步朝向
+	Position3D								clientPos_;							// Client location, if the entity is a client control is used to synchronize to the server location
+	Direction3D								clientDir_;							// Client orientated, if the entity controlled by the client to the server for synchronization
 
 	ClientObjectBase*						pClientApp_;
 
@@ -207,13 +207,13 @@ protected:
 
 	float									velocity_;
 
-	bool									enterworld_;						// 是否已经enterworld了， restore时有用
+	bool									enterworld_;						// Whether enterworld, restore is useful when
 	
 	bool									isOnGround_;
 
 	ScriptID								pMoveHandlerID_;
 	
-	bool									inited_;							// __init__调用之后设置为true
+	bool									inited_;							// _ After the init call is set to true
 };																										
 
 }

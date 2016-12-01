@@ -64,12 +64,12 @@ public:
 public:
 	int16 gameUpdateHertz_;
 
-	uint32 tcp_SOMAXCONN_;									// listen监听队列最大值
+	uint32 tcp_SOMAXCONN_;									// Listen listen queue maximum
 	
-	uint32 port_;											// 组件的运行后监听的端口
-	char ip_[MAX_BUF];										// 组件的运行期ip地址
+	uint32 port_;											// After the component is running listening on port
+	char ip_[MAX_BUF];										// Component runtime IP address
 
-	char entryScriptFile_[MAX_NAME];						// 组件的入口脚本文件
+	char entryScriptFile_[MAX_NAME];						// Components of the entry script file
 
 	float channelInternalTimeout_;
 	float channelExternalTimeout_;

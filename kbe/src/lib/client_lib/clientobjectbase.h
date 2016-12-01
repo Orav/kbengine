@@ -51,7 +51,7 @@ class Channel;
 class ClientObjectBase : public script::ScriptObject
 {
 	/** 
-		子类化 将一些py操作填充进派生类 
+		Subclass py operations filling in a derived class 
 	*/
 	INSTANCE_SCRIPT_HREADER(ClientObjectBase, ScriptObject)	
 public:
@@ -68,7 +68,7 @@ public:
 	Entities<client::Entity>* pEntities() const{ return pEntities_; }
 
 	/**
-		创建一个entity 
+		Create an entity 
 	*/
 	client::Entity* createEntity(const char* entityType, PyObject* params,
 		bool isInitializeScript = true, ENTITY_ID eid = 0, bool initProperty = true, 
@@ -77,7 +77,7 @@ public:
 	PY_CALLBACKMGR& callbackMgr(){ return pyCallbackMgr_; }	
 
 	/**
-		通过entityID销毁一个entity 
+		By entity iD destroy a entity 
 	*/
 	virtual bool destroyEntity(ENTITY_ID entityID, bool callScript);
 
@@ -128,19 +128,18 @@ public:
 	static PyObject* __py_disconnect(PyObject* self, PyObject* args);
 
 	/**
-		如果entitiessize小于256
-		通过索引位置来获取entityID
-		否则直接取ID
+		If entitiessize is less than 256
+		Gets the entity through the index iD Otherwise directly access ID
 	*/
 	ENTITY_ID readEntityIDFromStream(MemoryStream& s);
 
 	/**
-		由mailbox来尝试获取一个channel的实例
+		By the mailbox in an attempt to get an instance of a channel
 	*/
 	virtual Network::Channel* findChannelByMailbox(EntityMailbox& mailbox);
 
-	/** 网络接口
-		客户端与服务端第一次建立交互, 服务端返回
+	/** Network interface
+		Clients interact with the server for the first time, the server returns
 	*/
 	virtual void onHelloCB_(Network::Channel* pChannel, const std::string& verInfo,
 		const std::string& scriptVerInfo, const std::string& protocolMD5, 
@@ -148,123 +147,120 @@ public:
 
 	virtual void onHelloCB(Network::Channel* pChannel, MemoryStream& s);
 
-	/** 网络接口
-		和服务端的版本不匹配
+	/** Network interface
+		And server versions do not match
 	*/
 	virtual void onVersionNotMatch(Network::Channel* pChannel, MemoryStream& s);
 	
-	/** 网络接口
-		和服务端的脚本层版本不匹配
+	/** Network interface
+		And the server does not match the version of the script
 	*/
 	virtual void onScriptVersionNotMatch(Network::Channel* pChannel, MemoryStream& s);
 
-	/** 网络接口
-		创建账号成功和失败回调
-	   @failedcode: 失败返回码 NETWORK_ERR_SRV_NO_READY:服务器没有准备好, 
-									NETWORK_ERR_ACCOUNT_CREATE:创建失败（已经存在）, 
-									NETWORK_SUCCESS:账号创建成功
+	/** Network interface
+		Create account success and failure callbacks
 
-									SERVER_ERROR_CODE failedcode;
-		@二进制附带数据:二进制额外数据: uint32长度 + bytearray
+	@Failedcode: NETWORK fail return code ERR SRV NO READY: the server is not ready,
+				 NETWORK ERR ACCOUNT CREATE: create failed (already exists), 
+				 NETWORK SUCCESS: account created successfully
+				 SERVER ERROR CODE failedcode; @ Binary data attached: additional data is binary: UInt32 length + ByteArray
 	*/
 	virtual void onCreateAccountResult(Network::Channel * pChannel, MemoryStream& s);
 
-	/** 网络接口
-	   登录失败回调
-	   @failedcode: 失败返回码 NETWORK_ERR_SRV_NO_READY:服务器没有准备好, 
-									NETWORK_ERR_SRV_OVERLOAD:服务器负载过重, 
-									NETWORK_ERR_NAME_PASSWORD:用户名或者密码不正确
+	/** Network interface
+	   Login failure callback @Failedcode: NETWORK fail return code ERR SRV NO READY: the server is not ready,
+										   NETWORK ERR SRV OVERLOAD: heavy server load, 
+										   NETWORK ERR NAME PASSWORD: the user name or password is not correct
 	*/
 	virtual void onLoginFailed(Network::Channel * pChannel, MemoryStream& s);
 
-	/** 网络接口
-	   登录成功
-	   @ip: 服务器ip地址
-	   @port: 服务器端口
+	/** Network interface
+	   Login success
+	   @IP: IP address of the server
+	   @Port: server port
 	*/
 	virtual void onLoginSuccessfully(Network::Channel * pChannel, MemoryStream& s);
 
-	/** 网络接口
-	   登录失败回调
-	   @failedcode: 失败返回码 NETWORK_ERR_SRV_NO_READY:服务器没有准备好, 
-									NETWORK_ERR_ILLEGAL_LOGIN:非法登录, 
-									NETWORK_ERR_NAME_PASSWORD:用户名或者密码不正确
+	/** Network interface
+	   Login failure callback @Failedcode: NETWORK fail return code ERR SRV NO READY: the server is not ready,
+											NETWORK ERR ILLEGAL LOGIN: unauthorised access,
+											NETWORK ERR NAME PASSWORD: the user name or password is not correct
 	*/
 	virtual void onLoginBaseappFailed(Network::Channel * pChannel, SERVER_ERROR_CODE failedcode);
 	virtual void onReLoginBaseappFailed(Network::Channel * pChannel, SERVER_ERROR_CODE failedcode);
 
-	/** 网络接口
-	   重登陆baseapp成功
+	/** Network interface
+	   Heavy landing baseapp success
 	*/
 	virtual void onReLoginBaseappSuccessfully(Network::Channel * pChannel, MemoryStream& s);
 
-	/** 网络接口
-		服务器端已经创建了一个与客户端关联的代理Entity
-	   在登录时也可表达成功回调
-	   @datas: 账号entity的信息
+	/** Network interface
+		Has created a server-side and client-side agents associated Entity
+	   Can also succeed at logon callback
+	   @Datas: the account entity information
 	*/
 	virtual void onCreatedProxies(Network::Channel * pChannel, uint64 rndUUID, 
 		ENTITY_ID eid, std::string& entityType);
 
-	/** 网络接口
-		服务器上的entity已经进入游戏世界了
+	/** Network interface
+		Entity has entered the game on the server
 	*/
 	virtual void onEntityEnterWorld(Network::Channel * pChannel, MemoryStream& s);
 
-	/** 网络接口
-		服务器上的entity已经离开游戏世界了
+	/** Network interface
+		Entity have left on the server game world
 	*/
 	virtual void onEntityLeaveWorld(Network::Channel * pChannel, ENTITY_ID eid);
 	virtual void onEntityLeaveWorldOptimized(Network::Channel * pChannel, MemoryStream& s);
 
-	/** 网络接口
-		告诉客户端某个entity销毁了， 此类entity通常是还未onEntityEnterWorld
+	/** Network interface
+		Tell the client whether a entity destroyed, this type of entity is usually not on entity enter world
 	*/
 	virtual void onEntityDestroyed(Network::Channel * pChannel, ENTITY_ID eid);
 
-	/** 网络接口
-		服务器上的entity已经进入space了
+	/** Network interface
+		Entity has entered the space on the server
 	*/
 	virtual void onEntityEnterSpace(Network::Channel * pChannel, MemoryStream& s);
 
-	/** 网络接口
-		服务器上的entity已经离开space了
+	/** Network interface
+		Entity had left space on the server
 	*/
 	virtual void onEntityLeaveSpace(Network::Channel * pChannel, ENTITY_ID eid);
 
-	/** 网络接口
-		远程调用entity的方法 
+	/** Network interface
+		Remote calling methods of the entity 
 	*/
 	virtual void onRemoteMethodCall(Network::Channel* pChannel, MemoryStream& s);
 	virtual void onRemoteMethodCallOptimized(Network::Channel* pChannel, MemoryStream& s);
 	void onRemoteMethodCall_(ENTITY_ID eid, MemoryStream& s);
 
-	/** 网络接口
-	   被踢出服务器
+	/** Network interface
+	   Kicked out of the server
 	*/
 	virtual void onKicked(Network::Channel * pChannel, SERVER_ERROR_CODE failedcode);
 
-	/** 网络接口
-		服务器更新entity属性
+	/** Network interface
+		Server Update entity properties
 	*/
 	virtual void onUpdatePropertys(Network::Channel* pChannel, MemoryStream& s);
 	virtual void onUpdatePropertysOptimized(Network::Channel* pChannel, MemoryStream& s);
 	void onUpdatePropertys_(ENTITY_ID eid, MemoryStream& s);
 
-	/** 网络接口
-		服务器强制设置entity的位置与朝向
+	/** Network interface
+		Server sets the position of the entity and
 	*/
 	virtual void onSetEntityPosAndDir(Network::Channel* pChannel, MemoryStream& s);
 
-	/** 网络接口
-		服务器更新avatar基础位置和朝向
+	/** Network interface
+		Server Update avatar based position and orientation
 	*/
 	virtual void onUpdateBasePos(Network::Channel* pChannel, float x, float y, float z);
 	virtual void onUpdateBasePosXZ(Network::Channel* pChannel, float x, float z);
 	virtual void onUpdateBaseDir(Network::Channel* pChannel, MemoryStream& s);
 
-	/** 网络接口
-		服务器更新VolatileData
+	/** Network interface
+		Server updates the Volatile data
 	*/
 	virtual void onUpdateData(Network::Channel* pChannel, MemoryStream& s);
 
@@ -298,62 +294,62 @@ public:
 		float pitch, float yaw, int8 isOnGround);
 
 	/** 
-		更新玩家到服务端 
+		Update the player to the server-side 
 	*/
 	virtual void updatePlayerToServer();
 
-	/** 网络接口
+	/** Network interface
 		download stream开始了 
 	*/
 	virtual void onStreamDataStarted(Network::Channel* pChannel, int16 id, uint32 datasize, std::string& descr);
 
-	/** 网络接口
-		接收到streamData
+	/** Network interface
+		Receiving stream data
 	*/
 	virtual void onStreamDataRecv(Network::Channel* pChannel, MemoryStream& s);
 
-	/** 网络接口
-		download stream完成了 
+	/** Network interface
+		Download stream has completed 
 	*/
 	virtual void onStreamDataCompleted(Network::Channel* pChannel, int16 id);
 
-	/** 网络接口
-		服务器告诉客户端：你当前（取消）控制谁的位移同步
+	/** Network interface
+		Server to tell the client: your current (cancelled) whose displacement control synchronization
 	*/
 	virtual void onControlEntity(Network::Channel* pChannel, int32 entityID, int8 isControlled);
 
-	/** 网络接口
-		接收到ClientMessages(通常是web等才会应用到)
+	/** Network interface
+		Client messages received (usually only applies to Web)
 	*/
 	virtual void onImportClientMessages(Network::Channel* pChannel, MemoryStream& s){}
 
-	/** 网络接口
-		接收到entitydef(通常是web等才会应用到)
+	/** Network interface
+		Entitydef received (usually only applies to Web)
 	*/
 	virtual void onImportClientEntityDef(Network::Channel* pChannel, MemoryStream& s){}
 	
-	/** 网络接口
-		错误码描述导出(通常是web等才会应用到)
+	/** Network interface
+		Error code description is derived (usually only applies to Web)
 	*/
 	virtual void onImportServerErrorsDescr(Network::Channel* pChannel, MemoryStream& s){}
 
-	/** 网络接口
-		重置账号密码请求返回
+	/** Network interface
+		Reset account password request returns
 	*/
 	virtual void onReqAccountResetPasswordCB(Network::Channel* pChannel, SERVER_ERROR_CODE failedcode){}
 
-	/** 网络接口
-		请求绑定邮箱返回
+	/** Network interface
+		Request bound mail returned
 	*/
 	virtual void onReqAccountBindEmailCB(Network::Channel* pChannel, SERVER_ERROR_CODE failedcode){}
 
-	/** 网络接口
-		请求修改密码返回
+	/** Network interface
+		Request to modify password return
 	*/
 	virtual void onReqAccountNewPasswordCB(Network::Channel* pChannel, SERVER_ERROR_CODE failedcode){}
 
 	/** 
-		获得player实例
+		Get the player instance
 	*/
 	client::Entity* pPlayer();
 
@@ -369,8 +365,8 @@ public:
 	ENTITY_ID getAoiEntityIDByAliasID(uint8 id);
 
 	/** 
-		space相关操作接口
-		服务端添加了某个space的几何映射
+		Space-dependent operation interface 
+		Server added a geometric mapping space
 	*/
 	virtual void addSpaceGeometryMapping(SPACE_ID spaceID, const std::string& respath);
 	virtual void onAddSpaceGeometryMapping(SPACE_ID spaceID, const std::string& respath){}
@@ -402,18 +398,18 @@ public:
 
 	Network::NetworkInterface* pNetworkInterface()const { return &networkInterface_; }
 
-	/** 网络接口
-		服务器心跳返回
+	/** Network interface
+		Server heartbeat returns
 	*/
 	void onAppActiveTickCB(Network::Channel* pChannel);
 
 protected:				
 	int32													appID_;
 
-	// 服务端网络通道
+	// Server-side network channel
 	Network::Channel*										pServerChannel_;
 
-	// 存储所有的entity的容器
+	// Storing all container entity
 	Entities<client::Entity>*								pEntities_;	
 	std::vector<ENTITY_ID>									pEntityIDAliasIDList_;
 
@@ -451,10 +447,10 @@ protected:
 
 	Network::NetworkInterface&								networkInterface_;
 
-	// 当前客户端所选择的目标
+	// Current clients the choice of target
 	ENTITY_ID												targetID_;
 
-	// 是否加载过地形数据
+	// Load terrain data
 	bool													isLoadedGeometry_;
 
 	SPACE_DATA												spacedatas_;
@@ -464,7 +460,7 @@ protected:
 
 	uint64													locktime_;
 	
-	// 用于重登陆网关时的key
+	// To visit the gateway key
 	uint64													rndUUID_; 
 };
 

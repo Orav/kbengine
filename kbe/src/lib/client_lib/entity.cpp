@@ -262,7 +262,7 @@ void Entity::onUpdatePropertys(MemoryStream& s)
 			s >> uid;
 		}
 
-		// 如果是位置或者朝向信息则
+		// If it's location or orientation information
 		if(uid == posuid)
 		{
 			Position3D pos;
@@ -615,7 +615,7 @@ PyObject* Entity::pyMoveToPoint(PyObject_ptr pyDestination, float velocity, floa
 		return 0;
 	}
 
-	// 将坐标信息提取出来
+	// To extract coordinates information
 	script::ScriptVector3::convertPyObjectToVector3(destination, pyDestination);
 	Py_INCREF(userData);
 
@@ -668,7 +668,7 @@ void Entity::cancelController(uint32 id)
 		return;
 	}
 
-	// 暂时只有回调, 主要是因为用在了移动中，当前可能不是非常合适
+	// Only the callback, mainly because of the use on the move, current may not be very appropriate
 	if(id == (uint32)pMoveHandlerID_)
 		this->stopMove();
 }

@@ -101,7 +101,7 @@ bool MoveToPointHandler::update(TimerHandle& handle)
 
 		if(distance_ > 0.0f)
 		{
-			// 单位化向量
+			// Unit vector
 			KBEVec3Normalize(&movement, &movement); 
 			movement *= distance_;
 			currpos -= movement;
@@ -114,29 +114,29 @@ bool MoveToPointHandler::update(TimerHandle& handle)
 	}
 	else
 	{
-		// 单位化向量
+		// Unit vector
 		KBEVec3Normalize(&movement, &movement); 
 
-		// 移动位置
+		// Mobile location
 		movement *= velocity_;
 		currpos += movement;
 	}
 	
-	// 是否需要改变面向
+	// If you need to change-oriented
 	if (faceMovement_ && (movement.x != 0.f || movement.z != 0.f))
 		direction.yaw(movement.yaw());
 	
-	// 设置entity的新位置和面向
+	// Set the new location and entity-oriented
 	pEntity_->clientPos(currpos);
 	pEntity_->clientDir(direction);
 
-	// 非navigate都不能确定其在地面上
+	// Non-navigate uncertain on the ground
 	pEntity_->isOnGround(false);
 
-	// 通知脚本
+	// Notification script
 	pEntity->onMove(scriptCallbacks_.getIDForHandle(handle), layer_, currpos_backup, pyuserarg_);
 
-	// 如果达到目的地则返回true
+	// If the destination is reached then return true
 	if(!ret)
 	{
 		return !requestMoveOver(handle, currpos_backup);

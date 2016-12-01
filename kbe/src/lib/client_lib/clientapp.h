@@ -135,7 +135,7 @@ public:
 	virtual void onServerClosed();
 
 	/**
-		设置脚本输出类型前缀
+		Set the type of the script prefix
 	*/
 	static PyObject* __py_setScriptLogType(PyObject* self, PyObject* args);
 
@@ -146,49 +146,49 @@ public:
 		const std::string& scriptVerInfo, const std::string& protocolMD5, 
 		const std::string& entityDefMD5, COMPONENT_TYPE componentType);
 
-	/** 网络接口
-		和服务端的版本不匹配
+	/** Network interface
+		And server versions do not match
 	*/
 	virtual void onVersionNotMatch(Network::Channel* pChannel, MemoryStream& s);
 
-	/** 网络接口
-		和服务端的脚本层版本不匹配
+	/** Network interface
+		And the server does not match the version of the script
 	*/
 	virtual void onScriptVersionNotMatch(Network::Channel* pChannel, MemoryStream& s);
 
-	/** 网络接口
-	   登录成功
-	   @ip: 服务器ip地址
-	   @port: 服务器端口
+	/** Network interface
+	   Login success
+	   @IP: IP address of the server
+	   @Port: server port
 	*/
 	virtual void onLoginSuccessfully(Network::Channel * pChannel, MemoryStream& s);
 
-	/** 网络接口
-	   登录失败回调
-	   @failedcode: 失败返回码 NETWORK_ERR_SRV_NO_READY:服务器没有准备好, 
-									NETWORK_ERR_SRV_OVERLOAD:服务器负载过重, 
-									NETWORK_ERR_NAME_PASSWORD:用户名或者密码不正确
+	/** Network interface
+	   Login failure callback
+	   @Failedcode: NETWORK fail return code ERR SRV NO READY: the server is not ready, 
+					NETWORK ERR SRV OVERLOAD: heavy server load, 
+					NETWORK ERR NAME PASSWORD: the user name or password is not correct
 	*/
 	virtual void onLoginFailed(Network::Channel * pChannel, MemoryStream& s);
 
-	/** 网络接口
-	   登录失败回调
-	   @failedcode: 失败返回码 NETWORK_ERR_SRV_NO_READY:服务器没有准备好, 
-									NETWORK_ERR_ILLEGAL_LOGIN:非法登录, 
-									NETWORK_ERR_NAME_PASSWORD:用户名或者密码不正确
+	/** Network interface
+	   Login failure callback
+	   @Failedcode: NETWORK fail return code ERR SRV NO READY: the server is not ready, 
+									NETWORK ERR ILLEGAL LOGIN: unauthorised access, 
+									NETWORK ERR NAME PASSWORD: the user name or password is not correct
 	*/
 	virtual void onLoginBaseappFailed(Network::Channel * pChannel, SERVER_ERROR_CODE failedcode);
 	virtual void onReLoginBaseappFailed(Network::Channel * pChannel, SERVER_ERROR_CODE failedcode);
 
-	/** 网络接口
-	   重登陆baseapp成功
+	/** Network interface
+	   Heavy landing baseapp success
 	*/
 	virtual void onReLoginBaseappSuccessfully(Network::Channel * pChannel, MemoryStream& s);
 
 	virtual void onTargetChanged();
 
 	/** 
-		服务端添加了某个space的几何映射
+		Server added a geometric mapping space
 	*/
 	virtual void onAddSpaceGeometryMapping(SPACE_ID spaceID, std::string& respath);
 
@@ -223,27 +223,27 @@ public:
 	}
 
 	/**
-	通过相对路径获取资源的全路径
+	Get resources through the relative path full path
 	*/
 	static PyObject* __py_getResFullPath(PyObject* self, PyObject* args);
 
 	/**
-	通过相对路径判断资源是否存在
+	By relative paths to determine whether resources exist
 	*/
 	static PyObject* __py_hasRes(PyObject* self, PyObject* args);
 
 	/**
-	open文件
+	Open file
 	*/
 	static PyObject* __py_kbeOpen(PyObject* self, PyObject* args);
 
 	/**
-	列出目录下所有文件
+	Directory all the files that are listed
 	*/
 	static PyObject* __py_listPathRes(PyObject* self, PyObject* args);
 
 	/**
-	匹配相对路径获得全路径
+	Relative full path match
 	*/
 	static PyObject* __py_matchPath(PyObject* self, PyObject* args);
 
@@ -255,7 +255,7 @@ protected:
 
 	COMPONENT_TYPE											componentType_;
 
-	// 本组件的ID
+	// The component ID
 	COMPONENT_ID											componentID_;									
 
 	Network::EventDispatcher& 								dispatcher_;
@@ -265,7 +265,7 @@ protected:
 	Network::TCPPacketReceiver*								pTCPPacketReceiver_;
 	Network::BlowfishFilter*								pBlowfishFilter_;
 
-	// 线程池
+	// The thread pool
 	thread::ThreadPool										threadPool_;
 
 	PyObjectPtr												entryScript_;

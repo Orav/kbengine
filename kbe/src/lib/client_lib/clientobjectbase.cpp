@@ -195,7 +195,7 @@ void ClientObjectBase::tickSend()
 		return;
 	}
 
-	// 向服务器发送tick
+	// Send to the server tick
 	uint64 check = uint64( Network::g_channelExternalTimeout * stampsPerSecond() ) / 2;
 	if (timestamp() - lastSentActiveTickTime_ > check)
 	{
@@ -343,10 +343,10 @@ client::Entity* ClientObjectBase::createEntity(const char* entityType, PyObject*
 	if(initProperty)
 		entity->initProperty();
 
-	// 将entity加入entities
+	// Join the entity entities
 	pEntities_->add(eid, entity); 
 
-	// 初始化脚本
+	// Initialization script
 	if(isInitializeScript)
 		entity->initializeEntity(params);
 
@@ -412,9 +412,9 @@ ENTITY_ID ClientObjectBase::getAoiEntityIDFromStream(MemoryStream& s)
 		uint8 aliasID = 0;
 		s >> aliasID;
 
-		// 如果为0且客户端上一步是重登陆或者重连操作并且服务端entity在断线期间一直处于在线状态
-		// 则可以忽略这个错误, 因为cellapp可能一直在向baseapp发送同步消息， 当客户端重连上时未等
-		// 服务端初始化步骤开始则收到同步信息, 此时这里就会出错。
+		// If 0 and the client is stronger on landing or even the previous step operation and server-side entity during the break is in the online state
+		// You can ignore this error because cellapp may have been sent to baseapp sync messages, not when the client is connected
+		// Server starting initialization steps receive sync messages, here you will make mistakes.
 		if (pEntityIDAliasIDList_.size() <= aliasID)
 			return 0;
 
@@ -445,7 +445,7 @@ bool ClientObjectBase::deregisterEventHandle(EventHandle* pEventHandle)
 //-------------------------------------------------------------------------------------
 bool ClientObjectBase::createAccount()
 {
-	// 创建账号
+	// Create an account
 	Network::Bundle* pBundle = Network::Bundle::createPoolObject();
 	(*pBundle).newMessage(LoginappInterface::reqCreateAccount);
 	(*pBundle) << name_;
@@ -602,7 +602,7 @@ bool ClientObjectBase::login()
 {
 	Network::Bundle* pBundle = Network::Bundle::createPoolObject();
 
-	// 提交账号密码请求登录
+	// Submit a password request login
 	(*pBundle).newMessage(LoginappInterface::login);
 	(*pBundle) << typeClient_;
 	(*pBundle).appendBlob(clientDatas_);
@@ -617,7 +617,7 @@ bool ClientObjectBase::login()
 //-------------------------------------------------------------------------------------
 bool ClientObjectBase::loginBaseapp()
 {
-	// 请求登录网关, 能走到这里来一定是连接了网关
+	// Request login gateway, can come here must have connected the gateway
 	connectedBaseapp_ = true;
 
 	Network::Bundle* pBundle = Network::Bundle::createPoolObject();
@@ -631,7 +631,7 @@ bool ClientObjectBase::loginBaseapp()
 //-------------------------------------------------------------------------------------
 bool ClientObjectBase::reLoginBaseapp()
 {
-	// 请求重登陆网关, 通常是掉线了之后执行
+	// Requests to visit the gateway is usually executed after dropping
 	connectedBaseapp_ = true;
 
 	Network::Bundle* pBundle = Network::Bundle::createPoolObject();
@@ -703,7 +703,7 @@ void ClientObjectBase::onLoginBaseappFailed(Network::Channel * pChannel, SERVER_
 {
 	INFO_MSG(fmt::format("ClientObjectBase::onLoginBaseappFailed: {} failedcode={}!\n", name_, failedcode));
 
-	// 能走到这里来一定是连接了网关
+	// Come here must have connected the gateway
 	connectedBaseapp_ = true;
 
 	EventData_LoginBaseappFailed eventdata;
@@ -717,7 +717,7 @@ void ClientObjectBase::onReLoginBaseappFailed(Network::Channel * pChannel, SERVE
 {
 	INFO_MSG(fmt::format("ClientObjectBase::onReLoginBaseappFailed: {} failedcode={}!\n", name_, failedcode));
 
-	// 能走到这里来一定是连接了网关
+	// Come here must have connected the gateway
 	connectedBaseapp_ = true;
 
 	EventData_LoginBaseappFailed eventdata;
@@ -753,7 +753,7 @@ void ClientObjectBase::onCreatedProxies(Network::Channel * pChannel, uint64 rndU
 	BUFFEREDMESSAGE::iterator iter = bufferedCreateEntityMessage_.find(eid);
 	bool hasBufferedMessage = (iter != bufferedCreateEntityMessage_.end());
 
-	// 能走到这里来一定是连接了网关
+	// Come here must have connected the gateway
 	connectedBaseapp_ = true;
 
 	entityID_ = eid;
@@ -762,7 +762,7 @@ void ClientObjectBase::onCreatedProxies(Network::Channel * pChannel, uint64 rndU
 	INFO_MSG(fmt::format("ClientObject::onCreatedProxies({}): rndUUID={} eid={} entityType={}!\n",
 		name_, rndUUID, eid, entityType));
 
-	// 设置entity的baseMailbox
+	// Sets the base entity mailbox
 	EntityMailbox* mailbox = new EntityMailbox(EntityDef::findScriptModule(entityType.c_str()), 
 		NULL, appID(), eid, MAILBOX_TYPE_BASE);
 
@@ -771,7 +771,7 @@ void ClientObjectBase::onCreatedProxies(Network::Channel * pChannel, uint64 rndU
 
 	if(hasBufferedMessage)
 	{
-		// 先更新属性再初始化脚本
+		// Update property initialization script
 		this->onUpdatePropertys(pChannel, *iter->second.get());
 		bufferedCreateEntityMessage_.erase(iter);
 		pEntity->initializeEntity(NULL);
@@ -823,14 +823,14 @@ void ClientObjectBase::onEntityEnterWorld(Network::Channel * pChannel, MemoryStr
 			ScriptDefModule* sm = EntityDef::findScriptModule(scriptType);
 			KBE_ASSERT(sm);
 			
-			// 设置entity的cellMailbox
+			// Sets the cell entity mailbox
 			EntityMailbox* mailbox = new EntityMailbox(EntityDef::findScriptModule(sm->getName()), 
 				NULL, appID(), eid, MAILBOX_TYPE_CELL);
 
 			entity = createEntity(sm->getName(), NULL, false, eid, true, NULL, mailbox);
 			KBE_ASSERT(entity != NULL);
 
-			// 先更新属性再初始化脚本
+			// Update property initialization script
 			this->onUpdatePropertys(pChannel, *iter->second.get());
 			bufferedCreateEntityMessage_.erase(iter);
 			entity->isOnGround(isOnGround > 0);
@@ -856,7 +856,7 @@ void ClientObjectBase::onEntityEnterWorld(Network::Channel * pChannel, MemoryStr
 		entity->clientPos(entity->position());
 		entity->clientDir(entity->direction());
 
-		// 初始化一下服务端当前的位置
+		// Initialize Server current location
 		entity->serverPosition(entity->position());
 
 		DEBUG_MSG(fmt::format("ClientObjectBase::onPlayerEnterWorld: {}({}), isOnGround({}), appID({}).\n",
@@ -865,15 +865,15 @@ void ClientObjectBase::onEntityEnterWorld(Network::Channel * pChannel, MemoryStr
 		KBE_ASSERT(!entity->inWorld());
 		KBE_ASSERT(entity->cellMailbox() == NULL);
 
-		// 设置entity的cellMailbox
+		// Sets the cell entity mailbox
 		EntityMailbox* mailbox = new EntityMailbox(entity->pScriptModule(), 
 			NULL, appID(), eid, MAILBOX_TYPE_CELL);
 
 		entity->cellMailbox(mailbox);
 
-		// 安全起见， 这里清空一下
-		// 如果服务端上使用giveClientTo切换控制权
-		// 之前的实体已经进入世界， 切换后的实体也进入世界， 这里可能会残留之前那个实体进入世界的信息
+		// The safe side, where empty
+		// If you use give client on the server to switch control
+		// Before the entity has entered into the world, switch entity comes into the world, that entity into the world before there may be residual information
 		pEntityIDAliasIDList_.clear();
 		std::vector<ENTITY_ID> excludes;
 		excludes.push_back(entityID_);
@@ -939,7 +939,7 @@ void ClientObjectBase::onEntityLeaveWorld(Network::Channel * pChannel, ENTITY_ID
 
 	eventHandler_.fire(&eventdata);
 
-	// 如果不是玩家
+	// If not the player
 	if(entityID_ != eid)
 	{
 		destroyEntity(eid, false);
@@ -981,7 +981,7 @@ void ClientObjectBase::onEntityEnterSpace(Network::Channel * pChannel, MemoryStr
 	entity->clientPos(entity->position());
 	entity->clientDir(entity->direction());
 
-	// 初始化一下服务端当前的位置
+	// Initialize Server current location
 	entity->serverPosition(entity->position());
 
 	EventData_EnterSpace eventdata;
@@ -1219,7 +1219,7 @@ void ClientObjectBase::onUpdateBaseDir(Network::Channel* pChannel, MemoryStream&
 	client::Entity* pEntity = pPlayer();
 	if (pEntity)
 	{
-		// @TODO(phw)：这里将来需要与controlledBy机制一起实现
+		// @TODO(phw)：Future needs and controlled by mechanisms to achieve
 	}
 }
 
@@ -1722,9 +1722,9 @@ void ClientObjectBase::_updateVolatileData(ENTITY_ID entityID, float x, float y,
 	client::Entity* entity = pEntities_->find(entityID);
 	if(entity == NULL)
 	{
-		// 如果为0且客户端上一步是重登陆或者重连操作并且服务端entity在断线期间一直处于在线状态
-		// 则可以忽略这个错误, 因为cellapp可能一直在向baseapp发送同步消息， 当客户端重连上时未等
-		// 服务端初始化步骤开始则收到同步信息, 此时这里就会出错。
+		// If 0 and the client is stronger on landing or even the previous step operation and server-side entity during the break is in the online state
+		// You can ignore this error because cellapp may have been sent to baseapp sync messages, not when the client is connected
+		// Server starting initialization steps receive sync messages, here you will make mistakes.
 		ERROR_MSG(fmt::format("ClientObjectBase::onUpdateData_xz_yp: not found entity({}).\n", entityID));
 		return;
 	}
@@ -1736,7 +1736,7 @@ void ClientObjectBase::_updateVolatileData(ENTITY_ID entityID, float x, float y,
 		return;
 	}
 
-	// 小于0不设置
+	// Less than 0 is not set
 	if(isOnGround >= 0)
 		entity->isOnGround(isOnGround > 0);
 

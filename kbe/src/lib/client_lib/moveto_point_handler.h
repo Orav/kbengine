@@ -35,9 +35,9 @@ class MoveToPointHandler : public ScriptCallbackHandler
 public:
 	enum MoveType
 	{
-		MOVE_TYPE_POINT = 0,		// 常规类型
-		MOVE_TYPE_ENTITY = 1,		// 范围触发器类型
-		MOVE_TYPE_NAV = 2,			// 移动控制器类型
+		MOVE_TYPE_POINT = 0,		// Common type
+		MOVE_TYPE_ENTITY = 1,		// Scope trigger type
+		MOVE_TYPE_NAV = 2,			// Move the controller type
 	};
 
 	MoveToPointHandler(ScriptCallbacks& scriptCallbacks, client::Entity* pEntity, int layer, 
@@ -62,9 +62,9 @@ protected:
 
 protected:
 	Position3D destPos_;
-	float velocity_;			// 速度
-	bool faceMovement_;			// 是否不改变面向移动
-	bool moveVertically_;		// true则可以飞起来移动否则贴地
+	float velocity_;			// Speed
+	bool faceMovement_;			// Do not change for mobile
+	bool moveVertically_;		// True you can fly up to move or affixed to
 	PyObject* pyuserarg_;
 	float distance_;
 	int layer_;
