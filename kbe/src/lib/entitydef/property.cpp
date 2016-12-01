@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -61,7 +61,7 @@ PropertyDescription::PropertyDescription(ENTITY_PROPERTY_UID utype,
 {
 	dataType_->incRef();
 
-	// mailbox ÎŞ·¨±£´æ
+	// mailbox æ— æ³•ä¿å­˜
 	if(isPersistent && strcmp(dataType_->getName(), "MAILBOX") == 0)
 	{
 		isPersistent_ = false;
@@ -110,7 +110,7 @@ PyObject* PropertyDescription::createFromStream(MemoryStream* mstream)
 //-------------------------------------------------------------------------------------
 void PropertyDescription::addPersistentToStream(MemoryStream* mstream, PyObject* pyValue)
 {
-	// ÔÊĞíÊ¹ÓÃÄ¬ÈÏÖµÀ´´´½¨Ò»¸öÁ÷
+	// å…è®¸ä½¿ç”¨é»˜è®¤å€¼æ¥åˆ›å»ºä¸€ä¸ªæµ
 	if(pyValue == NULL)
 	{
 		pyValue = newDefaultVal();
@@ -262,7 +262,7 @@ PyObject* FixedDictDescription::onSetValue(PyObject* parentObj, PyObject* value)
 //-------------------------------------------------------------------------------------
 void FixedDictDescription::addPersistentToStream(MemoryStream* mstream, PyObject* pyValue)
 {
-	// ÔÊĞíÊ¹ÓÃÄ¬ÈÏÖµÀ´´´½¨Ò»¸öÁ÷
+	// å…è®¸ä½¿ç”¨é»˜è®¤å€¼æ¥åˆ›å»ºä¸€ä¸ªæµ
 	if(pyValue == NULL)
 	{
 		pyValue = newDefaultVal();
@@ -321,7 +321,7 @@ PyObject* ArrayDescription::onSetValue(PyObject* parentObj, PyObject* value)
 //-------------------------------------------------------------------------------------
 void ArrayDescription::addPersistentToStream(MemoryStream* mstream, PyObject* pyValue)
 {
-	// ÔÊĞíÊ¹ÓÃÄ¬ÈÏÖµÀ´´´½¨Ò»¸öÁ÷
+	// å…è®¸ä½¿ç”¨é»˜è®¤å€¼æ¥åˆ›å»ºä¸€ä¸ªæµ
 	if(pyValue == NULL)
 	{
 		pyValue = newDefaultVal();

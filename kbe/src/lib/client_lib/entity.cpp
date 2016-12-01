@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -262,7 +262,7 @@ void Entity::onUpdatePropertys(MemoryStream& s)
 			s >> uid;
 		}
 
-		// Èç¹ûÊÇÎ»ÖÃ»òÕß³¯ÏòÐÅÏ¢Ôò
+		// å¦‚æžœæ˜¯ä½ç½®æˆ–è€…æœå‘ä¿¡æ¯åˆ™
 		if(uid == posuid)
 		{
 			Position3D pos;
@@ -615,7 +615,7 @@ PyObject* Entity::pyMoveToPoint(PyObject_ptr pyDestination, float velocity, floa
 		return 0;
 	}
 
-	// ½«×ø±êÐÅÏ¢ÌáÈ¡³öÀ´
+	// å°†åæ ‡ä¿¡æ¯æå–å‡ºæ¥
 	script::ScriptVector3::convertPyObjectToVector3(destination, pyDestination);
 	Py_INCREF(userData);
 
@@ -668,7 +668,7 @@ void Entity::cancelController(uint32 id)
 		return;
 	}
 
-	// ÔÝÊ±Ö»ÓÐ»Øµ÷, Ö÷ÒªÊÇÒòÎªÓÃÔÚÁËÒÆ¶¯ÖÐ£¬µ±Ç°¿ÉÄÜ²»ÊÇ·Ç³£ºÏÊÊ
+	// æš‚æ—¶åªæœ‰å›žè°ƒ, ä¸»è¦æ˜¯å› ä¸ºç”¨åœ¨äº†ç§»åŠ¨ä¸­ï¼Œå½“å‰å¯èƒ½ä¸æ˜¯éžå¸¸åˆé€‚
 	if(id == (uint32)pMoveHandlerID_)
 		this->stopMove();
 }

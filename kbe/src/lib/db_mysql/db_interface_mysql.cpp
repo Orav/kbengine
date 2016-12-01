@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -261,7 +261,7 @@ __RECONNECT:
 			return false;
 		}
 
-		// ²»ĞèÒª¹Ø±Õ×Ô¶¯Ìá½»£¬µ×²ã»áSTART TRANSACTIONÖ®ºóÔÙCOMMIT
+		// ä¸éœ€è¦å…³é—­è‡ªåŠ¨æäº¤ï¼Œåº•å±‚ä¼šSTART TRANSACTIONä¹‹åå†COMMIT
 		// mysql_autocommit(mysql(), 0);
 
 		char characterset_sql[MAX_BUF];

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -74,10 +74,10 @@ EntityMailboxAbstract::~EntityMailboxAbstract()
 //-------------------------------------------------------------------------------------
 void EntityMailboxAbstract::newMail(Network::Bundle& bundle)
 {
-	// Èç¹ûÊÇserver¶ËµÄmailbox
+	// å¦‚æžœæ˜¯serverç«¯çš„mailbox
 	if(g_componentType != CLIENT_TYPE && g_componentType != BOTS_TYPE)
 	{
-		// Èç¹ûIDÎª0£¬ÔòÕâÊÇÒ»¸ö¿Í»§¶Ë×é¼þ£¬·ñÔòÎª·þÎñ¶Ë¡£
+		// å¦‚æžœIDä¸º0ï¼Œåˆ™è¿™æ˜¯ä¸€ä¸ªå®¢æˆ·ç«¯ç»„ä»¶ï¼Œå¦åˆ™ä¸ºæœåŠ¡ç«¯ã€‚
 		if(componentID_ == 0)
 		{
 			bundle.newMessage(ClientInterface::onRemoteMethodCall);
@@ -88,7 +88,7 @@ void EntityMailboxAbstract::newMail(Network::Bundle& bundle)
 
 			if(cinfos != NULL)
 			{
-				// ÕÒµ½¶ÔÓ¦µÄ×é¼þÍ¶µÝ¹ýÈ¥£¬ Èç¹ûÕâ¸ömailbox»¹ÐèÒªÖÐ×ª±ÈÈç e.base.cell £¬ ÔòÓÉbaseapp×ªÍùcellapp
+				// æ‰¾åˆ°å¯¹åº”çš„ç»„ä»¶æŠ•é€’è¿‡åŽ»ï¼Œ å¦‚æžœè¿™ä¸ªmailboxè¿˜éœ€è¦ä¸­è½¬æ¯”å¦‚ e.base.cell ï¼Œ åˆ™ç”±baseappè½¬å¾€cellapp
 				if(cinfos->componentType == BASEAPP_TYPE)
 				{
 					bundle.newMessage(BaseappInterface::onEntityMail);
@@ -107,13 +107,13 @@ void EntityMailboxAbstract::newMail(Network::Bundle& bundle)
 
 		bundle << id_;
 		
-		// Èç¹ûÊÇ·¢Íù¿Í»§¶ËµÄ°üÔòÎÞÐè¸½¼ÓÕâÑùÒ»¸öÀàÐÍ
+		// å¦‚æžœæ˜¯å‘å¾€å®¢æˆ·ç«¯çš„åŒ…åˆ™æ— éœ€é™„åŠ è¿™æ ·ä¸€ä¸ªç±»åž‹
 		if(componentID_ > 0)
 			bundle << type_;
 	}
 	else
 	{
-		// Èç¹ûÊÇ¿Í»§¶ËÉÏµÄmailboxµ÷ÓÃ·þÎñ¶Ë·½·¨Ö»´æÔÚµ÷ÓÃcell»òÕßbase
+		// å¦‚æžœæ˜¯å®¢æˆ·ç«¯ä¸Šçš„mailboxè°ƒç”¨æœåŠ¡ç«¯æ–¹æ³•åªå­˜åœ¨è°ƒç”¨cellæˆ–è€…base
 		switch(type_)
 		{
 		case MAILBOX_TYPE_BASE:

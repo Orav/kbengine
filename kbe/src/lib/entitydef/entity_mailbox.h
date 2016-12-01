@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -45,7 +45,7 @@ class MethodDescription;
 
 class EntityMailbox : public EntityMailboxAbstract
 {
-	/** ×ÓÀà»¯ ½«Ò»Ğ©py²Ù×÷Ìî³ä½øÅÉÉúÀà */
+	/** å­ç±»åŒ– å°†ä¸€äº›pyæ“ä½œå¡«å……è¿›æ´¾ç”Ÿç±» */
 	INSTANCE_SCRIPT_HREADER(EntityMailbox, EntityMailboxAbstract)
 public:
 	typedef std::tr1::function<RemoteEntityMethod* (MethodDescription* pMethodDescription, EntityMailbox* pMailbox)> MailboxCallHookFunc;
@@ -58,12 +58,12 @@ public:
 	~EntityMailbox();
 	
 	/** 
-		½Å±¾ÇëÇó»ñÈ¡ÊôĞÔ»òÕß·½·¨ 
+		è„šæœ¬è¯·æ±‚è·å–å±æ€§æˆ–è€…æ–¹æ³• 
 	*/
 	PyObject* onScriptGetAttribute(PyObject* attr);						
 			
 	/** 
-		»ñµÃ¶ÔÏóµÄÃèÊö 
+		è·å¾—å¯¹è±¡çš„æè¿° 
 	*/
 	PyObject* tp_repr();
 	PyObject* tp_str();
@@ -71,36 +71,36 @@ public:
 	void c_str(char* s, size_t size);
 
 	/** 
-		unpickle·½·¨ 
+		unpickleæ–¹æ³• 
 	*/
 	static PyObject* __unpickle__(PyObject* self, PyObject* args);
 
 	/** 
-		½Å±¾±»°²×°Ê±±»µ÷ÓÃ 
+		è„šæœ¬è¢«å®‰è£…æ—¶è¢«è°ƒç”¨ 
 	*/
 	static void onInstallScript(PyObject* mod);
 
 	/** 
-		Í¨¹ıentityµÄID³¢ÊÔÑ°ÕÒËüµÄÊµÀı
+		é€šè¿‡entityçš„IDå°è¯•å¯»æ‰¾å®ƒçš„å®ä¾‹
 	*/
 	static PyObject* tryGetEntity(COMPONENT_ID componentID, ENTITY_ID entityID);
 
 	/** 
-		ÉèÖÃmailboxµÄ__getEntityFuncº¯ÊıµØÖ· 
+		è®¾ç½®mailboxçš„__getEntityFuncå‡½æ•°åœ°å€ 
 	*/
 	static void setGetEntityFunc(GetEntityFunc func){ 
 		__getEntityFunc = func; 
 	};
 
 	/** 
-		ÉèÖÃmailboxµÄ__findChannelFuncº¯ÊıµØÖ· 
+		è®¾ç½®mailboxçš„__findChannelFuncå‡½æ•°åœ°å€ 
 	*/
 	static void setFindChannelFunc(FindChannelFunc func){ 
 		__findChannelFunc = func; 
 	};
 
 	/** 
-		ÉèÖÃmailboxµÄ__hookCallFuncº¯ÊıµØÖ· 
+		è®¾ç½®mailboxçš„__hookCallFuncå‡½æ•°åœ°å€ 
 	*/
 	static void setMailboxCallHookFunc(MailboxCallHookFunc* pFunc){ 
 		__hookCallFuncPtr = pFunc; 
@@ -122,7 +122,7 @@ public:
 	static MAILBOXS mailboxs;
 	
 private:
-	// »ñµÃÒ»¸öentityµÄÊµÌåµÄº¯ÊıµØÖ·
+	// è·å¾—ä¸€ä¸ªentityçš„å®ä½“çš„å‡½æ•°åœ°å€
 	static GetEntityFunc					__getEntityFunc;
 	static MailboxCallHookFunc*				__hookCallFuncPtr;
 	static FindChannelFunc					__findChannelFunc;
@@ -130,7 +130,7 @@ private:
 protected:
 	std::string								scriptModuleName_;
 
-	// ¸ÃentityËùÊ¹ÓÃµÄ½Å±¾Ä£¿é¶ÔÏó
+	// è¯¥entityæ‰€ä½¿ç”¨çš„è„šæœ¬æ¨¡å—å¯¹è±¡
 	ScriptDefModule*						pScriptModule_;	
 
 	void _setATIdx(MAILBOXS::size_type idx) { 

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -39,78 +39,78 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine{
 
 /**
-	CLIENTËùÓÐÏûÏ¢½Ó¿ÚÔÚ´Ë¶¨Òå
+	All CLIENT messaging interface defined here
 */
 NETWORK_INTERFACE_DECLARE_BEGIN(ClientInterface)
-	// ·þÎñ¶Ëhello·µ»Ø¡£
+	// Server Hello returned.
 	CLIENT_MESSAGE_DECLARE_STREAM(onHelloCB,								NETWORK_VARIABLE_MESSAGE)
 
-	// ºÍ·þÎñ¶ËµÄ°æ±¾²»Æ¥Åä
+	// And server versions do not match
 	CLIENT_MESSAGE_DECLARE_STREAM(onVersionNotMatch,						NETWORK_VARIABLE_MESSAGE)
 
-	// ºÍ·þÎñ¶ËµÄ½Å±¾²ã°æ±¾²»Æ¥Åä
+	// And the server does not match the version of the script
 	CLIENT_MESSAGE_DECLARE_STREAM(onScriptVersionNotMatch,					NETWORK_VARIABLE_MESSAGE)
 
-	// ´´½¨ÕËºÅÊ§°Ü¡£
+	// Failed to create account.
 	CLIENT_MESSAGE_DECLARE_STREAM(onCreateAccountResult,					NETWORK_VARIABLE_MESSAGE)
 
-	// µÇÂ¼³É¹¦¡£
+	// A successful logon.
 	CLIENT_MESSAGE_DECLARE_STREAM(onLoginSuccessfully,						NETWORK_VARIABLE_MESSAGE)
 
-	// µÇÂ¼Ê§°Ü¡£
+	// Login failed.
 	CLIENT_MESSAGE_DECLARE_STREAM(onLoginFailed,							NETWORK_VARIABLE_MESSAGE)
 
-	// ·þÎñÆ÷¶ËÒÑ¾­´´½¨ÁËÒ»¸öÓë¿Í»§¶Ë¹ØÁªµÄ´úÀíEntity || µÇÂ¼Íø¹Ø³É¹¦¡£
+	// Has created a server-side proxy associated with the client Entity | | Login gateway is successful.
 	CLIENT_MESSAGE_DECLARE_ARGS3(onCreatedProxies,							NETWORK_VARIABLE_MESSAGE,
 								uint64,										rndUUID,
 								ENTITY_ID,									eid,
 								std::string,								entityType)
 
-	// µÇÂ¼Íø¹ØÊ§°Ü¡£
+	// Login gateway fails.
 	CLIENT_MESSAGE_DECLARE_ARGS1(onLoginBaseappFailed,						NETWORK_FIXED_MESSAGE,
 								SERVER_ERROR_CODE,							failedcode)
 
-	// µÇÂ¼Íø¹ØÊ§°Ü¡£
+	// Login gateway fails.
 	CLIENT_MESSAGE_DECLARE_ARGS1(onReLoginBaseappFailed,					NETWORK_FIXED_MESSAGE,
 								SERVER_ERROR_CODE,							failedcode)
 
-	// ·þÎñÆ÷ÉÏµÄentityÒÑ¾­½øÈëÓÎÏ·ÊÀ½çÁË¡£
+	// Entity has entered the game on the server world.
 	CLIENT_MESSAGE_DECLARE_STREAM(onEntityEnterWorld,						NETWORK_VARIABLE_MESSAGE)
 
-	// ·þÎñÆ÷ÉÏµÄentityÒÑ¾­Àë¿ªÓÎÏ·ÊÀ½çÁË¡£
+	// Entity has to leave the game on the server world.
 	CLIENT_MESSAGE_DECLARE_ARGS1(onEntityLeaveWorld,						NETWORK_FIXED_MESSAGE,
 								ENTITY_ID,									eid)
 
-	// ·þÎñÆ÷ÉÏµÄentityÒÑ¾­Àë¿ªÓÎÏ·ÊÀ½çÁË¡£
+	// Entity has to leave the game on the server world.
 	CLIENT_MESSAGE_DECLARE_STREAM(onEntityLeaveWorldOptimized,				NETWORK_VARIABLE_MESSAGE)
 
-	// ¸æËß¿Í»§¶ËÄ³¸öentityÏú»ÙÁË£¬ ´ËÀàentityÍ¨³£ÊÇ»¹Î´onEntityEnterWorld¡£
+	// Tell the client whether a entity destroyed, this type of entity is usually not on entity enter world.
 	CLIENT_MESSAGE_DECLARE_ARGS1(onEntityDestroyed,							NETWORK_FIXED_MESSAGE,
 								ENTITY_ID,									eid)
 
-	// ·þÎñÆ÷ÉÏµÄentityÒÑ¾­½øÈëspaceÁË¡£
+	// Entity has entered the space on the server.
 	CLIENT_MESSAGE_DECLARE_STREAM(onEntityEnterSpace,						NETWORK_VARIABLE_MESSAGE)
 
-	// ·þÎñÆ÷ÉÏµÄentityÒÑ¾­Àë¿ªspaceÁË¡£
+	// Entity had left space on the server.
 	CLIENT_MESSAGE_DECLARE_ARGS1(onEntityLeaveSpace,						NETWORK_FIXED_MESSAGE,
 								ENTITY_ID,									eid)
 
-	// Ô¶³Ìºô½Ðentity·½·¨
+	// Remote call entity methods
 	CLIENT_MESSAGE_DECLARE_STREAM(onRemoteMethodCall,						NETWORK_VARIABLE_MESSAGE)
 	CLIENT_MESSAGE_DECLARE_STREAM(onRemoteMethodCallOptimized,				NETWORK_VARIABLE_MESSAGE)
 
-	// ±»Ìß³ö·þÎñÆ÷
+	// Kicked out of the server
 	CLIENT_MESSAGE_DECLARE_ARGS1(onKicked,									NETWORK_FIXED_MESSAGE,
 								SERVER_ERROR_CODE,							failedcode)
 
-	// ·þÎñÆ÷¸üÐÂentityÊôÐÔ
+	// Server Update entity properties
 	CLIENT_MESSAGE_DECLARE_STREAM(onUpdatePropertys,						NETWORK_VARIABLE_MESSAGE)
 	CLIENT_MESSAGE_DECLARE_STREAM(onUpdatePropertysOptimized,				NETWORK_VARIABLE_MESSAGE)
 
-	// ·þÎñÆ÷Ç¿ÖÆÉèÖÃentityµÄÎ»ÖÃÓë³¯Ïò
+	// Server sets the position of the entity and
 	CLIENT_MESSAGE_DECLARE_STREAM(onSetEntityPosAndDir,						NETWORK_VARIABLE_MESSAGE)
 
-	// ·þÎñÆ÷¸üÐÂ°ü
+	// Server update package
 	CLIENT_MESSAGE_DECLARE_ARGS3(onUpdateBasePos,							NETWORK_FIXED_MESSAGE,
 								float,										x,
 								float,										y,
@@ -149,63 +149,63 @@ NETWORK_INTERFACE_DECLARE_BEGIN(ClientInterface)
 	CLIENT_MESSAGE_DECLARE_STREAM(onUpdateData_xyz_p,						NETWORK_VARIABLE_MESSAGE)
 	CLIENT_MESSAGE_DECLARE_STREAM(onUpdateData_xyz_r,						NETWORK_VARIABLE_MESSAGE)
 
-	// download stream¿ªÊ¼ÁË 
+	// Download stream begins 
 	CLIENT_MESSAGE_DECLARE_ARGS3(onStreamDataStarted,						NETWORK_VARIABLE_MESSAGE,
 								int16,										id,
 								uint32,										datasize,
 								std::string,								descr)
 
-	// ½ÓÊÕµ½streamData
+	// Receiving stream data
 	CLIENT_MESSAGE_DECLARE_STREAM(onStreamDataRecv,							NETWORK_VARIABLE_MESSAGE)
 
-	// download streamÍê³ÉÁË 
+	// Download stream has completed 
 	CLIENT_MESSAGE_DECLARE_ARGS1(onStreamDataCompleted,						NETWORK_FIXED_MESSAGE,
 								int16,										id)
 
-	// µ¼ÈëÐ­Òé
+	// Import protocols
 	CLIENT_MESSAGE_DECLARE_STREAM(onImportClientMessages,					NETWORK_VARIABLE_MESSAGE)
 	
-	// µ¼Èëentitydef
+	// Import entitydef
 	CLIENT_MESSAGE_DECLARE_STREAM(onImportClientEntityDef,					NETWORK_VARIABLE_MESSAGE)
 
-	// ´íÎóÂëÃèÊöµ¼³ö
+	// Error code that describes the exported
 	CLIENT_MESSAGE_DECLARE_STREAM(onImportServerErrorsDescr,				NETWORK_VARIABLE_MESSAGE)
 
-	// ·þÎñ¶Ë³õÊ¼»¯spacedata
+	// Server-side initialization spacedata
 	CLIENT_MESSAGE_DECLARE_STREAM(initSpaceData,							NETWORK_VARIABLE_MESSAGE)
 
-	// ·þÎñ¶ËÉèÖÃÁËspacedata
+	// Server settings spacedata
 	CLIENT_MESSAGE_DECLARE_ARGS3(setSpaceData,								NETWORK_VARIABLE_MESSAGE,
 								SPACE_ID,									spaceID,
 								std::string,								key,
 								std::string,								val)
 
-	// ·þÎñ¶ËÉ¾³ýÁËspacedata
+	// Server delete spacedata
 	CLIENT_MESSAGE_DECLARE_ARGS2(delSpaceData,								NETWORK_VARIABLE_MESSAGE,
 								SPACE_ID,									spaceID,
 								std::string,								key)
 
-	// ÖØÖÃÕËºÅÃÜÂëÇëÇó·µ»Ø
+	// Reset account password request returns
 	CLIENT_MESSAGE_DECLARE_ARGS1(onReqAccountResetPasswordCB,				NETWORK_FIXED_MESSAGE,
 								SERVER_ERROR_CODE,							failedcode)
 
-	// ÖØÖÃÕËºÅÃÜÂëÇëÇó·µ»Ø
+	// Reset account password request returns
 	CLIENT_MESSAGE_DECLARE_ARGS1(onReqAccountBindEmailCB,					NETWORK_FIXED_MESSAGE,
 								SERVER_ERROR_CODE,							failedcode)
 
-	// ÖØÖÃÕËºÅÃÜÂëÇëÇó·µ»Ø
+	// Reset account password request returns
 	CLIENT_MESSAGE_DECLARE_ARGS1(onReqAccountNewPasswordCB,					NETWORK_FIXED_MESSAGE,
 								SERVER_ERROR_CODE,							failedcode)
 
-	// ÖØµÇÂ½Íø¹Ø³É¹¦ 
+	// To visit the gateway successfully 
 	CLIENT_MESSAGE_DECLARE_STREAM(onReLoginBaseappSuccessfully,				NETWORK_VARIABLE_MESSAGE)
 									
-	// ¸æËß¿Í»§¶Ë£ºÄãµ±Ç°¸ºÔð£¨»òÈ¡Ïû£©¿ØÖÆË­µÄÎ»ÒÆÍ¬²½
+	// Tell clients: you are responsible for (or cancel) whose displacement control synchronization
 	CLIENT_MESSAGE_DECLARE_ARGS2(onControlEntity,							NETWORK_FIXED_MESSAGE,
 									ENTITY_ID,								eid,
 									int8,									isControlled)
 
-	// ·þÎñÆ÷ÐÄÌø»Øµ÷
+	// Server heartbeat callbacks
 	CLIENT_MESSAGE_DECLARE_ARGS0(onAppActiveTickCB,							NETWORK_FIXED_MESSAGE)
 
 	NETWORK_INTERFACE_DECLARE_END()

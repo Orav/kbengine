@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -33,7 +33,7 @@ class EntityTable;
 class EntityTables;
 
 /*
-	Êı¾İ¿âÏß³ÌÈÎÎñ»ù´¡Àà
+	æ•°æ®åº“çº¿ç¨‹ä»»åŠ¡åŸºç¡€ç±»
 */
 
 class DBTaskBase : public thread::TPTask
@@ -61,7 +61,7 @@ protected:
 };
 
 /**
-	Ö´ĞĞÒ»ÌõsqlÓï¾ä
+	æ‰§è¡Œä¸€æ¡sqlè¯­å¥
 */
 class DBTaskSyncTable : public DBTaskBase
 {

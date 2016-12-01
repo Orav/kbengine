@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -30,7 +30,7 @@ namespace KBEngine{
 
 class FixedArray : public script::Sequence
 {		
-	/** ×ÓÀà»¯ ½«Ò»Ğ©py²Ù×÷Ìî³ä½øÅÉÉúÀà */
+	/** å­ç±»åŒ– å°†ä¸€äº›pyæ“ä½œå¡«å……è¿›æ´¾ç”Ÿç±» */
 	INSTANCE_SCRIPT_HREADER(FixedArray, Sequence)
 public:	
 	FixedArray(DataType* dataType);
@@ -41,28 +41,28 @@ public:
 	const DataType* getDataType(void){ return _dataType; }
 	
 	/** 
-		³õÊ¼»¯¹Ì¶¨Êı×é
+		åˆå§‹åŒ–å›ºå®šæ•°ç»„
 	*/
 	void initialize(std::string strInitData);
 	void initialize(PyObject* pyObjInitData);
 
 	/** 
-		Ö§³Öpickler ·½·¨ 
+		æ”¯æŒpickler æ–¹æ³• 
 	*/
 	static PyObject* __py_reduce_ex__(PyObject* self, PyObject* protocol);
 
 	/** 
-		unpickle·½·¨ 
+		unpickleæ–¹æ³• 
 	*/
 	static PyObject* __unpickle__(PyObject* self, PyObject* args);
 	
 	/** 
-		½Å±¾±»°²×°Ê±±»µ÷ÓÃ 
+		è„šæœ¬è¢«å®‰è£…æ—¶è¢«è°ƒç”¨ 
 	*/
 	static void onInstallScript(PyObject* mod);
 	
 	/** 
-		Ò»ÏÂÎªÒ»¸ölistËùĞèµÄ²Ù×÷½Ó¿Ú 
+		ä¸€ä¸‹ä¸ºä¸€ä¸ªlistæ‰€éœ€çš„æ“ä½œæ¥å£ 
 	*/
 	static PyObject* __py_append(PyObject* self, PyObject* args, PyObject* kwargs);	
 	static PyObject* __py_count(PyObject* self, PyObject* args, PyObject* kwargs);
@@ -78,7 +78,7 @@ public:
 	virtual PyObject* createNewItemFromObj(PyObject* pyItem);
 
 	/** 
-		»ñµÃ¶ÔÏóµÄÃèÊö 
+		è·å¾—å¯¹è±¡çš„æè¿° 
 	*/
 	PyObject* tp_repr();
 	PyObject* tp_str();

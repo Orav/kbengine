@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -38,7 +38,7 @@ class Bundle;
 
 class EntityMailboxAbstract : public script::ScriptObject
 {
-	/** ×ÓÀà»¯ ½«Ò»Ğ©py²Ù×÷Ìî³ä½øÅÉÉúÀà */
+	/** å­ç±»åŒ– å°†ä¸€äº›pyæ“ä½œå¡«å……è¿›æ´¾ç”Ÿç±» */
 	INSTANCE_SCRIPT_HREADER(EntityMailboxAbstract, ScriptObject)
 public:
 	EntityMailboxAbstract(PyTypeObject* scriptType, 
@@ -51,7 +51,7 @@ public:
 	virtual ~EntityMailboxAbstract();
 
 	/** 
-		»ñÈ¡entityID 
+		è·å–entityID 
 	*/
 	INLINE ENTITY_ID id() const;
 
@@ -60,27 +60,27 @@ public:
 	DECLARE_PY_GET_MOTHOD(pyGetID);
 
 	/** 
-		»ñµÃ×é¼şID 
+		è·å¾—ç»„ä»¶ID 
 	*/
 	INLINE COMPONENT_ID componentID(void) const;
 
 	/** 
-		ÉèÖÃ×é¼şµÄID 
+		è®¾ç½®ç»„ä»¶çš„ID 
 	*/
 	INLINE void componentID(COMPONENT_ID cid);
 
 	/** 
-		»ñµÃutype 
+		è·å¾—utype 
 	*/
 	INLINE ENTITY_SCRIPT_UID utype(void) const;
 
 	/** 
-		»ñµÃtype 
+		è·å¾—type 
 	*/
 	INLINE ENTITY_MAILBOX_TYPE type(void) const;
 
 	/** 
-		Ö§³Öpickler ·½·¨ 
+		æ”¯æŒpickler æ–¹æ³• 
 	*/
 	static PyObject* __py_reduce_ex__(PyObject* self, PyObject* protocol);
 	
@@ -102,11 +102,11 @@ public:
 	INLINE bool isBaseViaCell() const;
 	
 protected:
-	COMPONENT_ID							componentID_;			// Ô¶¶Ë»úÆ÷×é¼şµÄID
-	Network::Address						addr_;					// ÆµµÀµØÖ·
-	ENTITY_MAILBOX_TYPE						type_;					// ¸ÃmailboxµÄÀàĞÍ
+	COMPONENT_ID							componentID_;			// è¿œç«¯æœºå™¨ç»„ä»¶çš„ID
+	Network::Address						addr_;					// é¢‘é“åœ°å€
+	ENTITY_MAILBOX_TYPE						type_;					// è¯¥mailboxçš„ç±»å‹
 	ENTITY_ID								id_;					// entityID
-	ENTITY_SCRIPT_UID						utype_;					// entityµÄutype  °´ÕÕentities.xmlÖĞµÄ¶¨ÒåË³Ğò
+	ENTITY_SCRIPT_UID						utype_;					// entityçš„utype  æŒ‰ç…§entities.xmlä¸­çš„å®šä¹‰é¡ºåº
 };
 
 }

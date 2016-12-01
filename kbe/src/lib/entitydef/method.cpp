@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -114,7 +114,7 @@ bool MethodDescription::checkArgs(PyObject* args)
 	}	
 	
 	
-	// ¼ì²éÊÇ·ñÊÇÒ»¸öexposed·½·¨
+	// æ£€æŸ¥æ˜¯å¦æ˜¯ä¸€ä¸ªexposedæ–¹æ³•
 	if(offset > 0)
 	{
 		PyObject* pyExposed = PyTuple_GetItem(args, 0);
@@ -164,8 +164,8 @@ void MethodDescription::addToStream(MemoryStream* mstream, PyObject* args)
 	uint8 argsSize = argTypes_.size();
 	int offset = 0;
 
-	// ½«utype·Å½øÈ¥£¬·½±ã¶Ô¶ËÊ¶±ğÕâ¸ö·½·¨
-	// ÕâÀïÈç¹ûaliasID_´óÓÚ0Ôò²ÉÓÃÒ»¸öÓÅ»¯µÄ°ì·¨£¬ Ê¹ÓÃ1×Ö½Ú´«Êä
+	// å°†utypeæ”¾è¿›å»ï¼Œæ–¹ä¾¿å¯¹ç«¯è¯†åˆ«è¿™ä¸ªæ–¹æ³•
+	// è¿™é‡Œå¦‚æœaliasID_å¤§äº0åˆ™é‡‡ç”¨ä¸€ä¸ªä¼˜åŒ–çš„åŠæ³•ï¼Œ ä½¿ç”¨1å­—èŠ‚ä¼ è¾“
 	if(aliasID_ < 0)
 	{
 		(*mstream) << utype_;
@@ -176,7 +176,7 @@ void MethodDescription::addToStream(MemoryStream* mstream, PyObject* args)
 		(*mstream) << utype;
 	}
 
-	// Èç¹ûÊÇexposed·½·¨ÔòÏÈ½«entityID´ò°ü½øÈ¥
+	// å¦‚æœæ˜¯exposedæ–¹æ³•åˆ™å…ˆå°†entityIDæ‰“åŒ…è¿›å»
 	if(isExposed() && g_componentType == CELLAPP_TYPE && isCell())
 	{
 		offset = 1;
@@ -184,7 +184,7 @@ void MethodDescription::addToStream(MemoryStream* mstream, PyObject* args)
 		(*mstream) << eid;
 	}
 
-	// ½«Ã¿Ò»¸ö²ÎÊıÌí¼Óµ½Á÷ÖĞ
+	// å°†æ¯ä¸€ä¸ªå‚æ•°æ·»åŠ åˆ°æµä¸­
 	for(uint8 i=0; i <argsSize; ++i)
 	{
 		PyObject* pyArg = PyTuple_GetItem(args, i + offset);
@@ -204,7 +204,7 @@ PyObject* MethodDescription::createFromStream(MemoryStream* mstream)
 		offset = 1;
 		pyArgsTuple = PyTuple_New(argSize + offset);
 
-		// ÉèÖÃÒ»¸öµ÷ÓÃÕßIDÌá¹©¸ø½Å±¾ÅĞ¶ÏÀ´Ô´ÊÇ·ñÕıÈ·
+		// è®¾ç½®ä¸€ä¸ªè°ƒç”¨è€…IDæä¾›ç»™è„šæœ¬åˆ¤æ–­æ¥æºæ˜¯å¦æ­£ç¡®
 		KBE_ASSERT(currCallerID_ > 0);
 		PyTuple_SET_ITEM(pyArgsTuple, 0, PyLong_FromLong(currCallerID_));
 	}

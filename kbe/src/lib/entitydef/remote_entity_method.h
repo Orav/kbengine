@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -41,7 +41,7 @@ class MethodDescription;
 
 class RemoteEntityMethod : public script::ScriptObject
 {
-	/** ×ÓÀà»¯ ½«Ò»Ğ©py²Ù×÷Ìî³ä½øÅÉÉúÀà */
+	/** å­ç±»åŒ– å°†ä¸€äº›pyæ“ä½œå¡«å……è¿›æ´¾ç”Ÿç±» */
 	INSTANCE_SCRIPT_HREADER(RemoteEntityMethod, script::ScriptObject)	
 		
 public:	
@@ -66,8 +66,8 @@ public:
 	}
 	
 protected:	
-	MethodDescription*		methodDescription_;					// Õâ¸ö·½·¨µÄÃèÊö
-	EntityMailboxAbstract*	pMailbox_;							// Õâ¸ö·½·¨ËùÊôµÄmailbox
+	MethodDescription*		methodDescription_;					// è¿™ä¸ªæ–¹æ³•çš„æè¿°
+	EntityMailboxAbstract*	pMailbox_;							// è¿™ä¸ªæ–¹æ³•æ‰€å±çš„mailbox
 };
 }
 

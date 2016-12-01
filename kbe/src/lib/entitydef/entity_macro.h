@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -280,7 +280,7 @@ namespace KBEngine{
 }																											\
 
 
-// ÊµÌåµÄ±êÖ¾
+// å®ä½“çš„æ ‡å¿—
 #define ENTITY_FLAGS_UNKNOWN			0x00000000
 #define ENTITY_FLAGS_DESTROYING			0x00000001
 #define ENTITY_FLAGS_INITING			0x00000002
@@ -656,7 +656,7 @@ public:																										\
 					Py_ssize_t ob_refcnt = value->ob_refcnt;												\
 					PyObject* pySetObj = propertyDescription->onSetValue(this, value);						\
 																											\
-					/* Èç¹ûdefÊôĞÔÊı¾İÓĞ¸Ä±ä£¬ ÄÇÃ´¿ÉÄÜĞèÒª¹ã²¥ */											\
+					/* å¦‚æœdefå±æ€§æ•°æ®æœ‰æ”¹å˜ï¼Œ é‚£ä¹ˆå¯èƒ½éœ€è¦å¹¿æ’­ */											\
 					if(pySetObj != NULL)																	\
 					{																						\
 						onDefDataChanged(propertyDescription, pySetObj);									\
@@ -712,7 +712,7 @@ public:																										\
 		}																									\
 		else if(g_componentType == BASEAPP_TYPE)															\
 		{																									\
-			extra = -1;	/* shouldAutoLoad -1Ä¬ÈÏ²»¸Ä±äÉèÖÃ */												\
+			extra = -1;	/* shouldAutoLoad -1é»˜è®¤ä¸æ”¹å˜è®¾ç½® */												\
 		}																									\
 																											\
 		if(currargsSize == 1)																				\

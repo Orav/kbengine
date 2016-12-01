@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -56,7 +56,7 @@ public:
 
 	virtual bool query(DBInterface* pdbi = NULL)
 	{
-		// Ã»ÓĞÊı¾İ¸üĞÂ
+		// æ²¡æœ‰æ•°æ®æ›´æ–°
 		if(sqlstr_ == "")
 			return true;
 
@@ -145,7 +145,7 @@ public:
 
 	virtual bool query(DBInterface* pdbi = NULL)
 	{
-		// Ã»ÓĞÊı¾İ¸üĞÂ
+		// æ²¡æœ‰æ•°æ®æ›´æ–°
 		if(sqlstr_ == "")
 			return true;
 
@@ -228,7 +228,7 @@ public:
 
 		// select id,xxx from tbl_SpawnPoint where id=123;
 		sqlstr_ = "select id,";
-		// ÎŞÂÛÄÄÖÖÇé¿ö¶¼²éÑ¯³öID×Ö¶Î
+		// æ— è®ºå“ªç§æƒ…å†µéƒ½æŸ¥è¯¢å‡ºIDå­—æ®µ
 		sqlstr1_ += " from " ENTITY_TABLE_PERFIX "_";
 		sqlstr1_ += tableName;
 		

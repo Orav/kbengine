@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -167,14 +167,14 @@ public:
 				}
 		}
 	
-		// É¾³ı·ÏÆúµÄÊı¾İÏî
+		// åˆ é™¤åºŸå¼ƒçš„æ•°æ®é¡¹
 		KBEUnordered_map< std::string, std::vector<DBID> >::iterator tabiter = childTableDBIDs.begin();
 		for(; tabiter != childTableDBIDs.end(); ++tabiter)
 		{
 			if(tabiter->second.size() == 0)
 				continue;
 
-			// ÏÈÉ¾³ıÊı¾İ¿âÖĞµÄ¼ÇÂ¼
+			// å…ˆåˆ é™¤æ•°æ®åº“ä¸­çš„è®°å½•
 			std::string sqlstr = "delete from " ENTITY_TABLE_PERFIX "_";
 			sqlstr += tabiter->first;
 			sqlstr += " where " TABLE_ID_CONST_STR " in (";

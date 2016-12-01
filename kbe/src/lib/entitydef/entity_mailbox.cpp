@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -32,7 +32,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine
 {
 
-// »ñµÃÄ³¸öentityµÄº¯ÊıµØÖ·
+// è·å¾—æŸä¸ªentityçš„å‡½æ•°åœ°å€
 EntityMailbox::GetEntityFunc EntityMailbox::__getEntityFunc;
 EntityMailbox::FindChannelFunc EntityMailbox::__findChannelFunc;
 EntityMailbox::MailboxCallHookFunc*	EntityMailbox::__hookCallFuncPtr = NULL;
@@ -78,7 +78,7 @@ EntityMailbox::~EntityMailbox()
 	KBE_ASSERT(atIdx_ < EntityMailbox::mailboxs.size());
 	KBE_ASSERT(EntityMailbox::mailboxs[ atIdx_ ] == this);
 
-	// Èç¹ûÓĞ2¸ö»òÒÔÉÏµÄMailboxÔò½«×îºóÒ»¸öMailboxÒÆÖÁÉ¾³ıµÄÕâ¸öMailboxËùÔÚÎ»ÖÃ
+	// å¦‚æœæœ‰2ä¸ªæˆ–ä»¥ä¸Šçš„Mailboxåˆ™å°†æœ€åä¸€ä¸ªMailboxç§»è‡³åˆ é™¤çš„è¿™ä¸ªMailboxæ‰€åœ¨ä½ç½®
 	EntityMailbox* pBack = EntityMailbox::mailboxs.back();
 	pBack->_setATIdx(atIdx_);
 	EntityMailbox::mailboxs[atIdx_] = pBack;
@@ -148,7 +148,7 @@ PyObject* EntityMailbox::onScriptGetAttribute(PyObject* attr)
 		return createRemoteMethod(pMethodDescription);
 	}
 
-	// Ê×ÏÈÒªÇóÃû³Æ²»ÄÜÎª×Ô¼º  ±ÈÈç£º×ÔÉíÊÇÒ»¸öcell£¬ ²»ÄÜÊ¹ÓÃcell.cell
+	// é¦–å…ˆè¦æ±‚åç§°ä¸èƒ½ä¸ºè‡ªå·±  æ¯”å¦‚ï¼šè‡ªèº«æ˜¯ä¸€ä¸ªcellï¼Œ ä¸èƒ½ä½¿ç”¨cell.cell
 	if(strcmp(ccattr, ENTITY_MAILBOX_TYPE_TO_NAME_TABLE[type_]) != 0)
 	{
 		int8 mbtype = -1;

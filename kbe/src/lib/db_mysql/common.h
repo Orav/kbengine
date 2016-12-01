@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -28,7 +28,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace KBEngine{ 
 
-// ¼ÇÂ¼KBEËùÉèÖÃ¹ıµÄËùÓĞmysql±ê¼Ç£¬Ìá¹©sync_item_to_dbÊ±¼ì²éÉèÖÃÏî
+// è®°å½•KBEæ‰€è®¾ç½®è¿‡çš„æ‰€æœ‰mysqlæ ‡è®°ï¼Œæä¾›sync_item_to_dbæ—¶æ£€æŸ¥è®¾ç½®é¡¹
 extern uint32 ALL_MYSQL_SET_FLAGS;
 
 }

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -105,7 +105,7 @@ bool DBUtil::initialize()
 
 		if ((*dbinfo_iter).db_passwordEncrypt)
 		{
-			// Èç¹ûĞ¡ÓÚ64Ôò±íÃ÷µ±Ç°ÊÇÃ÷ÎÄÃÜÂëÅäÖÃ
+			// å¦‚æœå°äº64åˆ™è¡¨æ˜å½“å‰æ˜¯æ˜æ–‡å¯†ç é…ç½®
 			if (strlen((*dbinfo_iter).db_password) < 64)
 			{
 				WARNING_MSG(fmt::format("DBUtil::initialize: db({}) password is not encrypted!\nplease use password(rsa):\n{}\n",

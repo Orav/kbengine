@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -330,21 +330,21 @@ PyObject* ScriptDefModule::getInitDict(void)
 void ScriptDefModule::autoMatchCompOwn()
 {
 	/*
-		entity´æÔÚÄ³²¿·Ö(cell, base, client)µÄÅĞ¶¨¹æÔò
+		entityå­˜åœ¨æŸéƒ¨åˆ†(cell, base, client)çš„åˆ¤å®šè§„åˆ™
 
-		1: entitydefÎÄ¼şÖĞ´æÔÚÊµÌåÄ³²¿·ÖµÄ·½·¨»òÕßÊôĞÔ£¬Í¬Ê±Ò²±ØĞëÒ²´æÔÚpy½Å±¾
-		2: ÓÃ»§ÔÚentities.xmlÃ÷È·ÉùÃ÷´æÔÚÄ³ÊµÌå²¿·Ö(ÎªÁËunity3d»òÕßhtml5ÀàµÄÇ°¶ËÎŞ·¨¼ÓÔØpyµÄ»·¾³¿¼ÂÇ)
-			entities.xml£¬ <Spaces hasCell="true" hasClient="false", hasBase="true"></Spaces>
+		1: entitydefæ–‡ä»¶ä¸­å­˜åœ¨å®ä½“æŸéƒ¨åˆ†çš„æ–¹æ³•æˆ–è€…å±æ€§ï¼ŒåŒæ—¶ä¹Ÿå¿…é¡»ä¹Ÿå­˜åœ¨pyè„šæœ¬
+		2: ç”¨æˆ·åœ¨entities.xmlæ˜ç¡®å£°æ˜å­˜åœ¨æŸå®ä½“éƒ¨åˆ†(ä¸ºäº†unity3dæˆ–è€…html5ç±»çš„å‰ç«¯æ— æ³•åŠ è½½pyçš„ç¯å¢ƒè€ƒè™‘)
+			entities.xmlï¼Œ <Spaces hasCell="true" hasClient="false", hasBase="true"></Spaces>
 	*/
 
 	std::string entitiesFile = Resmgr::getSingleton().getPyUserScriptsPath() + "entities.xml";
 
-	// ´ò¿ªÕâ¸öentities.xmlÎÄ¼ş
+	// æ‰“å¼€è¿™ä¸ªentities.xmlæ–‡ä»¶
 	SmartPointer<XML> xml(new XML());
 	if(!xml->openSection(entitiesFile.c_str()) || !xml->isGood())
 		return;
 	
-	// »ñµÃentities.xml¸ù½Úµã, Èç¹ûÃ»ÓĞ¶¨ÒåÒ»¸öentityÄÇÃ´Ö±½Ó·µ»Øtrue
+	// è·å¾—entities.xmlæ ¹èŠ‚ç‚¹, å¦‚æœæ²¡æœ‰å®šä¹‰ä¸€ä¸ªentityé‚£ä¹ˆç›´æ¥è¿”å›true
 	TiXmlNode* node = xml->getRootNode();
 	if(node == NULL)
 		return;
@@ -353,7 +353,7 @@ void ScriptDefModule::autoMatchCompOwn()
 	int assertionHasBase = -1;
 	int assertionHasCell = -1;
 
-	// ¿ªÊ¼±éÀúËùÓĞµÄentity½Úµã
+	// å¼€å§‹éå†æ‰€æœ‰çš„entityèŠ‚ç‚¹
 	XML_FOR_BEGIN(node)
 	{
 		std::string moduleName = xml.get()->getKey(node);
@@ -403,15 +403,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if (assertionHasClient < 0)
 		{
-			// Èç¹ûÓÃ»§²»´æÔÚÃ÷È·ÉùÃ÷²¢ÉèÖÃÎªÃ»ÓĞ¶ÔÓ¦ÊµÌå²¿·Ö
-			// ÕâÑù×öµÄÔ­ÒòÊÇÔÊĞíÓÃ»§ÔÚdefÎÄ¼ş¶¨ÒåÕâ²¿·ÖµÄÄÚÈİ(ÒòÎªinterfaceµÄ´æÔÚ£¬interfaceÖĞ¿ÉÄÜ»á´æÔÚ¿Í»§¶ËÊôĞÔ»òÕß·½·¨)
-			// µ«Èç¹û½Å±¾²»´æÔÚÈÔÈ»ÈÏÎªÓÃ»§µ±Ç°²»ĞèÒª¸Ã²¿·Ö
+			// å¦‚æœç”¨æˆ·ä¸å­˜åœ¨æ˜ç¡®å£°æ˜å¹¶è®¾ç½®ä¸ºæ²¡æœ‰å¯¹åº”å®ä½“éƒ¨åˆ†
+			// è¿™æ ·åšçš„åŸå› æ˜¯å…è®¸ç”¨æˆ·åœ¨defæ–‡ä»¶å®šä¹‰è¿™éƒ¨åˆ†çš„å†…å®¹(å› ä¸ºinterfaceçš„å­˜åœ¨ï¼Œinterfaceä¸­å¯èƒ½ä¼šå­˜åœ¨å®¢æˆ·ç«¯å±æ€§æˆ–è€…æ–¹æ³•)
+			// ä½†å¦‚æœè„šæœ¬ä¸å­˜åœ¨ä»ç„¶è®¤ä¸ºç”¨æˆ·å½“å‰ä¸éœ€è¦è¯¥éƒ¨åˆ†
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setClient(true);
 		}
 		else
 		{
-			// ÓÃ»§Ã÷È·ÉùÃ÷²¢½øĞĞÁËÉè¶¨
+			// ç”¨æˆ·æ˜ç¡®å£°æ˜å¹¶è¿›è¡Œäº†è®¾å®š
 			setClient(assertionHasClient == 1);
 		}
 	}
@@ -419,15 +419,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if(assertionHasClient < 0)
 		{
-			// Èç¹ûÓÃ»§²»´æÔÚÃ÷È·ÉùÃ÷²¢ÉèÖÃÎªÃ»ÓĞ¶ÔÓ¦ÊµÌå²¿·Ö
-			// ÕâÑù×öµÄÔ­ÒòÊÇÔÊĞíÓÃ»§ÔÚdefÎÄ¼ş¶¨ÒåÕâ²¿·ÖµÄÄÚÈİ(ÒòÎªinterfaceµÄ´æÔÚ£¬interfaceÖĞ¿ÉÄÜ»á´æÔÚ¿Í»§¶ËÊôĞÔ»òÕß·½·¨)
-			// µ«Èç¹û½Å±¾²»´æÔÚÈÔÈ»ÈÏÎªÓÃ»§µ±Ç°²»ĞèÒª¸Ã²¿·Ö
+			// å¦‚æœç”¨æˆ·ä¸å­˜åœ¨æ˜ç¡®å£°æ˜å¹¶è®¾ç½®ä¸ºæ²¡æœ‰å¯¹åº”å®ä½“éƒ¨åˆ†
+			// è¿™æ ·åšçš„åŸå› æ˜¯å…è®¸ç”¨æˆ·åœ¨defæ–‡ä»¶å®šä¹‰è¿™éƒ¨åˆ†çš„å†…å®¹(å› ä¸ºinterfaceçš„å­˜åœ¨ï¼Œinterfaceä¸­å¯èƒ½ä¼šå­˜åœ¨å®¢æˆ·ç«¯å±æ€§æˆ–è€…æ–¹æ³•)
+			// ä½†å¦‚æœè„šæœ¬ä¸å­˜åœ¨ä»ç„¶è®¤ä¸ºç”¨æˆ·å½“å‰ä¸éœ€è¦è¯¥éƒ¨åˆ†
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setClient(false);
 		}
 		else
 		{
-			// ÓÃ»§Ã÷È·ÉùÃ÷²¢½øĞĞÁËÉè¶¨
+			// ç”¨æˆ·æ˜ç¡®å£°æ˜å¹¶è¿›è¡Œäº†è®¾å®š
 			setClient(assertionHasClient == 1);
 		}
 	}
@@ -446,15 +446,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if (assertionHasBase < 0)
 		{
-			// Èç¹ûÓÃ»§²»´æÔÚÃ÷È·ÉùÃ÷²¢ÉèÖÃÎªÃ»ÓĞ¶ÔÓ¦ÊµÌå²¿·Ö
-			// ÕâÑù×öµÄÔ­ÒòÊÇÔÊĞíÓÃ»§ÔÚdefÎÄ¼ş¶¨ÒåÕâ²¿·ÖµÄÄÚÈİ(ÒòÎªinterfaceµÄ´æÔÚ£¬interfaceÖĞ¿ÉÄÜ»á´æÔÚbaseÊôĞÔ»òÕß·½·¨)
-			// µ«Èç¹û½Å±¾²»´æÔÚÈÔÈ»ÈÏÎªÓÃ»§µ±Ç°²»ĞèÒª¸Ã²¿·Ö
+			// å¦‚æœç”¨æˆ·ä¸å­˜åœ¨æ˜ç¡®å£°æ˜å¹¶è®¾ç½®ä¸ºæ²¡æœ‰å¯¹åº”å®ä½“éƒ¨åˆ†
+			// è¿™æ ·åšçš„åŸå› æ˜¯å…è®¸ç”¨æˆ·åœ¨defæ–‡ä»¶å®šä¹‰è¿™éƒ¨åˆ†çš„å†…å®¹(å› ä¸ºinterfaceçš„å­˜åœ¨ï¼Œinterfaceä¸­å¯èƒ½ä¼šå­˜åœ¨baseå±æ€§æˆ–è€…æ–¹æ³•)
+			// ä½†å¦‚æœè„šæœ¬ä¸å­˜åœ¨ä»ç„¶è®¤ä¸ºç”¨æˆ·å½“å‰ä¸éœ€è¦è¯¥éƒ¨åˆ†
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setBase(true);
 		}
 		else
 		{
-			// ÓÃ»§Ã÷È·ÉùÃ÷²¢½øĞĞÁËÉè¶¨
+			// ç”¨æˆ·æ˜ç¡®å£°æ˜å¹¶è¿›è¡Œäº†è®¾å®š
 			setBase(assertionHasBase == 1);
 		}
 	}
@@ -462,15 +462,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if(assertionHasBase < 0)
 		{
-			// Èç¹ûÓÃ»§²»´æÔÚÃ÷È·ÉùÃ÷²¢ÉèÖÃÎªÃ»ÓĞ¶ÔÓ¦ÊµÌå²¿·Ö
-			// ÕâÑù×öµÄÔ­ÒòÊÇÔÊĞíÓÃ»§ÔÚdefÎÄ¼ş¶¨ÒåÕâ²¿·ÖµÄÄÚÈİ(ÒòÎªinterfaceµÄ´æÔÚ£¬interfaceÖĞ¿ÉÄÜ»á´æÔÚbaseÊôĞÔ»òÕß·½·¨)
-			// µ«Èç¹û½Å±¾²»´æÔÚÈÔÈ»ÈÏÎªÓÃ»§µ±Ç°²»ĞèÒª¸Ã²¿·Ö
+			// å¦‚æœç”¨æˆ·ä¸å­˜åœ¨æ˜ç¡®å£°æ˜å¹¶è®¾ç½®ä¸ºæ²¡æœ‰å¯¹åº”å®ä½“éƒ¨åˆ†
+			// è¿™æ ·åšçš„åŸå› æ˜¯å…è®¸ç”¨æˆ·åœ¨defæ–‡ä»¶å®šä¹‰è¿™éƒ¨åˆ†çš„å†…å®¹(å› ä¸ºinterfaceçš„å­˜åœ¨ï¼Œinterfaceä¸­å¯èƒ½ä¼šå­˜åœ¨baseå±æ€§æˆ–è€…æ–¹æ³•)
+			// ä½†å¦‚æœè„šæœ¬ä¸å­˜åœ¨ä»ç„¶è®¤ä¸ºç”¨æˆ·å½“å‰ä¸éœ€è¦è¯¥éƒ¨åˆ†
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setBase(false);
 		}
 		else
 		{
-			// ÓÃ»§Ã÷È·ÉùÃ÷²¢½øĞĞÁËÉè¶¨
+			// ç”¨æˆ·æ˜ç¡®å£°æ˜å¹¶è¿›è¡Œäº†è®¾å®š
 			setBase(assertionHasBase == 1);
 		}
 	}
@@ -482,15 +482,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if (assertionHasCell < 0)
 		{
-			// Èç¹ûÓÃ»§²»´æÔÚÃ÷È·ÉùÃ÷²¢ÉèÖÃÎªÃ»ÓĞ¶ÔÓ¦ÊµÌå²¿·Ö
-			// ÕâÑù×öµÄÔ­ÒòÊÇÔÊĞíÓÃ»§ÔÚdefÎÄ¼ş¶¨ÒåÕâ²¿·ÖµÄÄÚÈİ(ÒòÎªinterfaceµÄ´æÔÚ£¬interfaceÖĞ¿ÉÄÜ»á´æÔÚcellÊôĞÔ»òÕß·½·¨)
-			// µ«Èç¹û½Å±¾²»´æÔÚÈÔÈ»ÈÏÎªÓÃ»§µ±Ç°²»ĞèÒª¸Ã²¿·Ö
+			// å¦‚æœç”¨æˆ·ä¸å­˜åœ¨æ˜ç¡®å£°æ˜å¹¶è®¾ç½®ä¸ºæ²¡æœ‰å¯¹åº”å®ä½“éƒ¨åˆ†
+			// è¿™æ ·åšçš„åŸå› æ˜¯å…è®¸ç”¨æˆ·åœ¨defæ–‡ä»¶å®šä¹‰è¿™éƒ¨åˆ†çš„å†…å®¹(å› ä¸ºinterfaceçš„å­˜åœ¨ï¼Œinterfaceä¸­å¯èƒ½ä¼šå­˜åœ¨cellå±æ€§æˆ–è€…æ–¹æ³•)
+			// ä½†å¦‚æœè„šæœ¬ä¸å­˜åœ¨ä»ç„¶è®¤ä¸ºç”¨æˆ·å½“å‰ä¸éœ€è¦è¯¥éƒ¨åˆ†
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setCell(true);
 		}
 		else
 		{
-			// ÓÃ»§Ã÷È·ÉùÃ÷²¢½øĞĞÁËÉè¶¨
+			// ç”¨æˆ·æ˜ç¡®å£°æ˜å¹¶è¿›è¡Œäº†è®¾å®š
 			setCell(assertionHasCell == 1);
 		}
 	}
@@ -498,15 +498,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if(assertionHasCell < 0)
 		{
-			// Èç¹ûÓÃ»§²»´æÔÚÃ÷È·ÉùÃ÷²¢ÉèÖÃÎªÃ»ÓĞ¶ÔÓ¦ÊµÌå²¿·Ö
-			// ÕâÑù×öµÄÔ­ÒòÊÇÔÊĞíÓÃ»§ÔÚdefÎÄ¼ş¶¨ÒåÕâ²¿·ÖµÄÄÚÈİ(ÒòÎªinterfaceµÄ´æÔÚ£¬interfaceÖĞ¿ÉÄÜ»á´æÔÚcellÊôĞÔ»òÕß·½·¨)
-			// µ«Èç¹û½Å±¾²»´æÔÚÈÔÈ»ÈÏÎªÓÃ»§µ±Ç°²»ĞèÒª¸Ã²¿·Ö
+			// å¦‚æœç”¨æˆ·ä¸å­˜åœ¨æ˜ç¡®å£°æ˜å¹¶è®¾ç½®ä¸ºæ²¡æœ‰å¯¹åº”å®ä½“éƒ¨åˆ†
+			// è¿™æ ·åšçš„åŸå› æ˜¯å…è®¸ç”¨æˆ·åœ¨defæ–‡ä»¶å®šä¹‰è¿™éƒ¨åˆ†çš„å†…å®¹(å› ä¸ºinterfaceçš„å­˜åœ¨ï¼Œinterfaceä¸­å¯èƒ½ä¼šå­˜åœ¨cellå±æ€§æˆ–è€…æ–¹æ³•)
+			// ä½†å¦‚æœè„šæœ¬ä¸å­˜åœ¨ä»ç„¶è®¤ä¸ºç”¨æˆ·å½“å‰ä¸éœ€è¦è¯¥éƒ¨åˆ†
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setCell(false);
 		}
 		else
 		{
-			// ÓÃ»§Ã÷È·ÉùÃ÷²¢½øĞĞÁËÉè¶¨
+			// ç”¨æˆ·æ˜ç¡®å£°æ˜å¹¶è¿›è¡Œäº†è®¾å®š
 			setCell(assertionHasCell == 1);
 		}
 	}
@@ -528,7 +528,7 @@ bool ScriptDefModule::addPropertyDescription(const char* attrName,
 			propertyDescr = &getCellPropertyDescriptions();
 			propertyDescr_uidmap = &getCellPropertyDescriptions_uidmap();
 			
-			// ÅĞ¶ÏËûÃÇÊÇÊ²Ã´¼¶±ğµÄÊôĞÔ£¬ ½«Æä±£´æµ½¶ÔÓ¦detailLevelµÄµØ·½
+			// åˆ¤æ–­ä»–ä»¬æ˜¯ä»€ä¹ˆçº§åˆ«çš„å±æ€§ï¼Œ å°†å…¶ä¿å­˜åˆ°å¯¹åº”detailLevelçš„åœ°æ–¹
 			if((propertyDescription->getFlags() & ENTITY_CLIENT_DATA_FLAGS) > 0){
 				cellDetailLevelPropertyDescrs_[propertyDescription->getDetailLevel()][attrName] = propertyDescription;
 			}
@@ -562,7 +562,7 @@ bool ScriptDefModule::addPropertyDescription(const char* attrName,
 	propertyDescription->incRef();
 
 
-	// ÅĞ¶ÏÊÇ·ñÊÇ´æ´¢ÊôĞÔ£¬ ÊÇ¾Í´æ´¢µ½persistentPropertyDescr_
+	// åˆ¤æ–­æ˜¯å¦æ˜¯å­˜å‚¨å±æ€§ï¼Œ æ˜¯å°±å­˜å‚¨åˆ°persistentPropertyDescr_
 	if(propertyDescription->isPersistent())
 	{
 		PROPERTYDESCRIPTION_MAP::const_iterator pciter = 

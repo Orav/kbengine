@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -48,11 +48,11 @@ public:
 	}
 
 	/**
-		´Ó±íÖĞ²éÑ¯Êı¾İ
+		ä»è¡¨ä¸­æŸ¥è¯¢æ•°æ®
 	*/
 	static bool queryDB(DBInterface* pdbi, mysql::DBContext& context)
 	{
-		// ¸ù¾İÄ³¸ödbid»ñµÃÒ»ÕÅ±íÉÏµÄÏà¹ØÊı¾İ
+		// æ ¹æ®æŸä¸ªdbidè·å¾—ä¸€å¼ è¡¨ä¸Šçš„ç›¸å…³æ•°æ®
 		SqlStatement* pSqlcmd = new SqlStatementQuery(pdbi, context.tableName, 
 			context.dbids[context.dbid], 
 			context.dbid, context.items);
@@ -64,7 +64,7 @@ public:
 		if(!ret)
 			return ret;
 
-		// ½«²éÑ¯µ½µÄ½á¹ûĞ´ÈëÉÏÏÂÎÄ
+		// å°†æŸ¥è¯¢åˆ°çš„ç»“æœå†™å…¥ä¸Šä¸‹æ–‡
 		MYSQL_RES * pResult = mysql_store_result(static_cast<DBInterfaceMysql*>(pdbi)->mysql());
 
 		if(pResult)
@@ -79,16 +79,16 @@ public:
 
 				unsigned long *lengths = mysql_fetch_lengths(pResult);
 
-				// ²éÑ¯ÃüÁî±£Ö¤ÁË²éÑ¯µ½µÄÃ¿Ìõ¼ÇÂ¼¶¼»áÓĞdbid
+				// æŸ¥è¯¢å‘½ä»¤ä¿è¯äº†æŸ¥è¯¢åˆ°çš„æ¯æ¡è®°å½•éƒ½ä¼šæœ‰dbid
 				std::stringstream sval;
 				sval << arow[0];
 				DBID item_dbid;
 				sval >> item_dbid;
 
-				// ½«dbid¼ÇÂ¼µ½ÁĞ±íÖĞ£¬Èç¹ûµ±Ç°±í»¹´æÔÚ×Ó±íÒıÓÃÔò»áÈ¥×Ó±í²éÃ¿Ò»ÌõÓë´ËdbidÏà¹ØµÄ¼ÇÂ¼
+				// å°†dbidè®°å½•åˆ°åˆ—è¡¨ä¸­ï¼Œå¦‚æœå½“å‰è¡¨è¿˜å­˜åœ¨å­è¡¨å¼•ç”¨åˆ™ä¼šå»å­è¡¨æŸ¥æ¯ä¸€æ¡ä¸æ­¤dbidç›¸å…³çš„è®°å½•
 				context.dbids[context.dbid].push_back(item_dbid);
 
-				// Èç¹ûÕâÌõ¼ÇÂ¼³ıÁËdbidÒÔÍâ»¹´æÔÚÆäËûÊı¾İ£¬Ôò½«Êı¾İÌî³äµ½½á¹û¼¯ÖĞ
+				// å¦‚æœè¿™æ¡è®°å½•é™¤äº†dbidä»¥å¤–è¿˜å­˜åœ¨å…¶ä»–æ•°æ®ï¼Œåˆ™å°†æ•°æ®å¡«å……åˆ°ç»“æœé›†ä¸­
 				if(nfields > 1)
 				{
 					KBE_ASSERT(nfields == context.items.size() + 1);
@@ -108,13 +108,13 @@ public:
 		
 		std::vector<DBID>& dbids = context.dbids[context.dbid];
 
-		// Èç¹ûÃ»ÓĞÊı¾İÔò²éÑ¯Íê±ÏÁË
+		// å¦‚æœæ²¡æœ‰æ•°æ®åˆ™æŸ¥è¯¢å®Œæ¯•äº†
 		if(dbids.size() == 0)
 			return true;
 
-		// Èç¹ûµ±Ç°±í´æÔÚ×Ó±íÒıÓÃÔòĞèÒª¼ÌĞø²éÑ¯×Ó±í
-		// Ã¿Ò»¸ödbid¶¼ĞèÒª»ñµÃ×Ó±íÉÏµÄÊı¾İ
-		// ÔÚÕâÀïÎÒÃÇÈÃ×Ó±íÒ»´Î²éÑ¯³öËùÓĞµÄdbidsÊı¾İÈ»ºóÌî³äµ½½á¹û¼¯
+		// å¦‚æœå½“å‰è¡¨å­˜åœ¨å­è¡¨å¼•ç”¨åˆ™éœ€è¦ç»§ç»­æŸ¥è¯¢å­è¡¨
+		// æ¯ä¸€ä¸ªdbidéƒ½éœ€è¦è·å¾—å­è¡¨ä¸Šçš„æ•°æ®
+		// åœ¨è¿™é‡Œæˆ‘ä»¬è®©å­è¡¨ä¸€æ¬¡æŸ¥è¯¢å‡ºæ‰€æœ‰çš„dbidsæ•°æ®ç„¶åå¡«å……åˆ°ç»“æœé›†
 
 		mysql::DBContext::DB_RW_CONTEXTS::iterator iter1 = context.optable.begin();
 		for(; iter1 != context.optable.end(); ++iter1)
@@ -129,11 +129,11 @@ public:
 
 
 	/**
-		´Ó×Ó±íÖĞ²éÑ¯Êı¾İ
+		ä»å­è¡¨ä¸­æŸ¥è¯¢æ•°æ®
 	*/
 	static bool queryChildDB(DBInterface* pdbi, mysql::DBContext& context, std::vector<DBID>& parentTableDBIDs)
 	{
-		// ¸ù¾İÄ³¸ödbid»ñµÃÒ»ÕÅ±íÉÏµÄÏà¹ØÊı¾İ
+		// æ ¹æ®æŸä¸ªdbidè·å¾—ä¸€å¼ è¡¨ä¸Šçš„ç›¸å…³æ•°æ®
 		SqlStatement* pSqlcmd = new SqlStatementQuery(pdbi, context.tableName, 
 			parentTableDBIDs, 
 			context.dbid, context.items);
@@ -147,7 +147,7 @@ public:
 
 		std::vector<DBID> t_parentTableDBIDs;
 
-		// ½«²éÑ¯µ½µÄ½á¹ûĞ´ÈëÉÏÏÂÎÄ
+		// å°†æŸ¥è¯¢åˆ°çš„ç»“æœå†™å…¥ä¸Šä¸‹æ–‡
 		MYSQL_RES * pResult = mysql_store_result(static_cast<DBInterfaceMysql*>(pdbi)->mysql());
 
 		if(pResult)
@@ -162,7 +162,7 @@ public:
 
 				unsigned long *lengths = mysql_fetch_lengths(pResult);
 
-				// ²éÑ¯ÃüÁî±£Ö¤ÁË²éÑ¯µ½µÄÃ¿Ìõ¼ÇÂ¼¶¼»áÓĞdbid
+				// æŸ¥è¯¢å‘½ä»¤ä¿è¯äº†æŸ¥è¯¢åˆ°çš„æ¯æ¡è®°å½•éƒ½ä¼šæœ‰dbid
 				std::stringstream sval;
 				sval << arow[0];
 				DBID item_dbid;
@@ -173,11 +173,11 @@ public:
 				DBID parentID;
 				sval >> parentID;
 
-				// ½«dbid¼ÇÂ¼µ½ÁĞ±íÖĞ£¬Èç¹ûµ±Ç°±í»¹´æÔÚ×Ó±íÒıÓÃÔò»áÈ¥×Ó±í²éÃ¿Ò»ÌõÓë´ËdbidÏà¹ØµÄ¼ÇÂ¼
+				// å°†dbidè®°å½•åˆ°åˆ—è¡¨ä¸­ï¼Œå¦‚æœå½“å‰è¡¨è¿˜å­˜åœ¨å­è¡¨å¼•ç”¨åˆ™ä¼šå»å­è¡¨æŸ¥æ¯ä¸€æ¡ä¸æ­¤dbidç›¸å…³çš„è®°å½•
 				context.dbids[parentID].push_back(item_dbid);
 				t_parentTableDBIDs.push_back(item_dbid);
 
-				// Èç¹ûÕâÌõ¼ÇÂ¼³ıÁËdbidÒÔÍâ»¹´æÔÚÆäËûÊı¾İ£¬Ôò½«Êı¾İÌî³äµ½½á¹û¼¯ÖĞ
+				// å¦‚æœè¿™æ¡è®°å½•é™¤äº†dbidä»¥å¤–è¿˜å­˜åœ¨å…¶ä»–æ•°æ®ï¼Œåˆ™å°†æ•°æ®å¡«å……åˆ°ç»“æœé›†ä¸­
 				const uint32 const_fields = 2; // id, parentID
 				if(nfields > const_fields)
 				{
@@ -196,13 +196,13 @@ public:
 			mysql_free_result(pResult);
 		}
 
-		// Èç¹ûÃ»ÓĞÊı¾İÔò²éÑ¯Íê±ÏÁË
+		// å¦‚æœæ²¡æœ‰æ•°æ®åˆ™æŸ¥è¯¢å®Œæ¯•äº†
 		if(t_parentTableDBIDs.size() == 0)
 			return true;
 
-		// Èç¹ûµ±Ç°±í´æÔÚ×Ó±íÒıÓÃÔòĞèÒª¼ÌĞø²éÑ¯×Ó±í
-		// Ã¿Ò»¸ödbid¶¼ĞèÒª»ñµÃ×Ó±íÉÏµÄÊı¾İ
-		// ÔÚÕâÀïÎÒÃÇÈÃ×Ó±íÒ»´Î²éÑ¯³öËùÓĞµÄdbidsÊı¾İÈ»ºóÌî³äµ½½á¹û¼¯
+		// å¦‚æœå½“å‰è¡¨å­˜åœ¨å­è¡¨å¼•ç”¨åˆ™éœ€è¦ç»§ç»­æŸ¥è¯¢å­è¡¨
+		// æ¯ä¸€ä¸ªdbidéƒ½éœ€è¦è·å¾—å­è¡¨ä¸Šçš„æ•°æ®
+		// åœ¨è¿™é‡Œæˆ‘ä»¬è®©å­è¡¨ä¸€æ¬¡æŸ¥è¯¢å‡ºæ‰€æœ‰çš„dbidsæ•°æ®ç„¶åå¡«å……åˆ°ç»“æœé›†
 		mysql::DBContext::DB_RW_CONTEXTS::iterator iter1 = context.optable.begin();
 		for(; iter1 != context.optable.end(); ++iter1)
 		{
