@@ -61,7 +61,7 @@ PropertyDescription::PropertyDescription(ENTITY_PROPERTY_UID utype,
 {
 	dataType_->incRef();
 
-	// mailbox 无法保存
+	// Mailbox could not be saved
 	if(isPersistent && strcmp(dataType_->getName(), "MAILBOX") == 0)
 	{
 		isPersistent_ = false;
@@ -110,7 +110,7 @@ PyObject* PropertyDescription::createFromStream(MemoryStream* mstream)
 //-------------------------------------------------------------------------------------
 void PropertyDescription::addPersistentToStream(MemoryStream* mstream, PyObject* pyValue)
 {
-	// 允许使用默认值来创建一个流
+	// Allow default values are used to create a stream
 	if(pyValue == NULL)
 	{
 		pyValue = newDefaultVal();
@@ -262,7 +262,7 @@ PyObject* FixedDictDescription::onSetValue(PyObject* parentObj, PyObject* value)
 //-------------------------------------------------------------------------------------
 void FixedDictDescription::addPersistentToStream(MemoryStream* mstream, PyObject* pyValue)
 {
-	// 允许使用默认值来创建一个流
+	// Allow default values are used to create a stream
 	if(pyValue == NULL)
 	{
 		pyValue = newDefaultVal();
@@ -321,7 +321,7 @@ PyObject* ArrayDescription::onSetValue(PyObject* parentObj, PyObject* value)
 //-------------------------------------------------------------------------------------
 void ArrayDescription::addPersistentToStream(MemoryStream* mstream, PyObject* pyValue)
 {
-	// 允许使用默认值来创建一个流
+	// Allow default values are used to create a stream
 	if(pyValue == NULL)
 	{
 		pyValue = newDefaultVal();

@@ -330,21 +330,21 @@ PyObject* ScriptDefModule::getInitDict(void)
 void ScriptDefModule::autoMatchCompOwn()
 {
 	/*
-		entity存在某部分(cell, base, client)的判定规则
+		Entity there is some parts (cell, base, client) determine the rules
 
-		1: entitydef文件中存在实体某部分的方法或者属性，同时也必须也存在py脚本
-		2: 用户在entities.xml明确声明存在某实体部分(为了unity3d或者html5类的前端无法加载py的环境考虑)
+		1: Entitydef methods or properties for entities of a given part exist in the file, and must also exist py script
+		2: Users in part of the entities.XML make it clear there is some entity (unity3d or HTML5 front end py environmental concerns could not be loaded)
 			entities.xml， <Spaces hasCell="true" hasClient="false", hasBase="true"></Spaces>
 	*/
 
 	std::string entitiesFile = Resmgr::getSingleton().getPyUserScriptsPath() + "entities.xml";
 
-	// 打开这个entities.xml文件
+	// Open the entities.XML file
 	SmartPointer<XML> xml(new XML());
 	if(!xml->openSection(entitiesFile.c_str()) || !xml->isGood())
 		return;
 	
-	// 获得entities.xml根节点, 如果没有定义一个entity那么直接返回true
+	// Access to entities.XML the root node, if an entity is not defined then return true
 	TiXmlNode* node = xml->getRootNode();
 	if(node == NULL)
 		return;
@@ -353,7 +353,7 @@ void ScriptDefModule::autoMatchCompOwn()
 	int assertionHasBase = -1;
 	int assertionHasCell = -1;
 
-	// 开始遍历所有的entity节点
+	// Traversing all of the entity node
 	XML_FOR_BEGIN(node)
 	{
 		std::string moduleName = xml.get()->getKey(node);
@@ -403,15 +403,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if (assertionHasClient < 0)
 		{
-			// 如果用户不存在明确声明并设置为没有对应实体部分
-			// 这样做的原因是允许用户在def文件定义这部分的内容(因为interface的存在，interface中可能会存在客户端属性或者方法)
-			// 但如果脚本不存在仍然认为用户当前不需要该部分
+			// If the user does not explicitly declared and set to no corresponding part entities
+			// Reason for this is to allow users in the def file defines which part of the content (because the interface exists, there may be client properties or methods in the interface)
+			// But if the script does not exist still think users do not currently need the part
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setClient(true);
 		}
 		else
 		{
-			// 用户明确声明并进行了设定
+			// Users expressly declare and set
 			setClient(assertionHasClient == 1);
 		}
 	}
@@ -419,15 +419,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if(assertionHasClient < 0)
 		{
-			// 如果用户不存在明确声明并设置为没有对应实体部分
-			// 这样做的原因是允许用户在def文件定义这部分的内容(因为interface的存在，interface中可能会存在客户端属性或者方法)
-			// 但如果脚本不存在仍然认为用户当前不需要该部分
+			// If the user does not explicitly declared and set to no corresponding part entities
+			// Reason for this is to allow users in the def file defines which part of the content (because the interface exists, there may be client properties or methods in the interface)
+			// But if the script does not exist still think users do not currently need the part
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setClient(false);
 		}
 		else
 		{
-			// 用户明确声明并进行了设定
+			// Users expressly declare and set
 			setClient(assertionHasClient == 1);
 		}
 	}
@@ -446,15 +446,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if (assertionHasBase < 0)
 		{
-			// 如果用户不存在明确声明并设置为没有对应实体部分
-			// 这样做的原因是允许用户在def文件定义这部分的内容(因为interface的存在，interface中可能会存在base属性或者方法)
-			// 但如果脚本不存在仍然认为用户当前不需要该部分
+			// If the user does not explicitly declared and set to no corresponding part entities
+			// Reason for this is to allow users in the def file defines which part of the content (because there are interface, interface base might exist in the property or method)
+			// But if the script does not exist still think users do not currently need the part
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setBase(true);
 		}
 		else
 		{
-			// 用户明确声明并进行了设定
+			// Users expressly declare and set
 			setBase(assertionHasBase == 1);
 		}
 	}
@@ -462,9 +462,9 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if(assertionHasBase < 0)
 		{
-			// 如果用户不存在明确声明并设置为没有对应实体部分
-			// 这样做的原因是允许用户在def文件定义这部分的内容(因为interface的存在，interface中可能会存在base属性或者方法)
-			// 但如果脚本不存在仍然认为用户当前不需要该部分
+			// If the user does not explicitly declared and set to no corresponding part entities
+			// Reason for this is to allow users in the def file defines which part of the content (because there are interface, interface base might exist in the property or method)
+			// But if the script does not exist still think users do not currently need the part
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setBase(false);
 		}
@@ -482,15 +482,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if (assertionHasCell < 0)
 		{
-			// 如果用户不存在明确声明并设置为没有对应实体部分
-			// 这样做的原因是允许用户在def文件定义这部分的内容(因为interface的存在，interface中可能会存在cell属性或者方法)
-			// 但如果脚本不存在仍然认为用户当前不需要该部分
+			// If the user does not explicitly declared and set to no corresponding part entities
+			// Reason for this is to allow users in the def file defines which part of the content (because there are interface, cell properties may exist in the interface or method)
+			// But if the script does not exist still think users do not currently need the part
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setCell(true);
 		}
 		else
 		{
-			// 用户明确声明并进行了设定
+			// Users expressly declare and set
 			setCell(assertionHasCell == 1);
 		}
 	}
@@ -498,15 +498,15 @@ void ScriptDefModule::autoMatchCompOwn()
 	{
 		if(assertionHasCell < 0)
 		{
-			// 如果用户不存在明确声明并设置为没有对应实体部分
-			// 这样做的原因是允许用户在def文件定义这部分的内容(因为interface的存在，interface中可能会存在cell属性或者方法)
-			// 但如果脚本不存在仍然认为用户当前不需要该部分
+			// If the user does not explicitly declared and set to no corresponding part entities
+			// Reason for this is to allow users in the def file defines which part of the content (because there are interface, cell properties may exist in the interface or method)
+			// But if the script does not exist still think users do not currently need the part
 			// http://www.kbengine.org/cn/docs/configuration/entities.html 
 			setCell(false);
 		}
 		else
 		{
-			// 用户明确声明并进行了设定
+			// Users expressly declare and set
 			setCell(assertionHasCell == 1);
 		}
 	}
@@ -528,7 +528,7 @@ bool ScriptDefModule::addPropertyDescription(const char* attrName,
 			propertyDescr = &getCellPropertyDescriptions();
 			propertyDescr_uidmap = &getCellPropertyDescriptions_uidmap();
 			
-			// 判断他们是什么级别的属性， 将其保存到对应detailLevel的地方
+			// What is their level of property, save it to the corresponding detail level
 			if((propertyDescription->getFlags() & ENTITY_CLIENT_DATA_FLAGS) > 0){
 				cellDetailLevelPropertyDescrs_[propertyDescription->getDetailLevel()][attrName] = propertyDescription;
 			}
@@ -562,7 +562,7 @@ bool ScriptDefModule::addPropertyDescription(const char* attrName,
 	propertyDescription->incRef();
 
 
-	// 判断是否是存储属性， 是就存储到persistentPropertyDescr_
+	// Judge whether the property is stored, is stored in the persistent property descr 
 	if(propertyDescription->isPersistent())
 	{
 		PROPERTYDESCRIPTION_MAP::const_iterator pciter = 

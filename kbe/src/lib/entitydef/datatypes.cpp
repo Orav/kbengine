@@ -54,7 +54,7 @@ void DataTypes::finalise(void)
 //-------------------------------------------------------------------------------------
 bool DataTypes::initialize(std::string file)
 {
-	// 初始化一些基础类别
+	// Initializes base class
 	addDataType("UINT8",	new IntType<uint8>);
 	addDataType("UINT16",	new IntType<uint16>);
 	addDataType("UINT64",	new UInt64Type);
@@ -95,7 +95,7 @@ bool DataTypes::loadAlias(std::string& file)
 
 	if(node == NULL)
 	{
-		// root节点下没有子节点了
+		// Under the root node has no child nodes
 		return true;
 	}
 

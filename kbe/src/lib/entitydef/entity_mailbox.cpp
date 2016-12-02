@@ -32,7 +32,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine
 {
 
-// 获得某个entity的函数地址
+// Get a function address entity
 EntityMailbox::GetEntityFunc EntityMailbox::__getEntityFunc;
 EntityMailbox::FindChannelFunc EntityMailbox::__findChannelFunc;
 EntityMailbox::MailboxCallHookFunc*	EntityMailbox::__hookCallFuncPtr = NULL;
@@ -78,7 +78,7 @@ EntityMailbox::~EntityMailbox()
 	KBE_ASSERT(atIdx_ < EntityMailbox::mailboxs.size());
 	KBE_ASSERT(EntityMailbox::mailboxs[ atIdx_ ] == this);
 
-	// 如果有2个或以上的Mailbox则将最后一个Mailbox移至删除的这个Mailbox所在位置
+	// If there are 2 or more Mailbox a Mailbox is finally moved to delete the Mailbox location
 	EntityMailbox* pBack = EntityMailbox::mailboxs.back();
 	pBack->_setATIdx(atIdx_);
 	EntityMailbox::mailboxs[atIdx_] = pBack;
@@ -148,7 +148,7 @@ PyObject* EntityMailbox::onScriptGetAttribute(PyObject* attr)
 		return createRemoteMethod(pMethodDescription);
 	}
 
-	// 首先要求名称不能为自己  比如：自身是一个cell， 不能使用cell.cell
+	// First name cannot be its own such as: self is a cell, you cannot use the cell.cell
 	if(strcmp(ccattr, ENTITY_MAILBOX_TYPE_TO_NAME_TABLE[type_]) != 0)
 	{
 		int8 mbtype = -1;

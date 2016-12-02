@@ -74,10 +74,10 @@ EntityMailboxAbstract::~EntityMailboxAbstract()
 //-------------------------------------------------------------------------------------
 void EntityMailboxAbstract::newMail(Network::Bundle& bundle)
 {
-	// 如果是server端的mailbox
+	// If it is a server-side mailbox
 	if(g_componentType != CLIENT_TYPE && g_componentType != BOTS_TYPE)
 	{
-		// 如果ID为0，则这是一个客户端组件，否则为服务端。
+		// If the ID is 0, then this is a client-side component, otherwise the server-side.
 		if(componentID_ == 0)
 		{
 			bundle.newMessage(ClientInterface::onRemoteMethodCall);
@@ -88,7 +88,7 @@ void EntityMailboxAbstract::newMail(Network::Bundle& bundle)
 
 			if(cinfos != NULL)
 			{
-				// 找到对应的组件投递过去， 如果这个mailbox还需要中转比如 e.base.cell ， 则由baseapp转往cellapp
+				// Post a component found in the past, if the mailbox needs to transit such as e.base.cell, by baseapp transferred cellapp
 				if(cinfos->componentType == BASEAPP_TYPE)
 				{
 					bundle.newMessage(BaseappInterface::onEntityMail);
@@ -107,13 +107,13 @@ void EntityMailboxAbstract::newMail(Network::Bundle& bundle)
 
 		bundle << id_;
 		
-		// 如果是发往客户端的包则无需附加这样一个类型
+		// If the package is sent to the client is not necessary to attach such a type
 		if(componentID_ > 0)
 			bundle << type_;
 	}
 	else
 	{
-		// 如果是客户端上的mailbox调用服务端方法只存在调用cell或者base
+		// If the mailbox is on the client calls the server-side method calls the cell or base
 		switch(type_)
 		{
 		case MAILBOX_TYPE_BASE:

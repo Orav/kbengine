@@ -1268,7 +1268,7 @@ void MailboxType::addToStream(MemoryStream* mstream, PyObject* pyValue)
 				if(stype == NULL)
 					continue;
 
-				// 是否是一个entity?
+				// If it is an entity?
 				if(PyObject_IsInstance(pyValue, (PyObject *)stype))
 				{
 					PyObject* pyid = PyObject_GetAttrString(pyValue, "id");
@@ -1280,7 +1280,7 @@ void MailboxType::addToStream(MemoryStream* mstream, PyObject* pyValue)
 					}
 					else
 					{
-						// 某些情况下会为NULL， 例如：使用了weakproxy，而mailbox已经变为NULL了
+						// Some cases will be NULL, for example, use weakproxy, and the mailbox has become NULL
 						SCRIPT_ERROR_CHECK();
 						id = 0;
 						cid = 0;
@@ -1314,7 +1314,7 @@ void MailboxType::addToStream(MemoryStream* mstream, PyObject* pyValue)
 			}
 		}
 		
-		// 只能是mailbox
+		// Only mailbox
 		if(id == 0)
 		{
 			EntityMailboxAbstract* pEntityMailboxAbstract = static_cast<EntityMailboxAbstract*>(pyValue);
@@ -1343,7 +1343,7 @@ PyObject* MailboxType::createFromStream(MemoryStream* mstream)
 
 		(*mstream) >> id >> cid >> type >> utype;
 
-		// 允许传输Py_None
+		// Allow Py None
 		if(id > 0)
 		{
 			PyObject* entity = EntityMailbox::tryGetEntity(cid, id);
@@ -1677,8 +1677,8 @@ PyObject* FixedDictType::createNewFromObj(PyObject* pyobj)
 		return impl_createObjFromDict(pyobj);
 	}
 
-	// 可能在传入参数的时候已经是FixedDict类型了, 因为parseDefaultStr
-	// 会初始为最终对象类型
+	// In the incoming parameter is already Fixed dict type because parse default str
+	// Initial to the final object type
 	if(PyObject_TypeCheck(pyobj, FixedDict::getScriptType()))
 	{
 		Py_INCREF(pyobj);
@@ -1895,8 +1895,8 @@ bool FixedDictType::loadImplModule(std::string moduleName)
 //-------------------------------------------------------------------------------------
 PyObject* FixedDictType::impl_createObjFromDict(PyObject* dictData)
 {
-	// 可能在传入参数的时候已经是用户类型了, 因为parseDefaultStr
-	// 会初始为最终对象类型
+	// Might be passed in the parameter when user types because parse default str
+	// Initial to the final object type
 	if(impl_isSameType(dictData))
 	{
 		Py_INCREF(dictData);
@@ -1992,8 +1992,8 @@ bool FixedDictType::isSameType(PyObject* pyValue)
 
 	if(hasImpl())
 	{
-		// 这里返回false后还继续判断的原因是isSameType因为相关特性
-		// fixeddict或者用户产生的类别都应该是合法的
+		// After returning false here, continue to judge the reason is same type-related attributes
+		// Fixeddict or categories of users should be legal
 		if(impl_isSameType(pyValue))
 			return true;
 	}
