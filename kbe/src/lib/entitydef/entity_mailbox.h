@@ -45,7 +45,7 @@ class MethodDescription;
 
 class EntityMailbox : public EntityMailboxAbstract
 {
-	/** 子类化 将一些py操作填充进派生类 */
+	/** Subclass py operations filling in a derived class */
 	INSTANCE_SCRIPT_HREADER(EntityMailbox, EntityMailboxAbstract)
 public:
 	typedef std::tr1::function<RemoteEntityMethod* (MethodDescription* pMethodDescription, EntityMailbox* pMailbox)> MailboxCallHookFunc;
@@ -58,12 +58,12 @@ public:
 	~EntityMailbox();
 	
 	/** 
-		脚本请求获取属性或者方法 
+		Script requests to obtain property or method 
 	*/
 	PyObject* onScriptGetAttribute(PyObject* attr);						
 			
 	/** 
-		获得对象的描述 
+		Get object descriptions 
 	*/
 	PyObject* tp_repr();
 	PyObject* tp_str();
@@ -71,36 +71,36 @@ public:
 	void c_str(char* s, size_t size);
 
 	/** 
-		unpickle方法 
+		Unpickle method 
 	*/
 	static PyObject* __unpickle__(PyObject* self, PyObject* args);
 
 	/** 
-		脚本被安装时被调用 
+		Is called when the script is installed 
 	*/
 	static void onInstallScript(PyObject* mod);
 
 	/** 
-		通过entity的ID尝试寻找它的实例
+		By entity ID try to find an instance of it
 	*/
 	static PyObject* tryGetEntity(COMPONENT_ID componentID, ENTITY_ID entityID);
 
 	/** 
-		设置mailbox的__getEntityFunc函数地址 
+		Set get entity func function mailbox address 
 	*/
 	static void setGetEntityFunc(GetEntityFunc func){ 
 		__getEntityFunc = func; 
 	};
 
 	/** 
-		设置mailbox的__findChannelFunc函数地址 
+		Find channel func function set mailbox address 
 	*/
 	static void setFindChannelFunc(FindChannelFunc func){ 
 		__findChannelFunc = func; 
 	};
 
 	/** 
-		设置mailbox的__hookCallFunc函数地址 
+		Set the hook call func function mailbox address 
 	*/
 	static void setMailboxCallHookFunc(MailboxCallHookFunc* pFunc){ 
 		__hookCallFuncPtr = pFunc; 
@@ -122,7 +122,7 @@ public:
 	static MAILBOXS mailboxs;
 	
 private:
-	// 获得一个entity的实体的函数地址
+	// Get an entity entity function address
 	static GetEntityFunc					__getEntityFunc;
 	static MailboxCallHookFunc*				__hookCallFuncPtr;
 	static FindChannelFunc					__findChannelFunc;
@@ -130,7 +130,7 @@ private:
 protected:
 	std::string								scriptModuleName_;
 
-	// 该entity所使用的脚本模块对象
+	// The entity objects using script module
 	ScriptDefModule*						pScriptModule_;	
 
 	void _setATIdx(MAILBOXS::size_type idx) { 

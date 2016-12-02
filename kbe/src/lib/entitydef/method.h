@@ -66,23 +66,23 @@ public:
 	size_t getArgSize(void);
 	
 	/** 
-		检查一个call是否合法 
+		Check whether a call is legitimate 
 	*/
 	bool checkArgs(PyObject* args);		
 	
 	/** 
-		将每个参数打包添加到流， 
-		这个流里包含的信息是这个方法在脚本被调用时里传入的参数 
+		Add to package each parameter to the stream, 
+		Information contained in this stream is the method in the script when it is invoked, passing parameters 
 	*/
 	void addToStream(MemoryStream* mstream, PyObject* args);
 
 	/** 
-		将一个call流解包 并返回一个PyObject类型的args 
+		Unpacks and returns a call flow type Py object args 
 	*/
 	PyObject* createFromStream(MemoryStream* mstream);
 	
 	/** 
-		呼叫一个方法 
+		Call a method 
 	*/
 	PyObject* call(PyObject* func, PyObject* args);	
 
@@ -95,28 +95,29 @@ public:
 	INLINE bool isBase() const;
 
 	/** 
-		别名id， 当暴露的方法或者广播的属性总个数小于255时
-		我们不使用utype而使用1字节的aliasID来传输
+		Alias ID, when exposed to or broadcast properties total number is less than 255
+		We do not use alias iD uType uses 1 byte to transmit
 	*/
 	INLINE int16 aliasID() const;
 	INLINE uint8 aliasIDAsUint8() const;
 	INLINE void aliasID(int16 v);
 	
 protected:
-	static uint32							methodDescriptionCount_;					// 所有的属性描述的数量
+	static uint32							methodDescriptionCount_;					// All property descriptions for quantities
 
 	COMPONENT_ID							methodDomain_;
 
-	std::string								name_;										// 这个方法的名称
-	ENTITY_METHOD_UID						utype_;										// 这个方法的数字类别， 用于网络上传输识别
+	std::string								name_;										// The name of this method
+	ENTITY_METHOD_UID						utype_;										// This digit, used for transmission on the network to identify
 
-	std::vector<DataType*>					argTypes_;									// 这个属性的参数类别列表
+	std::vector<DataType*>					argTypes_;									// This parameter category list of properties
 
-	bool									isExposed_;									// 是否是一个暴露方法
+	bool									isExposed_;									// Is an exposed method
 
-	ENTITY_ID								currCallerID_;								// 当前调用这个方法的调用者ID, 提供暴露方法调用时给脚本判断调用源防止作弊
+	ENTITY_ID								currCallerID_;								// The current caller ID calls this method, called provides exposes methods to the script when it is invoked to determine the source to prevent cheating
 
-	int16									aliasID_;									// 别名id， 当暴露的方法或者广播的属性总个数小于255时， 我们不使用utype而使用1字节的aliasID来传输
+	int16									aliasID_;									// Alias ID, when exposed to or broadcast properties total number is less than 255, 
+																						// we do not use the alias iD uType uses 1 byte to transmit
 };
 
 }

@@ -56,82 +56,82 @@ public:
 	virtual ~PropertyDescription();
 	
 	/** 
-		获取这个属性的detailLevel 
+		Gets the property detail level 
 	*/
 	INLINE int8 getDetailLevel(void) const;
 	
 	/** 
-		是否是一个保存到数据库中的属性 
+		Whether the property is saved to the database 
 	*/
 	INLINE bool isPersistent(void) const;
 	
 	/** 
-		获取这个属性的数据类别 
+		Gets the properties of the data categories 
 	*/
 	INLINE DataType* getDataType(void) const;
 	
 	/** 
-		获取属性的标志 cell_public等 
+		Gets property cell, such as public 
 	*/
 	INLINE uint32 getFlags(void) const;
 	
 	/** 
-		获取属性名称 
+		Gets the property name 
 	*/
 	INLINE const char* getName(void) const;
 	
 	/** 
-		获取字符串数据类别名 UINT32, BAG..
+		Gets the string data type UINT32, BAG..
 	*/
 	INLINE const char* getDataTypeName(void) const;
 	
 	/** 
-		获取初始值字符串
+		Gets the initial value string
 	*/
 	INLINE const char* getDefaultValStr(void) const;
 
 	/** 
-		属性的数字类别， 用于网络上传输识别 
+		Property number category, used for transmission on the network to identify 
 	*/
 	INLINE ENTITY_PROPERTY_UID getUType(void) const;
 	
 	/** 
-		获取属性索引类别
+		Gets the attribute index category
 	*/
 	INLINE const char* indexType(void) const;
 
 	/** 
-		别名id， 当暴露的方法或者广播的属性总个数小于255时
-		我们不使用utype而使用1字节的aliasID来传输
+		Alias ID, when exposed to or broadcast properties total number is less than 255
+		We do not use alias iD uType uses 1 byte to transmit
 	*/
 	INLINE int16 aliasID() const;
 	INLINE uint8 aliasIDAsUint8() const;
 	INLINE void aliasID(int16 v);
 
 	/** 
-		设置这个属性为索引键 
+		Setting this property to an index key 
 	*/
 	INLINE void setIdentifier(bool isIdentifier);
 	
 	/** 
-		设置这个属性在数据库中的长度 
+		Sets the length of the attribute in the database 
 	*/
 	INLINE void setDatabaseLength(uint32 databaseLength);
 	INLINE uint32 getDatabaseLength() const;
 
 	/** 
-		获取这个属性描述在def文件中被定义的默认值 
+		This property describes the default values defined in the def file 
 	*/
 	PyObject* newDefaultVal(void);
 	
 	/** 
-		获得属性描述的总数量 
+		Get property description the total number of 
 	*/
 	static uint32 getDescriptionCount(void){ return propertyDescriptionCount_; }
 	static void resetDescriptionCount(void){ propertyDescriptionCount_ = 0; }
 
 	/** 
-		根据类型产生一个描述实例 
+		Type a description instances 
 	*/
 	static PropertyDescription* createDescription(ENTITY_PROPERTY_UID utype, 
 		std::string& dataTypeName, 
@@ -146,7 +146,7 @@ public:
 		DETAIL_TYPE detailLevel);
 	
 	/** 
-		脚本请求设置这个属性的值 
+		Script request to set the value of this property 
 	*/
 	virtual PyObject* onSetValue(PyObject* parentObj, PyObject* value);	
 
@@ -161,19 +161,19 @@ public:
 	INLINE bool hasClient(void) const;
 	
 protected:	
-	static uint32				propertyDescriptionCount_;						// 所有的属性描述的数量	
-	std::string					name_;											// 这个属性的名称
-	std::string					dataTypeName_;									// 这个属性的字符串数据类别名
-	uint32						flags_;											// 这个属性的一些标志  比如 cell_public
-	bool						isPersistent_;									// 是否是一个存储到数据库的属性
-	DataType*					dataType_;										// 这个属性的数据类别
-	bool						isIdentifier_;									// 是否是一个索引键
-	uint32						databaseLength_;								// 这个属性在数据库中的长度
-	ENTITY_PROPERTY_UID			utype_;											// 这个属性的数字类别， 用于网络上传输识别
-	std::string					defaultValStr_;									// 这个属性的默认值
-	DETAIL_TYPE					detailLevel_;									// 这个属性的lod详情级别 看common中的:属性的lod广播级别范围的定义
-	int16						aliasID_;										// 别名id， 当暴露的方法或者广播的属性总个数小于255时， 我们不使用utype而使用1字节的aliasID来传输
-	std::string					indexType_;										// 属性的索引类别，UNIQUE, INDEX，分别对应无设置、唯一索引、普通索引
+	static uint32				propertyDescriptionCount_;						// All property descriptions for quantities	
+	std::string					name_;											// The name of the property
+	std::string					dataTypeName_;									// The properties of the string data type aliases
+	uint32						flags_;											// This attribute some of the flags such as cell public
+	bool						isPersistent_;									// Whether the property is stored in the database
+	DataType*					dataType_;										// This property of the data class
+	bool						isIdentifier_;									// Whether it is a key
+	uint32						databaseLength_;								// The length of the attribute in the database
+	ENTITY_PROPERTY_UID			utype_;											// This property number category, used for transmission on the network to identify
+	std::string					defaultValStr_;									// The default value for this property
+	DETAIL_TYPE					detailLevel_;									// In common the Lod level of details of this property: property of Lod broadcast-level scope definition
+	int16						aliasID_;										// Alias ID, when exposed to or broadcast properties total number is less than 255, we do not use the alias iD uType uses 1 byte to transmit
+	std::string					indexType_;										// Index attributes categories, UNIQUE, INDEX, respectively, no sets, unique indexes, General indexes
 };
 
 class FixedDictDescription : public PropertyDescription
@@ -194,7 +194,7 @@ public:
 	virtual ~FixedDictDescription();
 	
 	/** 
-		脚本请求设置这个属性的值 
+		Script request to set the value of this property 
 	*/
 	PyObject* onSetValue(PyObject* parentObj, PyObject* value);	
 
@@ -225,7 +225,7 @@ public:
 	virtual ~ArrayDescription();
 	
 	/** 
-		脚本请求设置这个属性的值 
+		Script request to set the value of this property 
 	*/
 	PyObject* onSetValue(PyObject* parentObj, PyObject* value);
 
@@ -254,7 +254,7 @@ public:
 	virtual ~VectorDescription();
 	
 	/** 
-		脚本请求设置这个属性的值 
+		Script request to set the value of this property 
 	*/
 	PyObject* onSetValue(PyObject* parentObj, PyObject* value);
 	

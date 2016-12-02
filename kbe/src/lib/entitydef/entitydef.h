@@ -52,7 +52,7 @@ public:
 	~EntityDef();
 	
 	/** 
-		初始化
+		Initialize
 	*/
 	static bool initialize(std::vector<PyTypeObject*>& scriptBaseTypes, 
 		COMPONENT_TYPE loadComponentType);
@@ -62,7 +62,7 @@ public:
 	static void reload(bool fullReload);
 
 	/** 
-		加载相关描述
+		Load description
 	*/
 	static bool loadAllScriptModules(std::string entitiesPath, 
 		std::vector<PyTypeObject*>& scriptBaseTypes);
@@ -123,28 +123,28 @@ public:
 		ScriptDefModule* pScriptModule);
 
 	/** 
-		是否加载这个脚本模块 
+		Whether to load the script module 
 	*/
 	static bool isLoadScriptModule(ScriptDefModule* pScriptModule);
 
 	/** 
-		根据当前组件类别设置是否有cell 或者base 
+		According to the current settings for cell component categories or base 
 	*/
 	static void setScriptModuleHasComponentEntity(ScriptDefModule* pScriptModule, bool has);
 
 	/** 
-		检查脚本模块中被定义的方法是否存在 
+		Check whether the method is defined in a script module 
 	*/
 	static bool checkDefMethod(ScriptDefModule* pScriptModule, PyObject* moduleObj, 
 		const std::string& moduleName);
 	
 	/** 
-		检查脚本模块中被定义的属性是否合法 
+		Check that the properties are defined in the script module is legitimate 
 	*/
 	static bool validDefPropertyName(ScriptDefModule* pScriptModule, const std::string& name);
 
 	/** 
-		通过标记来寻找到对应的脚本模块对象 
+		Find scripting module objects by tag 
 	*/
 	static ScriptDefModule* findScriptModule(ENTITY_SCRIPT_UID utype);
 	static ScriptDefModule* findScriptModule(const char* scriptName);
@@ -187,13 +187,13 @@ public:
 	}
 
 private:
-	static SCRIPT_MODULES __scriptModules;										// 所有的扩展脚本模块都存储在这里
-	static SCRIPT_MODULES __oldScriptModules;									// reload时旧的模块会放到这里用于判断
+	static SCRIPT_MODULES __scriptModules;										// All extend scripts modules are stored here
+	static SCRIPT_MODULES __oldScriptModules;									// When you reload the old modules are used to determine
 
-	static SCRIPT_MODULE_UID_MAP __scriptTypeMappingUType;						// 脚本类别映射utype
-	static SCRIPT_MODULE_UID_MAP __oldScriptTypeMappingUType;					// reload时旧的脚本类别映射utype
+	static SCRIPT_MODULE_UID_MAP __scriptTypeMappingUType;						// Script category map uType
+	static SCRIPT_MODULE_UID_MAP __oldScriptTypeMappingUType;					// Reload old script category map utype
 
-	static COMPONENT_TYPE __loadComponentType;									// 所需关系的组件类别的相关数据		
+	static COMPONENT_TYPE __loadComponentType;									// Relevant data required component categories		
 	static std::vector<PyTypeObject*> __scriptBaseTypes;
 	static std::string __entitiesPath;
 
@@ -201,8 +201,8 @@ private:
 
 	static bool _isInit;
 
-	static bool __entityAliasID;												// 优化EntityID，aoi范围内小于255个EntityID, 传输到client时使用1字节伪ID 
-	static bool __entitydefAliasID;												// 优化entity属性和方法广播时占用的带宽，entity客户端属性或者客户端不超过255个时， 方法uid和属性uid传输到client时使用1字节别名ID
+	static bool __entityAliasID;												// Optimize Entity within the iD,aoi is less than 255 Entity iD, transfer to the client using 1 byte fake ID 
+	static bool __entitydefAliasID;												// Optimized broadcast entity properties and methods take up bandwidth, entity client properties or when the client does not exceed 255, UID UID and property transfers to a client using 1 byte alias ID
 };
 
 }

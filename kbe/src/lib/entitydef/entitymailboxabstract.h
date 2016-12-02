@@ -38,7 +38,7 @@ class Bundle;
 
 class EntityMailboxAbstract : public script::ScriptObject
 {
-	/** 子类化 将一些py操作填充进派生类 */
+	/** Subclass py operations filling in a derived class */
 	INSTANCE_SCRIPT_HREADER(EntityMailboxAbstract, ScriptObject)
 public:
 	EntityMailboxAbstract(PyTypeObject* scriptType, 
@@ -51,7 +51,7 @@ public:
 	virtual ~EntityMailboxAbstract();
 
 	/** 
-		获取entityID 
+		Gets the entity iD 
 	*/
 	INLINE ENTITY_ID id() const;
 
@@ -60,27 +60,27 @@ public:
 	DECLARE_PY_GET_MOTHOD(pyGetID);
 
 	/** 
-		获得组件ID 
+		Get the component ID 
 	*/
 	INLINE COMPONENT_ID componentID(void) const;
 
 	/** 
-		设置组件的ID 
+		Set the component's ID 
 	*/
 	INLINE void componentID(COMPONENT_ID cid);
 
 	/** 
-		获得utype 
+		Get uType 
 	*/
 	INLINE ENTITY_SCRIPT_UID utype(void) const;
 
 	/** 
-		获得type 
+		Access type 
 	*/
 	INLINE ENTITY_MAILBOX_TYPE type(void) const;
 
 	/** 
-		支持pickler 方法 
+		Supports Pickler method 
 	*/
 	static PyObject* __py_reduce_ex__(PyObject* self, PyObject* protocol);
 	
@@ -102,11 +102,11 @@ public:
 	INLINE bool isBaseViaCell() const;
 	
 protected:
-	COMPONENT_ID							componentID_;			// 远端机器组件的ID
-	Network::Address						addr_;					// 频道地址
-	ENTITY_MAILBOX_TYPE						type_;					// 该mailbox的类型
+	COMPONENT_ID							componentID_;			// The remote machine component ID
+	Network::Address						addr_;					// Channel address
+	ENTITY_MAILBOX_TYPE						type_;					// The type of the mailbox
 	ENTITY_ID								id_;					// entityID
-	ENTITY_SCRIPT_UID						utype_;					// entity的utype  按照entities.xml中的定义顺序
+	ENTITY_SCRIPT_UID						utype_;					// The uType entity as defined in entities.XML order
 };
 
 }

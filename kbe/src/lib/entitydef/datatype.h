@@ -63,9 +63,9 @@ public:
 	static bool finalise();
 
 	/**	
-		当传入的这个pyobj并不是当前类型时则按照当前类型创建出一个obj
-		前提是即使这个PyObject不是当前类型， 但必须拥有转换的共性
-		既一个python字典转换为一个固定字典， 字典中的key都匹配
+		When this pyobj is not passed in the current type, based on the current type when create an obj
+		If even the Py object instead of the current type, but must have the conversion of common Convert a Python 
+		dictionary to a fixed compression dictionary, the key is in the dictionary matches
 	*/
 	virtual PyObject* createNewItemFromObj(PyObject* pyobj)
 	{
@@ -623,16 +623,16 @@ public:
 	const char* getName(void) const{ return "ARRAY";}
 
 	/**	
-		当传入的这个pyobj并不是当前类型时则按照当前类型创建出一个obj
-		前提是即使这个PyObject不是当前类型， 但必须拥有转换的共性
-		既一个python字典转换为一个固定字典， 字典中的key都匹配
+		When this pyobj is not passed in the current type, based on the current type when create an obj
+		If even the Py object instead of the current type, but must have the conversion of common Convert a Python
+		dictionary to a fixed compression dictionary, the key is in the dictionary matches
 	*/
 	virtual PyObject* createNewItemFromObj(PyObject* pyobj);
 	virtual PyObject* createNewFromObj(PyObject* pyobj);
 
 	virtual DATATYPE type() const{ return DATA_TYPE_FIXEDARRAY; }
 protected:
-	DataType*			dataType_;		// 这个数组所处理的类别
+	DataType*			dataType_;		// The array class
 };
 
 class FixedDictType : public DataType
@@ -642,10 +642,10 @@ public:
 	{
 		DataType* dataType;
 
-		// 作为一个数据类别在alias中可对dict中的某个项指定是否持久化
+		// As a category of data in dict can be one of the items in the alias specifies whether persistent
 		bool persistent;
 
-		// 这个属性在数据库中的长度
+		// The length of the attribute in the database
 		uint32 databaseLength;
 	};
 
@@ -656,7 +656,7 @@ public:
 	virtual ~FixedDictType();
 	
 	/** 
-		获得这个固定字典的key类别 
+		Access to this dictionary of key categories 
 	*/	
 	FIXEDDICT_KEYTYPE_MAP& getKeyTypes(void){ return keyTypes_; }
 
@@ -675,30 +675,30 @@ public:
 	bool initialize(XML* xml, TiXmlNode* node);
 	
 	/**	
-		当传入的这个pyobj并不是当前类型时则按照当前类型创建出一个obj
-		前提是即使这个PyObject不是当前类型， 但必须拥有转换的共性
-		既一个python字典转换为一个固定字典， 字典中的key都匹配
+		When this pyobj is not passed in the current type, based on the current type when create an obj
+		If even the Py object instead of the current type, but must have the conversion of common Convert a Python
+		dictionary to a fixed compression dictionary, the key is in the dictionary matches
 	*/
 	virtual PyObject* createNewItemFromObj(const char* keyName, PyObject* pyobj);
 	virtual PyObject* createNewFromObj(PyObject* pyobj);
 
 	/** 
-		获得固定字典所有的key名称 
+		Get all fixed dictionary key name 
 	*/
 	std::string getKeyNames(void);
 
 	/** 
-		获得debug信息，返回固定字典所有的key名称和类型
+		Get debug information, and returns a fixed all the key names and types
 	*/
 	std::string debugInfos(void);
 
 	/** 
-		加载impl模块
+		Load impl modules
 	*/
 	bool loadImplModule(std::string moduleName);
 
 	/** 
-		impl相关实现
+		Impl implementation
 	*/
 	PyObject* impl_createObjFromDict(PyObject* dictData);
 	PyObject* impl_getDictFromObj(PyObject* pyobj);
@@ -711,10 +711,10 @@ public:
 	std::string& moduleName(){ return moduleName_; }
 	
 protected:
-	// 这个固定字典里的各个key的类型
+	// This fixed the dictionary for each key type
 	FIXEDDICT_KEYTYPE_MAP			keyTypes_;				
 
-	// 实现脚本模块
+	// Implement a script module
 	PyObject*						implObj_;				
 
 	PyObject*						pycreateObjFromDict_;

@@ -34,7 +34,7 @@ template<typename T>
 class EntityGarbages : public script::ScriptObject
 {
 	/** 
-		子类化 将一些py操作填充进派生类 
+		Subclass py operations filling in a derived class 
 	*/
 	INSTANCE_SCRIPT_HREADER(EntityGarbages, ScriptObject)	
 public:
@@ -76,7 +76,7 @@ public:
 	}
 
 	/** 
-		暴露一些字典方法给python 
+		Exposed some dictionary methods for Python 
 	*/
 	DECLARE_PY_MOTHOD_ARG1(pyHas_key, ENTITY_ID);
 	DECLARE_PY_MOTHOD_ARG0(pyKeys);
@@ -87,7 +87,7 @@ public:
 		PyObject * args, PyObject* kwds);
 
 	/** 
-		map操作函数相关 
+		Map manipulation functions 
 	*/
 	static PyObject* mp_subscript(PyObject* self, PyObject* key);
 
@@ -112,7 +112,7 @@ private:
 };
 
 /** 
-	Python EntityGarbages操作所需要的方法表 
+	Python methods of Entity garbages operation table 
 */
 template<typename T>
 PyMappingMethods EntityGarbages<T>::mappingMethods =
@@ -122,7 +122,7 @@ PyMappingMethods EntityGarbages<T>::mappingMethods =
 	NULL											// mp_ass_subscript
 };
 
-// 参考 objects/dictobject.c
+// Reference objects/dictobject.c
 // Hack to implement "key in dict"
 template<typename T>
 PySequenceMethods EntityGarbages<T>::mappingSequenceMethods = 
@@ -303,10 +303,10 @@ void EntityGarbages<T>::add(ENTITY_ID id, T* entity)
 	}
 	else
 	{
-		// X秒内没有清空过garbages则错误警告
+		// Not within x seconds to empty the garbages errors
 		if(_lastTime > 0 && timestamp() - _lastTime > uint64(stampsPerSecond()) * 3600)
 		{
-			// 再未清空情况下，下次不提示了
+			// Empty the case again, next time do not prompt
 			_lastTime = 0;
 			
 			ERROR_MSG(fmt::format("For a long time(3600s) not to empty the garbages, there may be a leak of the entitys(size:{}), "

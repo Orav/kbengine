@@ -31,7 +31,7 @@ namespace KBEngine{
 class VolatileInfo : public script::ScriptObject
 {
 	/**
-	子类化 将一些py操作填充进派生类
+	Subclass py operations filling in a derived class
 	*/
 	INSTANCE_SCRIPT_HREADER(VolatileInfo, ScriptObject)
 public:

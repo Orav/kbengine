@@ -41,7 +41,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine{
 
 /**
-	描述一个脚本def模块
+	Def describes a script module
 */
 class ScriptDefModule : public RefCountable
 {
@@ -149,37 +149,37 @@ public:
 	INLINE bool useMethodDescrAlias() const;
 	
 protected:
-	// 脚本类别
+	// Script categories
 	PyTypeObject*						scriptType_;
 
-	// 数字类别  主要用于方便查找和网络间传输识别这个脚本模块
+	// Digital category is mainly used for convenience, and travels across the network to identify the script module
 	ENTITY_SCRIPT_UID					uType_;
 	
-	// 这个脚本所有的存储到db的属性
+	// This script all of the properties stored in the DB
 	PROPERTYDESCRIPTION_MAP				persistentPropertyDescr_;
 
-	// 这个脚本cell部分所拥有的所有属性描述
+	// This cell has all of the properties in part description
 	PROPERTYDESCRIPTION_MAP				cellPropertyDescr_;
 
-	// cell近中远级别属性描述
+	// Cosco cell nearly level properties description
 	PROPERTYDESCRIPTION_MAP				cellDetailLevelPropertyDescrs_[3];
 
-	// 这个脚本base部分所拥有的属性描述
+	// The base part of the script with the property description
 	PROPERTYDESCRIPTION_MAP				basePropertyDescr_;
 
-	// 这个脚本client部分所拥有的属性描述
+	// The client part of the script with the property description
 	PROPERTYDESCRIPTION_MAP				clientPropertyDescr_;
 	
-	// 这个脚本所拥有的属性描述uid映射
+	// Property description this script have UID mapping
 	PROPERTYDESCRIPTION_UIDMAP			persistentPropertyDescr_uidmap_;
 	PROPERTYDESCRIPTION_UIDMAP			cellPropertyDescr_uidmap_;
 	PROPERTYDESCRIPTION_UIDMAP			basePropertyDescr_uidmap_;
 	PROPERTYDESCRIPTION_UIDMAP			clientPropertyDescr_uidmap_;
 	
-	// 这个脚本所拥有的属性描述aliasID映射
+	// Property owned by the script describes the alias iD mapping
 	PROPERTYDESCRIPTION_ALIASMAP		propertyDescr_aliasmap_;
 
-	// 这个脚本所拥有的方法描述
+	// This script has the method description
 	METHODDESCRIPTION_MAP				methodCellDescr_;
 	METHODDESCRIPTION_MAP				methodBaseDescr_;
 	METHODDESCRIPTION_MAP				methodClientDescr_;
@@ -187,23 +187,23 @@ protected:
 	METHODDESCRIPTION_MAP				methodBaseExposedDescr_;
 	METHODDESCRIPTION_MAP				methodCellExposedDescr_;
 
-	// 这个脚本所拥有的方法描述uid映射
+	// Methods owned by this script describes UID map
 	METHODDESCRIPTION_UIDMAP			methodCellDescr_uidmap_;
 	METHODDESCRIPTION_UIDMAP			methodBaseDescr_uidmap_;
 	METHODDESCRIPTION_UIDMAP			methodClientDescr_uidmap_;
 			
 	METHODDESCRIPTION_ALIASMAP			methodDescr_aliasmap_;
 
-	// 是否有cell部分等
+	// Whether there is a cell part
 	bool								hasCell_;
 	bool								hasBase_;
 	bool								hasClient_;
 	
-	// entity的详情级别数据
+	// Details of the entity-level data
 	DetailLevel							detailLevel_;
 	VolatileInfo*						pVolatileinfo_;
 
-	// 这个模块的名称
+	// The module name
 	std::string							name_;
 
 	bool								usePropertyDescrAlias_;

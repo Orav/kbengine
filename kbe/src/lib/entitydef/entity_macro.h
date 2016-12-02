@@ -280,7 +280,7 @@ namespace KBEngine{
 }																											\
 
 
-// 实体的标志
+// Entity logo
 #define ENTITY_FLAGS_UNKNOWN			0x00000000
 #define ENTITY_FLAGS_DESTROYING			0x00000001
 #define ENTITY_FLAGS_INITING			0x00000002
@@ -656,7 +656,7 @@ public:																										\
 					Py_ssize_t ob_refcnt = value->ob_refcnt;												\
 					PyObject* pySetObj = propertyDescription->onSetValue(this, value);						\
 																											\
-					/* 如果def属性数据有改变， 那么可能需要广播 */											\
+					/* If def data have changed, you might want to broadcast */											\
 					if(pySetObj != NULL)																	\
 					{																						\
 						onDefDataChanged(propertyDescription, pySetObj);									\
@@ -712,7 +712,7 @@ public:																										\
 		}																									\
 		else if(g_componentType == BASEAPP_TYPE)															\
 		{																									\
-			extra = -1;	/* shouldAutoLoad -1默认不改变设置 */												\
+			extra = -1;	/* shouldAutoLoad -1 by default, do not change the setting */												\
 		}																									\
 																											\
 		if(currargsSize == 1)																				\
