@@ -41,12 +41,12 @@ public:
 	}
 	
 	/**
-		同步entity表到数据库中
+		Synchronize the entity table in the database
 	*/
 	virtual bool syncToDB(DBInterface* pdbi) = 0;
 	
 	/**
-		初始化
+		Initialize
 	*/
 	virtual bool initialize(ScriptDefModule* sm, std::string name) { return true; };
 	
@@ -57,7 +57,7 @@ protected:
 };
 
 /*
-	kbe系统表
+	KBE system table
 */
 class KBEEntityLogTable : public KBETable
 {
@@ -70,7 +70,7 @@ public:
 		uint16 port;
 		COMPONENT_ID componentID;
 
-		// 由谁记录
+		// Who records
 		COMPONENT_ID logger;
 	};
 

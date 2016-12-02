@@ -37,7 +37,7 @@ class ThreadPool;
 class DBUtil;
 
 /*
-	数据库接口
+	Database interface
 */
 class DBInterface
 {
@@ -66,34 +66,34 @@ public:
 	};
 
 	/**
-		检查环境
+		Check environment
 	*/
 	virtual bool checkEnvironment() = 0;
 	
 	/**
-		检查错误， 对错误的内容进行纠正
-		如果纠正不成功返回失败
+		Check for errors and correct the wrong content
+		If you correct unsuccessful returns a failure
 	*/
 	virtual bool checkErrors() = 0;
 
 	/**
-		与某个数据库关联
+		Associated with a database
 	*/
 	virtual bool attach(const char* databaseName = NULL) = 0;
 	virtual bool detach() = 0;
 
 	/**
-		获取数据库所有的表名
+		Gets all of the tables in the database
 	*/
 	virtual bool getTableNames( std::vector<std::string>& tableNames, const char * pattern) = 0;
 
 	/**
-		获取数据库某个表所有的字段名称
+		Gets the database name fields to a table
 	*/
 	virtual bool getTableItemNames(const char* tableName, std::vector<std::string>& itemNames) = 0;
 
 	/**
-		查询表
+		Query tables
 	*/
 	virtual bool query(const char* cmd, uint32 size, bool printlog = true, MemoryStream * result = NULL) = 0;
 	virtual bool query(const std::string& cmd, bool printlog = true, MemoryStream * result = NULL)
@@ -102,76 +102,76 @@ public:
 	}
 
 	/**
-	返回这个接口的名称
+	Returns the name of the interface
 	*/
 	const char* name() const { return name_; }
 
 	/**
-	返回这个接口的索引
+	Returns the index of the interface
 	*/
 	uint16 dbIndex() const { return dbIndex_; }
 
 	/**
-		返回这个接口的描述
+		Returns the interface description
 	*/
 	virtual const char* c_str() = 0;
 
 	/** 
-		获取错误
+		Gets the error
 	*/
 	virtual const char* getstrerror() = 0;
 
 	/** 
-		获取错误编号
+		For the error number
 	*/
 	virtual int getlasterror() = 0;
 
 	/**
-		创建一个entity存储表
+		Creates a stored entity table
 	*/
 	virtual EntityTable* createEntityTable(EntityTables* pEntityTables) = 0;
 
 	/** 
-		从数据库删除entity表
+		Delete entity from the database table
 	*/
 	virtual bool dropEntityTableFromDB(const char* tableName) = 0;
 
 	/** 
-		从数据库删除entity表字段
+		Delete entity from the database table field
 	*/
 	virtual bool dropEntityTableItemFromDB(const char* tableName, const char* tableItemName) = 0;
 
 	/**
-		锁住接口操作
+		Lock interface operations
 	*/
 	virtual bool lock() = 0;
 	virtual bool unlock() = 0;
 
 	/**
-		处理异常
+		Handling exceptions
 	*/
 	virtual bool processException(std::exception & e) = 0;
 
 	/**
-		获取最后一次查询的sql语句
+		Gets the last SQL statement for the query
 	*/
 	virtual const std::string& lastquery() const{ return lastquery_; }
 
 protected:
-	char name_[MAX_BUF];									// 数据库接口的名称
-	char db_type_[MAX_BUF];									// 数据库的类别
-	uint32 db_port_;										// 数据库的端口
-	char db_ip_[MAX_IP];									// 数据库的ip地址
-	char db_username_[MAX_BUF];								// 数据库的用户名
-	char db_password_[MAX_BUF];								// 数据库的密码
-	char db_name_[MAX_BUF];									// 数据库名
-	uint16 db_numConnections_;								// 数据库最大连接
-	std::string lastquery_;									// 最后一次查询描述
-	uint16 dbIndex_;										// 对应的数据库接口索引
+	char name_[MAX_BUF];									// Database interface name
+	char db_type_[MAX_BUF];									// Database categories
+	uint32 db_port_;										// Database port
+	char db_ip_[MAX_IP];									// IP address database
+	char db_username_[MAX_BUF];								// Database user name
+	char db_password_[MAX_BUF];								// The password for the database
+	char db_name_[MAX_BUF];									// The database name
+	uint16 db_numConnections_;								// Database maximum connections
+	std::string lastquery_;									// Last query description
+	uint16 dbIndex_;										// Database interface that corresponds to the index
 };
 
 /*
-	数据库操作单元
+	Database operations unit
 */
 class DBUtil : public Singleton<DBUtil>
 {

@@ -64,7 +64,7 @@ DBID EntityTable::writeTable(DBInterface* pdbi, DBID dbid, int8 shouldAutoLoad, 
 
 		if(!pTableItem->writeItem(pdbi, dbid, s, pModule))
 		{
-			// 设置实体是否自动加载
+			// Set whether entities are automatically loaded
 			if(shouldAutoLoad > -1)
 				entityShouldAutoLoad(pdbi, dbid, shouldAutoLoad > 0);
 
@@ -72,7 +72,7 @@ DBID EntityTable::writeTable(DBInterface* pdbi, DBID dbid, int8 shouldAutoLoad, 
 		}
 	};
 
-	// 设置实体是否自动加载
+	// Set whether entities are automatically loaded
 	if(shouldAutoLoad > -1)
 		entityShouldAutoLoad(pdbi, dbid, shouldAutoLoad > 0);
 
@@ -187,7 +187,7 @@ bool EntityTables::syncToDB(DBInterface* pdbi)
 	int num = 0;
 	try
 	{
-		// 开始同步所有表
+		// Start to synchronize all tables
 		EntityTables::TABLES_MAP::iterator kiter = kbe_tables_.begin();
 		for(; kiter != kbe_tables_.end(); ++kiter)
 		{
@@ -221,7 +221,7 @@ bool EntityTables::syncToDB(DBInterface* pdbi)
 		std::vector<std::string> dbTableNames;
 		pdbi->getTableNames(dbTableNames, "");
 
-		// 检查是否有需要删除的表
+		// Check whether there is a need to delete a table
 		std::vector<std::string>::iterator iter0 = dbTableNames.begin();
 		for(; iter0 != dbTableNames.end(); ++iter0)
 		{

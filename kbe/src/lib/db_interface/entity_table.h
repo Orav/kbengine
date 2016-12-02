@@ -61,7 +61,7 @@ class MemoryStream;
 #define TABLE_AUTOLOAD_CONST_STR				"autoLoad"
 
 /**
-	db表操作
+	DB table operations
 */
 enum DB_TABLE_OP
 {
@@ -90,7 +90,7 @@ struct ACCOUNT_INFOS
 };
 
 /**
-	维护entity在数据库中的表中的一个字段
+	Maintenance entity in a field in a table in a database
 */
 class EntityTableItem
 {
@@ -143,7 +143,7 @@ public:
 	const PropertyDescription* pPropertyDescription() const { return pPropertyDescription_; }
 
 	/**
-		初始化
+		Initialize
 	*/
 	virtual bool initialize(const PropertyDescription* pPropertyDescription, 
 		const DataType* pDataType, std::string itemName) = 0;
@@ -152,22 +152,22 @@ public:
 	const char* tableName() { return tableName_.c_str(); }
 
 	/**
-		同步entity表到数据库中
+		Synchronize the entity table in the database
 	*/
 	virtual bool syncToDB(DBInterface* pdbi, void* pData = NULL) = 0;
 
 	/**
-		更新数据
+		Update data
 	*/
 	virtual bool writeItem(DBInterface* pdbi, DBID dbid, MemoryStream* s, ScriptDefModule* pModule) = 0;
 
 	/**
-		获取所有的数据放到流中
+		Get all the data to the stream
 	*/
 	virtual bool queryTable(DBInterface* pdbi, DBID dbid, MemoryStream* s, ScriptDefModule* pModule) = 0;
 
 protected:
-	// 字段名称
+	// Field name
 	std::string itemName_;
 	std::string tableName_;
 	int32/*ENTITY_PROPERTY_UID*/ utype_;
@@ -186,7 +186,7 @@ protected:
 };
 
 /*
-	维护entity在数据库中的表
+	Maintenance entity in the database table
 */
 class EntityTable
 {
@@ -209,27 +209,27 @@ public:
 	const char* tableName(){ return tableName_.c_str(); }
 
 	/**
-		初始化
+		Initialize
 	*/
 	virtual bool initialize(ScriptDefModule* sm, std::string name) = 0;
 
 	/**
-		同步entity表到数据库中
+		Synchronize the entity table in the database
 	*/
 	virtual bool syncToDB(DBInterface* pdbi) = 0;
 
 	/**
-		同步entity表索引到数据库中
+		Synchronize the entity table indexes in the database
 	*/
 	virtual bool syncIndexToDB(DBInterface* pdbi) = 0;
 
 	/** 
-		创建一个表item
+		Create a table item
 	*/
 	virtual EntityTableItem* createItem(std::string type, std::string defaultVal) = 0;
 
 	/** 
-		获得所有表字段
+		All table fields
 	*/
 	const EntityTable::TABLEITEM_MAP& tableItems() const { return tableItems_; }
 	const std::vector<EntityTableItem*>& tableFixedOrderItems() const{ return tableFixedOrderItems_; }
@@ -242,29 +242,29 @@ public:
 	EntityTableItem* findItem(int32/*ENTITY_PROPERTY_UID*/ utype);
 
 	/**
-		更新表
+		Update table
 	*/
 	virtual DBID writeTable(DBInterface* pdbi, DBID dbid, int8 shouldAutoLoad, MemoryStream* s, ScriptDefModule* pModule);
 
 	/**
-		从数据库删除entity
+		Removed from the database entity
 	*/
 	virtual bool removeEntity(DBInterface* pdbi, DBID dbid, ScriptDefModule* pModule);
 
 	/**
-		获取所有的数据放到流中
+		Get all the data to the stream
 	*/
 	virtual bool queryTable(DBInterface* pdbi, DBID dbid, MemoryStream* s, ScriptDefModule* pModule);
 
 	/**
-		设置是否自动加载
+		Set whether to automatically load
 	*/
 	virtual void entityShouldAutoLoad(DBInterface* pdbi, DBID dbid, bool shouldAutoLoad){};
 
 	bool hasSync() const { return sync_; }
 
 	/**
-		查询自动加载的实体
+		Query automatically loads the entity
 	*/
 	virtual void queryAutoLoadEntities(DBInterface* pdbi, ScriptDefModule* pModule, 
 		ENTITY_ID start, ENTITY_ID end, std::vector<DBID>& outs){}
@@ -274,16 +274,16 @@ public:
 
 protected:
 
-	// 表名称
+	// Table name
 	std::string tableName_;
 
-	// 所有的字段
+	// All fields
 	TABLEITEM_MAP tableItems_;
 
-	// 和ScriptDefModule中保持一致秩序的item引用
+	// And consistent Script def module orders item reference
 	std::vector<EntityTableItem*> tableFixedOrderItems_; 
 
-	// 是否为子表
+	// Is a child table
 	bool isChild_; 
 
 	bool sync_;
@@ -310,7 +310,7 @@ public:
 	}
 
 	/** 
-		获得所有表
+		Access to all tables
 	*/
 	const EntityTables::TABLES_MAP& tables() const { return tables_; }
 
@@ -323,30 +323,30 @@ public:
 	EntityTable* findKBETable(std::string name);
 
 	/**
-		写entity到数据库
+		Writing entity to the database
 	*/
 	DBID writeEntity(DBInterface* pdbi, DBID dbid, int8 shouldAutoLoad, MemoryStream* s, ScriptDefModule* pModule);
 
 	/**
-		从数据库删除entity
+		Removed from the database entity
 	*/
 	bool removeEntity(DBInterface* pdbi, DBID dbid, ScriptDefModule* pModule);
 
 	/**
-		获取某个表所有的数据放到流中
+		Gets a table of all the data to the stream
 	*/
 	bool queryEntity(DBInterface* pdbi, DBID dbid, MemoryStream* s, ScriptDefModule* pModule);
 
 	void onTableSyncSuccessfully(KBEShared_ptr<EntityTable> pEntityTable, bool error);
 
 	/**
-		查询自动加载的实体
+		Query automatically loads the entity
 	*/
 	void queryAutoLoadEntities(DBInterface* pdbi, ScriptDefModule* pModule, 
 		ENTITY_ID start, ENTITY_ID end, std::vector<DBID>& outs);
 
 protected:
-	// 所有的表
+	// All of the tables
 	TABLES_MAP tables_;
 	TABLES_MAP kbe_tables_;
 
