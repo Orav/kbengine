@@ -29,34 +29,32 @@ namespace KBEngine {
 namespace redis { 
 
 /**
-	读写删操作时会用到，包含取到或待写入的各种信息。
+	读Written when the delete operation is used, withdraw or to be written to contain all kinds of information.
 
-	dbid：如果是主表就是实体的dbid，子表就是当前查询的dbid
+Dbid: If you dbid is an entity the primary table, the child table is the current query dbid
+		Dbids: dbids on only a dbid in the primary table, is the ID of the entity if the entity data exists an array class, the child table will appear when this data structure describes a child table
+		Dbids is the child table index into an array, each dbid representing the table corresponds to the value and also said the order according to the values in the corresponding position in the array.
+			dbids = {
+			123: [xxx, xxx, ...],//123 a dbid that is on the parent table, array is associated with the parent table in the child table of the dbids.
+		...
 
-	dbids：主表上dbids中只有一个dbid，就是实体的id，如果实体数据存在数组类则会有子表出现，当这个数据结构描述的是一个子表的时候
-		dbids是这个数组的子表索引, 每个dbid都表示这个子表上对应的值并且按照排列顺序同时也表示在数组中对应位置的值。
-		dbids = {
-			123 : [xxx, xxx, ...], // 123为父表上的某个dbid，数组为在子表上与父表相关联的的dbids。
-			...
-		}
+}
 
-	items：中有这个表的字段信息，如果是写库则字段中也有对应的要写值。
+Items: the table field information is in, if it is written also wrote that corresponds to the value in the field.
 
-	optable：子表结构
+Optable: table structure
+	Results: query data when a read operation, arranged the data corresponds to the number of items in the strKey multiplied by the number of dbids.
 
-	results：读操作时查询到的数据, 数据的排列对应items中的strkey的数量乘以dbids的数量。
-	readresultIdx：因为results中的数量是dbids * items，所以当在某些递归读的时候填充数据会根据这个readresultIdx计算填充的位置。
+Readresult idx: dbids * number of items in the results, so in certain recursive read fill the data according to the readresult calculates the filling position IDX.
+	Parent table dBID: parent table dbid
 
-	parentTableDBID：父表的dbid
-	parentTableName：父表的名称
-
-	tableName：当前表的名称
+Parent table name: the name of the parent table Table name: the name of the current table
  */
 class DBContext
 {
 public:
 	/**
-		存储所有要操作的表item结构
+		Table to store all the action item structure
 	*/
 	struct DB_ITEM_DATA
 	{

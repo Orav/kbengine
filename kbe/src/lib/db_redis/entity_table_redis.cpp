@@ -47,10 +47,10 @@ EntityTableRedis::~EntityTableRedis()
 //-------------------------------------------------------------------------------------
 bool EntityTableRedis::initialize(ScriptDefModule* sm, std::string name)
 {
-	// 获取表名
+	// Gets the table name
 	tableName(name);
 
-	// 找到所有存储属性并且创建出所有的字段
+	// Find all the stored properties and creates all of the fields
 	ScriptDefModule::PROPERTYDESCRIPTION_MAP& pdescrsMap = sm->getPersistentPropertyDescriptions();
 	ScriptDefModule::PROPERTYDESCRIPTION_MAP::const_iterator iter = pdescrsMap.begin();
 	std::string hasUnique = "";
@@ -77,7 +77,7 @@ bool EntityTableRedis::initialize(ScriptDefModule* sm, std::string name)
 		tableFixedOrderItems_.push_back(pETItem);
 	}
 
-	// 特殊处理， 数据库保存方向和位置
+	// Special handling, database and directions
 	if(sm->hasCell())
 	{
 		ENTITY_PROPERTY_UID posuid = ENTITY_BASE_PROPERTY_UTYPE_POSITION_XYZ;
@@ -126,7 +126,7 @@ void EntityTableRedis::init_db_item_name()
 	EntityTable::TABLEITEM_MAP::iterator iter = tableItems_.begin();
 	for(; iter != tableItems_.end(); ++iter)
 	{
-		// 处理fixedDict字段名称的特例情况
+		// Fixed special cases of the dict field name
 		std::string exstrFlag = "";
 		if(iter->second->type() == TABLE_ITEM_TYPE_FIXEDDICT)
 		{
@@ -153,8 +153,9 @@ bool EntityTableRedis::syncToDB(DBInterface* pdbi)
 
 	// DEBUG_MSG(fmt::format("EntityTableRedis::syncToDB(): {}.\n", tableName()));
 
-	// 对于redis不需要一开始将表创建出来，数据写时才产生数据，因此这里不需要创建表
-	// 获取当前表的items，检查每个item是否与当前匹配，将其同步为当前表描述
+	// REDIS will begin with tables created when data is written to the data, 
+	// so there is no need to create a table Gets the items of the current table, 
+	// checking each item matches the current, and sync it to the current table description
 
 	//DBInterfaceRedis::TABLE_FIELDS outs;
 	//static_cast<DBInterfaceRedis*>(pdbi)->getFields(outs, this->tableName());
@@ -176,7 +177,7 @@ bool EntityTableRedis::syncToDB(DBInterface* pdbi)
 
 	pdbi->getTableItemNames(ttablename.c_str(), dbTableItemNames);
 
-	// 检查是否有需要删除的表字段
+	// Check whether there is a need to remove the table field
 	std::vector<std::string>::iterator iter0 = dbTableItemNames.begin();
 	for (; iter0 != dbTableItemNames.end(); ++iter0)
 	{
@@ -208,7 +209,7 @@ bool EntityTableRedis::syncToDB(DBInterface* pdbi)
 		}
 	}
 
-	// 同步表索引
+	// Synchronizing table index
 	if (!syncIndexToDB(pdbi))
 		return false;
 

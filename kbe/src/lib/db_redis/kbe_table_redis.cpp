@@ -35,7 +35,7 @@ namespace KBEngine {
 bool KBEEntityLogTableRedis::syncToDB(DBInterface* pdbi)
 {
 	/*
-	有数据时才产生表数据
+	Data tables the data only when
 	kbe_entitylog:dbid:entityType = hashes(entityID, ip, port, componentID, logger)
 	*/
 
@@ -129,7 +129,7 @@ bool KBEAccountTableRedis::setFlagsDeadline(DBInterface * pdbi, const std::strin
 	kbe_accountinfos:accountName = hashes(password, bindata, email, entityDBID, flags, deadline, regtime, lasttime, numlogin)
 	*/
 	
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(pdbi->query(fmt::format("HSET kbe_accountinfos:{} flags {} deadline {}", 
 		name, flags, deadline), false))
 		return true;
@@ -213,14 +213,14 @@ bool KBEAccountTableRedis::updateCount(DBInterface * pdbi, const std::string& na
 	*/
 	redis::DBTransaction transaction(pdbi);
 	
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("HINCRBY kbe_accountinfos:{} numlogin", name), false))
 	{
 		transaction.rollback();
 		return false;
 	}
 	
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("HSET kbe_accountinfos:{} lasttime {}", name, time(NULL)), false))
 	{
 		transaction.rollback();
@@ -237,7 +237,7 @@ bool KBEAccountTableRedis::updateCount(DBInterface * pdbi, const std::string& na
 //-------------------------------------------------------------------------------------
 bool KBEAccountTableRedis::updatePassword(DBInterface * pdbi, const std::string& name, const std::string& password)
 {
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("HSET kbe_accountinfos:{} password {}", name, password), false))
 		return false;
 
@@ -252,7 +252,7 @@ bool KBEAccountTableRedis::logAccount(DBInterface * pdbi, ACCOUNT_INFOS& info)
 		info.name, KBE_MD5::getDigest(info.password.data(), info.password.length()).c_str(),
 		info.datas, info.email, info.dbid, info.flags, info.deadline, time(NULL), time(NULL));
 
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(sqlstr.c_str(), sqlstr.size(), false))
 	{
 		ERROR_MSG(fmt::format("KBEAccountTableRedis::logAccount({}): cmd({}) is failed({})!\n", 
@@ -361,7 +361,7 @@ bool KBEEmailVerificationTableRedis::logAccount(DBInterface * pdbi, int8 type, c
 	
 	redis::DBTransaction transaction(pdbi);
 	
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("HSET kbe_email_verification:{} accountName {} type {} datas {} logtime {}", 
 		code, name, type, datas, time(NULL)), false))
 	{
@@ -372,7 +372,7 @@ bool KBEEmailVerificationTableRedis::logAccount(DBInterface * pdbi, int8 type, c
 		return false;
 	}
 
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("SET kbe_email_verification:{} {}", name, code), false))
 	{
 		ERROR_MSG(fmt::format("KBEEmailVerificationTableMysql::logAccount({}): cmd({}) is failed({})!\n", 
@@ -382,7 +382,7 @@ bool KBEEmailVerificationTableRedis::logAccount(DBInterface * pdbi, int8 type, c
 		return false;
 	}
 
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("EXPIRE kbe_email_verification:{} {}", 
 		code.c_str(), getDeadline(type)), false))
 	{
@@ -393,7 +393,7 @@ bool KBEEmailVerificationTableRedis::logAccount(DBInterface * pdbi, int8 type, c
 		return false;
 	}
 	
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("EXPIRE kbe_email_verification:{} {}", 
 		name.c_str(), getDeadline(type)), false))
 	{
@@ -468,7 +468,7 @@ bool KBEEmailVerificationTableRedis::activateAccount(DBInterface * pdbi, const s
 
 	std::string password = info.password;
 
-	// 寻找dblog是否有此账号
+	// Looking for dblog if this account
 	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::findByInterfaceName(pdbi->name()).findKBETable("kbe_accountinfos"));
 	KBE_ASSERT(pTable);
 	
@@ -507,7 +507,7 @@ bool KBEEmailVerificationTableRedis::activateAccount(DBInterface * pdbi, const s
 
 	ScriptDefModule* pModule = EntityDef::findScriptModule(DBUtil::accountScriptName());
 
-	// 防止多线程问题， 这里做一个拷贝。
+	// Prevent the multithreading issues, to make a copy.
 	MemoryStream copyAccountDefMemoryStream(pTable->accountDefMemoryStream());
 
 	info.dbid = EntityTables::findByInterfaceName(pdbi->name()).writeEntity(pdbi, 0, -1,
@@ -519,7 +519,7 @@ bool KBEEmailVerificationTableRedis::activateAccount(DBInterface * pdbi, const s
 	kbe_accountinfos:accountName = hashes(password, bindata, email, entityDBID, flags, deadline, regtime, lasttime, numlogin)
 	*/
 	
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("HSET kbe_accountinfos:{} entityDBID {}", 
 		info.name, info.dbid), false))
 	{
@@ -604,7 +604,7 @@ bool KBEEmailVerificationTableRedis::bindEMail(DBInterface * pdbi, const std::st
 	kbe_accountinfos:accountName = hashes(password, bindata, email, entityDBID, flags, deadline, regtime, lasttime, numlogin)
 	*/
 	
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("HSET kbe_accountinfos:{} email {}", 
 		qname, qemail), false))
 	{
@@ -686,7 +686,7 @@ bool KBEEmailVerificationTableRedis::resetpassword(DBInterface * pdbi, const std
 		return false;
 	}
 	
-	// 寻找dblog是否有此账号
+	// Looking for dblog if this account
 	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::findByInterfaceName(pdbi->name()).findKBETable("kbe_accountinfos"));
 	KBE_ASSERT(pTable);
 
@@ -711,7 +711,7 @@ bool KBEEmailVerificationTableRedis::delAccount(DBInterface * pdbi, int8 type, c
 	*/
 	redisReply* pRedisReply = NULL;
 	
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("GET kbe_email_verification:{}", name), false))
 	{
 		return false;
@@ -730,7 +730,7 @@ bool KBEEmailVerificationTableRedis::delAccount(DBInterface * pdbi, int8 type, c
 		pRedisReply = NULL;
 	}
 
-	// 事务开始	
+	// Transaction began	
 	redis::DBTransaction transaction(pdbi);
 	
 	if(code.size() > 0)
