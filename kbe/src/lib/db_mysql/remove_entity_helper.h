@@ -167,14 +167,14 @@ public:
 				}
 		}
 	
-		// 删除废弃的数据项
+		// Delete obsolete data
 		KBEUnordered_map< std::string, std::vector<DBID> >::iterator tabiter = childTableDBIDs.begin();
 		for(; tabiter != childTableDBIDs.end(); ++tabiter)
 		{
 			if(tabiter->second.size() == 0)
 				continue;
 
-			// 先删除数据库中的记录
+			// To delete records in the database
 			std::string sqlstr = "delete from " ENTITY_TABLE_PERFIX "_";
 			sqlstr += tabiter->first;
 			sqlstr += " where " TABLE_ID_CONST_STR " in (";

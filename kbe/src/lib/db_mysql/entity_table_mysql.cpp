@@ -35,7 +35,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace KBEngine { 
 
-// 同步成功时回调
+// Synchronizing success callback
 typedef void (*onSyncItemToDBSuccessPtr)(DBInterface*, const char*, const char*);
 
 bool sync_item_to_db(DBInterface* pdbi, 
@@ -145,10 +145,10 @@ EntityTableMysql::~EntityTableMysql()
 //-------------------------------------------------------------------------------------
 bool EntityTableMysql::initialize(ScriptDefModule* sm, std::string name)
 {
-	// 获取表名
+	// Gets the table name
 	tableName(name);
 
-	// 找到所有存储属性并且创建出所有的字段
+	// Find all the stored properties and creates all of the fields
 	ScriptDefModule::PROPERTYDESCRIPTION_MAP& pdescrsMap = sm->getPersistentPropertyDescriptions();
 	ScriptDefModule::PROPERTYDESCRIPTION_MAP::const_iterator iter = pdescrsMap.begin();
 	std::string hasUnique = "";
@@ -175,7 +175,7 @@ bool EntityTableMysql::initialize(ScriptDefModule* sm, std::string name)
 		tableFixedOrderItems_.push_back(pETItem);
 	}
 
-	// 特殊处理， 数据库保存方向和位置
+	// Special handling, database and directions
 	if(sm->hasCell())
 	{
 		ENTITY_PROPERTY_UID posuid = ENTITY_BASE_PROPERTY_UTYPE_POSITION_XYZ;
@@ -224,7 +224,7 @@ void EntityTableMysql::init_db_item_name()
 	EntityTable::TABLEITEM_MAP::iterator iter = tableItems_.begin();
 	for(; iter != tableItems_.end(); ++iter)
 	{
-		// 处理fixedDict字段名称的特例情况
+		// Fixed special cases of the dict field name
 		std::string exstrFlag = "";
 		if(iter->second->type() == TABLE_ITEM_TYPE_FIXEDDICT)
 		{
@@ -308,7 +308,7 @@ bool EntityTableMysql::syncIndexToDB(DBInterface* pdbi)
 		{
 			bool deleteIndex = fiter->second != (*iiter)->indexType();
 			
-			// 删除已经处理的，剩下的就是要从数据库删除的index
+			// Remove handle, the rest is to be deleted from the database index
 			currDBKeys.erase(fiter);
 			
 			if(deleteIndex)
@@ -345,7 +345,7 @@ bool EntityTableMysql::syncIndexToDB(DBInterface* pdbi)
 		done = true;
 	}
 
-	// 剩下的就是要从数据库删除的index
+	// The rest is to be deleted from the database index
 	KBEUnordered_map<std::string, std::string>::iterator dbkey_iter = currDBKeys.begin();
 	for(; dbkey_iter != currDBKeys.end(); ++dbkey_iter)
 	{
@@ -353,7 +353,7 @@ bool EntityTableMysql::syncIndexToDB(DBInterface* pdbi)
 		done = true;		
 	}
 	
-	// 没有需要修改或者添加的
+	// No need to modify or add the
 	if(!done)
 		return true;
 	
@@ -431,7 +431,7 @@ bool EntityTableMysql::syncToDB(DBInterface* pdbi)
 
 	pdbi->getTableItemNames(ttablename.c_str(), dbTableItemNames);
 
-	// 检查是否有需要删除的表字段
+	// Check whether there is a need to remove the table field
 	std::vector<std::string>::iterator iter0 = dbTableItemNames.begin();
 	for(; iter0 != dbTableItemNames.end(); ++iter0)
 	{
@@ -463,7 +463,7 @@ bool EntityTableMysql::syncToDB(DBInterface* pdbi)
 		}
 	}
 
-	// 同步表索引
+	// Synchronizing table index
 	if(!syncIndexToDB(pdbi))
 		return false;
 
@@ -802,11 +802,11 @@ DBID EntityTableMysql::writeTable(DBInterface* pdbi, DBID dbid, int8 shouldAutoL
 
 	dbid = context.dbid;
 
-	// 如果dbid为0则存储失败返回
+	// If you dbid is 0 the store failed to return
 	if(dbid <= 0)
 		return dbid;
 
-	// 设置实体是否自动加载
+	// Set whether entities are automatically loaded
 	if(shouldAutoLoad > -1)
 		entityShouldAutoLoad(pdbi, dbid, shouldAutoLoad > 0);
 
@@ -1241,7 +1241,7 @@ bool EntityTableItemMysql_ARRAY::initialize(const PropertyDescription* pProperty
 	if(!ret)
 		return false;
 
-	// 创建子表
+	// Create a table
 	EntityTableMysql* pTable = new EntityTableMysql(this->pParentTable()->pEntityTables());
 
 	std::string tname = this->pParentTable()->tableName();
@@ -1310,7 +1310,7 @@ bool EntityTableItemMysql_ARRAY::initialize(const PropertyDescription* pProperty
 //-------------------------------------------------------------------------------------
 bool EntityTableItemMysql_ARRAY::syncToDB(DBInterface* pdbi, void* pData)
 {
-	// 所有的表都会在bool EntityTables::syncToDB(DBInterface* pdbi)中被同步（包括子表），因此无需再做一次同步
+	// All the tables in bool Entity tables::sync to dB (DBInterface* pdbi) are synchronized (including the child table), so there is no need to do synchronization
 	//if(pChildTable_)
 	//	return pChildTable_->syncToDB(pdbi);
 
@@ -1713,7 +1713,7 @@ bool EntityTableItemMysql_STRING::syncToDB(DBInterface* pdbi, void* pData)
 	uint32 length = pPropertyDescription_->getDatabaseLength();
 	char sql_str[MAX_BUF];
 
-	// 如果父表Item是个固定字典，那么需要判断当前item有无在固定字典中设置DatabaseLength
+	// If the parent Item is a regular dictionary, you need to determine the current item has no fixed dictionary Database length
 	if (this->pParentTableItem() && this->pParentTableItem()->type() == TABLE_ITEM_TYPE_FIXEDDICT)
 	{
 		length = static_cast<KBEngine::EntityTableItemMysql_FIXED_DICT*>(pParentTableItem())->getItemDatabaseLength(this->itemName());
@@ -1721,7 +1721,7 @@ bool EntityTableItemMysql_STRING::syncToDB(DBInterface* pdbi, void* pData)
 
 	if (length <= 0)
 	{
-		// 默认长度255
+		// The default length of 255
 		length = 255;
 	}
 
@@ -1784,7 +1784,7 @@ bool EntityTableItemMysql_UNICODE::syncToDB(DBInterface* pdbi, void* pData)
 	uint32 length = pPropertyDescription_->getDatabaseLength();
 	char sql_str[MAX_BUF];
 
-	// 如果父表Item是个固定字典，那么需要判断当前item有无在固定字典中设置DatabaseLength
+	// If the parent Item is a regular dictionary, you need to determine the current item has no fixed dictionary Database length
 	if (this->pParentTableItem() && this->pParentTableItem()->type() == TABLE_ITEM_TYPE_FIXEDDICT)
 	{
 		length = static_cast<KBEngine::EntityTableItemMysql_FIXED_DICT*>(pParentTableItem())->getItemDatabaseLength(this->itemName());
@@ -1792,7 +1792,7 @@ bool EntityTableItemMysql_UNICODE::syncToDB(DBInterface* pdbi, void* pData)
 
 	if (length <= 0)
 	{
-		// 默认长度255
+		// The default length of 255
 		length = 255;
 	}
 

@@ -48,11 +48,11 @@ public:
 	}
 
 	/**
-		从表中查询数据
+		Query data from a table
 	*/
 	static bool queryDB(DBInterface* pdbi, mysql::DBContext& context)
 	{
-		// 根据某个dbid获得一张表上的相关数据
+		// According to a dbid to obtain a list of related data
 		SqlStatement* pSqlcmd = new SqlStatementQuery(pdbi, context.tableName, 
 			context.dbids[context.dbid], 
 			context.dbid, context.items);
@@ -64,7 +64,7 @@ public:
 		if(!ret)
 			return ret;
 
-		// 将查询到的结果写入上下文
+		// To write the result to a query context
 		MYSQL_RES * pResult = mysql_store_result(static_cast<DBInterfaceMysql*>(pdbi)->mysql());
 
 		if(pResult)
@@ -79,16 +79,16 @@ public:
 
 				unsigned long *lengths = mysql_fetch_lengths(pResult);
 
-				// 查询命令保证了查询到的每条记录都会有dbid
+				// Query command to ensure that the query to each record will have dbid
 				std::stringstream sval;
 				sval << arow[0];
 				DBID item_dbid;
 				sval >> item_dbid;
 
-				// 将dbid记录到列表中，如果当前表还存在子表引用则会去子表查每一条与此dbid相关的记录
+				// The dbid records to the list, if there child table reference is to check each child table records associated with the dbid
 				context.dbids[context.dbid].push_back(item_dbid);
 
-				// 如果这条记录除了dbid以外还存在其他数据，则将数据填充到结果集中
+				// If this record other data as well as dbid, you fill the data into a result set
 				if(nfields > 1)
 				{
 					KBE_ASSERT(nfields == context.items.size() + 1);
@@ -108,13 +108,13 @@ public:
 		
 		std::vector<DBID>& dbids = context.dbids[context.dbid];
 
-		// 如果没有数据则查询完毕了
+		// If no data query end
 		if(dbids.size() == 0)
 			return true;
 
-		// 如果当前表存在子表引用则需要继续查询子表
-		// 每一个dbid都需要获得子表上的数据
-		// 在这里我们让子表一次查询出所有的dbids数据然后填充到结果集
+		// If the current existing child table references you need to query the table
+		// Each dbid need access to child tables of data on
+		// Here the dbids we make table queries all at once and fill the data into a result set
 
 		mysql::DBContext::DB_RW_CONTEXTS::iterator iter1 = context.optable.begin();
 		for(; iter1 != context.optable.end(); ++iter1)
@@ -129,11 +129,11 @@ public:
 
 
 	/**
-		从子表中查询数据
+		Query data from the child table
 	*/
 	static bool queryChildDB(DBInterface* pdbi, mysql::DBContext& context, std::vector<DBID>& parentTableDBIDs)
 	{
-		// 根据某个dbid获得一张表上的相关数据
+		// According to a dbid to obtain a list of related data
 		SqlStatement* pSqlcmd = new SqlStatementQuery(pdbi, context.tableName, 
 			parentTableDBIDs, 
 			context.dbid, context.items);
@@ -147,7 +147,7 @@ public:
 
 		std::vector<DBID> t_parentTableDBIDs;
 
-		// 将查询到的结果写入上下文
+		// To write the result to a query context
 		MYSQL_RES * pResult = mysql_store_result(static_cast<DBInterfaceMysql*>(pdbi)->mysql());
 
 		if(pResult)
@@ -162,7 +162,7 @@ public:
 
 				unsigned long *lengths = mysql_fetch_lengths(pResult);
 
-				// 查询命令保证了查询到的每条记录都会有dbid
+				// Query command to ensure that the query to each record will have dbid
 				std::stringstream sval;
 				sval << arow[0];
 				DBID item_dbid;
@@ -173,11 +173,11 @@ public:
 				DBID parentID;
 				sval >> parentID;
 
-				// 将dbid记录到列表中，如果当前表还存在子表引用则会去子表查每一条与此dbid相关的记录
+				// The dbid records to the list, if there child table reference is to check each child table records associated with the dbid
 				context.dbids[parentID].push_back(item_dbid);
 				t_parentTableDBIDs.push_back(item_dbid);
 
-				// 如果这条记录除了dbid以外还存在其他数据，则将数据填充到结果集中
+				// If this record other data as well as dbid, you fill the data into a result set
 				const uint32 const_fields = 2; // id, parentID
 				if(nfields > const_fields)
 				{
@@ -196,13 +196,13 @@ public:
 			mysql_free_result(pResult);
 		}
 
-		// 如果没有数据则查询完毕了
+		// If no data query end
 		if(t_parentTableDBIDs.size() == 0)
 			return true;
 
-		// 如果当前表存在子表引用则需要继续查询子表
-		// 每一个dbid都需要获得子表上的数据
-		// 在这里我们让子表一次查询出所有的dbids数据然后填充到结果集
+		// If the current existing child table references you need to query the table
+		// Each dbid need access to child tables of data on
+		// Here the dbids we make table queries all at once and fill the data into a result set
 		mysql::DBContext::DB_RW_CONTEXTS::iterator iter1 = context.optable.begin();
 		for(; iter1 != context.optable.end(); ++iter1)
 		{

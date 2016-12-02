@@ -239,7 +239,7 @@ bool KBEAccountTableMysql::setFlagsDeadline(DBInterface * pdbi, const std::strin
 
 	SAFE_RELEASE_ARRAY(tbuf);
 
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(pdbi->query(sqlstr.c_str(), sqlstr.size(), false))
 		return true;
 
@@ -262,7 +262,7 @@ bool KBEAccountTableMysql::queryAccount(DBInterface * pdbi, const std::string& n
 	sqlstr += "\" LIMIT 1";
 	SAFE_RELEASE_ARRAY(tbuf);
 
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(sqlstr.c_str(), sqlstr.size(), false))
 		return true;
 
@@ -303,7 +303,7 @@ bool KBEAccountTableMysql::queryAccountAllInfos(DBInterface * pdbi, const std::s
 	sqlstr += "\" LIMIT 1";
 	SAFE_RELEASE_ARRAY(tbuf);
 
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(sqlstr.c_str(), sqlstr.size(), false))
 		return true;
 
@@ -331,7 +331,7 @@ bool KBEAccountTableMysql::queryAccountAllInfos(DBInterface * pdbi, const std::s
 //-------------------------------------------------------------------------------------
 bool KBEAccountTableMysql::updateCount(DBInterface * pdbi, const std::string& name, DBID dbid)
 {
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("update kbe_accountinfos set lasttime={}, numlogin=numlogin+1 where entityDBID={}",
 		time(NULL), dbid), false))
 		return false;
@@ -351,7 +351,7 @@ bool KBEAccountTableMysql::updatePassword(DBInterface * pdbi, const std::string&
 	mysql_real_escape_string(static_cast<DBInterfaceMysql*>(pdbi)->mysql(), 
 		tbuf1, name.c_str(), name.size());
 
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(fmt::format("update kbe_accountinfos set password=\"{}\" where accountName like \"{}\"", 
 		password, tbuf1), false))
 	{
@@ -422,7 +422,7 @@ bool KBEAccountTableMysql::logAccount(DBInterface * pdbi, ACCOUNT_INFOS& info)
 
 	SAFE_RELEASE_ARRAY(tbuf);
 
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	if(!pdbi->query(sqlstr.c_str(), sqlstr.size(), false))
 	{
 		ERROR_MSG(fmt::format("KBEAccountTableMysql::logAccount({}): sql({}) is failed({})!\n", 
@@ -601,7 +601,7 @@ bool KBEEmailVerificationTableMysql::activateAccount(DBInterface * pdbi, const s
 	
 	std::string password = info.password;
 
-	// 寻找dblog是否有此账号
+	// Looking for dblog if this account
 	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::findByInterfaceName(pdbi->name()).findKBETable("kbe_accountinfos"));
 	KBE_ASSERT(pTable);
 	
@@ -640,7 +640,7 @@ bool KBEEmailVerificationTableMysql::activateAccount(DBInterface * pdbi, const s
 
 	ScriptDefModule* pModule = EntityDef::findScriptModule(DBUtil::accountScriptName());
 
-	// 防止多线程问题， 这里做一个拷贝。
+	// Prevent the multithreading issues, to make a copy.
 	MemoryStream copyAccountDefMemoryStream(pTable->accountDefMemoryStream());
 
 	info.dbid = EntityTables::findByInterfaceName(pdbi->name()).writeEntity(pdbi, 0, -1,
@@ -648,7 +648,7 @@ bool KBEEmailVerificationTableMysql::activateAccount(DBInterface * pdbi, const s
 
 	KBE_ASSERT(info.dbid > 0);
 
-	// 如果查询失败则返回存在， 避免可能产生的错误
+	// If the query fails to return there, to avoid possible errors
 	tbuf = new char[MAX_BUF * 3];
 
 	mysql_real_escape_string(static_cast<DBInterfaceMysql*>(pdbi)->mysql(), 
@@ -851,7 +851,7 @@ bool KBEEmailVerificationTableMysql::resetpassword(DBInterface * pdbi, const std
 		return false;
 	}
 
-	// 寻找dblog是否有此账号
+	// Looking for dblog if this account
 	KBEAccountTable* pTable = static_cast<KBEAccountTable*>(EntityTables::findByInterfaceName(pdbi->name()).findKBETable("kbe_accountinfos"));
 	KBE_ASSERT(pTable);
 
@@ -921,7 +921,7 @@ bool KBEEmailVerificationTableMysql::syncToDB(DBInterface* pdbi)
 	ret = pdbi->query(sqlstr.c_str(), sqlstr.size(), true);
 	KBE_ASSERT(ret);
 
-	// 删除xx小时之前的记录
+	// XX hours before the record is deleted
 	sqlstr = fmt::format("delete from kbe_email_verification where logtime<{} and type={}", 
 		KBEngine::StringConv::val2str(time(NULL) - g_kbeSrvConfig.emailAtivationInfo_.deadline), 
 		((int)KBEEmailVerificationTable::V_TYPE_CREATEACCOUNT));

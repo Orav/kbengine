@@ -31,7 +31,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine { 
 
 /*
-	kbe系统表
+	KBE system table
 */
 class KBEEntityLogTableMysql : public KBEEntityLogTable
 {
@@ -40,7 +40,7 @@ public:
 	virtual ~KBEEntityLogTableMysql(){}
 	
 	/**
-		同步表到数据库中
+		Synchronize tables in the database
 	*/
 	virtual bool syncToDB(DBInterface* pdbi);
 	virtual bool syncIndexToDB(DBInterface* pdbi){ return true; }
@@ -62,7 +62,7 @@ public:
 	virtual ~KBEAccountTableMysql(){}
 	
 	/**
-		同步表到数据库中
+		Synchronize tables in the database
 	*/
 	virtual bool syncToDB(DBInterface* pdbi);
 	virtual bool syncIndexToDB(DBInterface* pdbi){ return true; }
@@ -84,7 +84,7 @@ public:
 	virtual ~KBEEmailVerificationTableMysql();
 
 	/**
-		同步表到数据库中
+		Synchronize tables in the database
 	*/
 	virtual bool syncToDB(DBInterface* pdbi);
 	virtual bool syncIndexToDB(DBInterface* pdbi){ return true; }

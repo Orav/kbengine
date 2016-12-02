@@ -64,7 +64,7 @@ struct MYSQL_TABLE_FIELD
 };
 
 /*
-	数据库接口
+	Database interface
 */
 class DBInterfaceMysql : public DBInterface
 {
@@ -75,7 +75,7 @@ public:
 	static bool initInterface(DBInterface* pdbi);
 	
 	/**
-		与某个数据库关联
+		Associated with a database
 	*/
 	bool reattach();
 	virtual bool attach(const char* databaseName = NULL);
@@ -95,13 +95,13 @@ public:
 	void hasLostConnection( bool v )	{ hasLostConnection_ = v; }
 
 	/**
-		检查环境
+		Check environment
 	*/
 	virtual bool checkEnvironment();
 	
 	/**
-		检查错误， 对错误的内容进行纠正
-		如果纠正不成功返回失败
+		Check for errors and correct the wrong content
+		If you correct unsuccessful returns a failure
 	*/
 	virtual bool checkErrors();
 
@@ -110,17 +110,17 @@ public:
 	bool write_query_result(MemoryStream * result);
 
 	/**
-		获取数据库所有的表名
+		Gets all of the tables in the database
 	*/
 	virtual bool getTableNames( std::vector<std::string>& tableNames, const char * pattern);
 
 	/**
-		获取数据库某个表所有的字段名称
+		Gets the database name fields to a table
 	*/
 	virtual bool getTableItemNames(const char* tableName, std::vector<std::string>& itemNames);
 
 	/** 
-		从数据库删除entity表字段
+		Delete entity from the database table field
 	*/
 	virtual bool dropEntityTableItemFromDB(const char* tableName, const char* tableItemName);
 
@@ -148,48 +148,48 @@ public:
 	void getFields(TABLE_FIELDS& outs, const char* tableName);
 
 	/**
-		返回这个接口的描述
+		Returns the interface description
 	*/
 	virtual const char* c_str();
 
 	/** 
-		获取错误
+		Gets the error
 	*/
 	virtual const char* getstrerror();
 
 	/** 
-		获取错误编号
+		For the error number
 	*/
 	virtual int getlasterror();
 
 	/**
-		如果数据库不存在则创建一个数据库
+		If the database does not exist, create one database
 	*/
 	virtual bool createDatabaseIfNotExist();
 	
 	/**
-		创建一个entity存储表
+		Creates a stored entity table
 	*/
 	virtual EntityTable* createEntityTable(EntityTables* pEntityTables);
 
 	/** 
-		从数据库删除entity表
+		Delete entity from the database table
 	*/
 	virtual bool dropEntityTableFromDB(const char* tableName);
 
 	/**
-		锁住接口操作
+		Lock interface operations
 	*/
 	virtual bool lock();
 	virtual bool unlock();
 
 	/**
-		处理异常
+		Handling exceptions
 	*/
 	bool processException(std::exception & e);
 
 	/**
-		SQL命令最长大小
+		SQL commands maximum size
 	*/
 	static size_t sql_max_allowed_packet(){ return sql_max_allowed_packet_; }
 

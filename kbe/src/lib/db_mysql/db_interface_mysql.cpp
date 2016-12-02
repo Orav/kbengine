@@ -261,7 +261,7 @@ __RECONNECT:
 			return false;
 		}
 
-		// 不需要关闭自动提交，底层会START TRANSACTION之后再COMMIT
+		// Do not need to turn off autocommit, START at the bottom again after the TRANSACTION COMMIT
 		// mysql_autocommit(mysql(), 0);
 
 		char characterset_sql[MAX_BUF];

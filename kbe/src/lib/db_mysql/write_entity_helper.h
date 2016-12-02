@@ -73,7 +73,7 @@ public:
 	}
 
 	/**
-		将数据更新到表中
+		When updating the data to the table
 	*/
 	static bool writeDB(DB_TABLE_OP optype, DBInterface* pdbi, mysql::DBContext& context)
 	{
@@ -92,24 +92,24 @@ public:
 
 		if(optype == TABLE_OP_INSERT)
 		{
-			// 开始更新所有的子表
+			// Start updating all the child tables
 			mysql::DBContext::DB_RW_CONTEXTS::iterator iter1 = context.optable.begin();
 			for(; iter1 != context.optable.end(); ++iter1)
 			{
 				mysql::DBContext& wbox = *iter1->second.get();
 				
-				// 绑定表关系
+				// Binding a table relationship
 				wbox.parentTableDBID = context.dbid;
 
-				// 更新子表
+				// Updating child table
 				writeDB(optype, pdbi, wbox);
 			}
 		}
 		else
 		{
-			// 如果有父ID首先得到该属性数据库中同父id的数据有多少条目， 并取出每条数据的id
-			// 然后将内存中的数据顺序更新至数据库， 如果数据库中有存在的条目则顺序覆盖更新已有的条目， 如果数据数量
-			// 大于数据库中已有的条目则插入剩余的数据， 如果数据少于数据库中的条目则删除数据库中的条目
+			// If a parent ID first half obtain the database ID number of data entries, and remove every piece of data ID
+			// Then update the in-memory data to the database, if the database has existing entries in sequence over the update existing entries, if the number data
+			// Is greater than the already existing in the database entry for the remaining data is inserted, if the data is less than the entry in the database delete database entries in the
 			// select id from tbl_SpawnPoint_xxx_values where parentID = 7;
 			KBEUnordered_map< std::string, std::vector<DBID> > childTableDBIDs;
 
@@ -210,10 +210,10 @@ public:
 				}
 			}
 
-			// 如果是要清空此表， 则循环N次已经找到的dbid， 使其子表中的子表也能有效删除
+			// If you want to empty the table, the dbid of the loop n times have been found, making it a child table in the child table can also be deleted
 			if(!context.isEmpty)
 			{
-				// 开始更新所有的子表
+				// Start updating all the child tables
 				mysql::DBContext::DB_RW_CONTEXTS::iterator iter1 = context.optable.begin();
 				for(; iter1 != context.optable.end(); ++iter1)
 				{
@@ -222,7 +222,7 @@ public:
 					if(wbox.isEmpty)
 						continue;
 
-					// 绑定表关系
+					// Binding a table relationship
 					wbox.parentTableDBID = context.dbid;
 
 					KBEUnordered_map<std::string, std::vector<DBID> >::iterator iter = 
@@ -242,19 +242,19 @@ public:
 						}
 					}
 
-					// 更新子表
+					// Updating child table
 					writeDB(optype, pdbi, wbox);
 				}
 			}
 			
-			// 删除废弃的数据项
+			// Delete obsolete data
 			KBEUnordered_map< std::string, std::vector<DBID> >::iterator tabiter = childTableDBIDs.begin();
 			for(; tabiter != childTableDBIDs.end(); ++tabiter)
 			{
 				if(tabiter->second.size() == 0)
 					continue;
 
-				// 先删除数据库中的记录
+				// To delete records in the database
 				std::string sqlstr = "delete from " ENTITY_TABLE_PERFIX "_";
 				sqlstr += tabiter->first;
 				sqlstr += " where " TABLE_ID_CONST_STR " in (";
@@ -290,7 +290,7 @@ public:
 							wbox.dbid = dbid;
 							wbox.isEmpty = true;
 
-							// 更新子表
+							// Updating child table
 							writeDB(optype, pdbi, wbox);
 						}
 					}
