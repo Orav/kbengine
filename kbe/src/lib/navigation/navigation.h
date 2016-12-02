@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -30,7 +30,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine
 {
 /*
-	µ¼º½Àà
+	å¯¼èˆªç±»
 */
 class Navigation : public Singleton<Navigation>
 {

@@ -19,23 +19,22 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /*
-	线程互诉体：
-	用法:
-		ThreadMutex tm;
-		tm.lockMutex();
-		....安全代码
-		tm.unlockMutex();
+	Thread bodies to each other:
+		Usage:
+		Thread mutex tm;
+		tm.lock mutex(); ....
+		Security code
 		
-		最好是配合ThreadGuard来使用
-		在一个类中定义互诉体成员
-		ThreadMutex tm;
-		在需要保护的地方:
+		tm.unlock mutex();
+		It is best used with Thread guard
+		Each other members defined within a class
+		Thread mutex tm;
+		Areas in need of protection:
 		void XXCLASS::func(void)
-		{
-			ThreadGuard tg(this->tm);
-			下面的代码都是安全的
-			...
-		}
+			{
+			Thread guard tg(this->tm);
+			The following code was safe
+		... }
 */
 #ifndef __THREADMUTEX_H__
 #define __THREADMUTEX_H__
@@ -75,8 +74,8 @@ public:
 
 	ThreadMutex(const ThreadMutex& v)
 	{
-		// 这里不允许拷贝构造mutex_，这是非常危险的
-		// 会造成多次THREAD_MUTEX_DELETE
+		// Copy mutex is not allowed here, this is very dangerous
+		// Causes multiple THREAD MUTEX DELETE
 		THREAD_MUTEX_INIT(mutex_);
 	}
 

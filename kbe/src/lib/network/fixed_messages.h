@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -30,14 +30,14 @@ namespace KBEngine {
 namespace Network
 {
 /*
-	ÓÃÀ´¶ÔÖĞ¼äĞ­Òé(Ç°¶ËÓëºó¶ËÖ®¼ä)½øĞĞÇ¿ÖÆÔ¼¶¨¡£
-	Ã»ÓĞÊ¹ÓÃµ½kbeÕûÌ×Ğ­Òé×Ô¶¯°ó¶¨»úÖÆµÄÇ°¶Ë¿ÉÒÔÊ¹ÓÃ´Ë´¦À´Ç¿ÖÆÔ¼¶¨Ğ­Òé¡£
+	ç”¨æ¥å¯¹ä¸­é—´åè®®(å‰ç«¯ä¸åç«¯ä¹‹é—´)è¿›è¡Œå¼ºåˆ¶çº¦å®šã€‚
+	æ²¡æœ‰ä½¿ç”¨åˆ°kbeæ•´å¥—åè®®è‡ªåŠ¨ç»‘å®šæœºåˆ¶çš„å‰ç«¯å¯ä»¥ä½¿ç”¨æ­¤å¤„æ¥å¼ºåˆ¶çº¦å®šåè®®ã€‚
 */
 class FixedMessages : public Singleton<FixedMessages>
 {
 public:
 
-	// ¹Ì¶¨µÄĞ­ÒéÊı¾İ½á¹¹
+	// å›ºå®šçš„åè®®æ•°æ®ç»“æ„
 	struct MSGInfo
 	{
 		MessageID msgid;

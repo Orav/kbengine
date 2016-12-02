@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -96,7 +96,7 @@ int UDPPacket::recvFromEndPoint(EndPoint & ep, Address* pAddr)
 {
 	KBE_ASSERT(maxBufferSize() > wpos());
 
-	// µ±½ÓÊÕÀ´µÄ´óĞ¡´óÓÚ½ÓÊÕ»º³åÇøµÄÊ±ºò£¬recvfrom·µ»Ø-1
+	// å½“æ¥æ”¶æ¥çš„å¤§å°å¤§äºæ¥æ”¶ç¼“å†²åŒºçš„æ—¶å€™ï¼Œrecvfromè¿”å›-1
 	int len = ep.recvfrom(data() + wpos(), size() - wpos(),
 		(u_int16_t*)&pAddr->port, (u_int32_t*)&pAddr->ip);
 

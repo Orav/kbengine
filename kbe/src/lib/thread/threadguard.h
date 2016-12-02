@@ -19,18 +19,17 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /*
-	线程守护体：
-		避免线程之间恶意竞争产生死锁问题。
-	用法:
-		在一个类中定义互诉体成员
-		ThreadMutex tm;
-		在需要保护的地方:
+	Thread guards:
+	Avoid malicious competition between the threads deadlock.
+		Usage:
+		Each other members defined within a class
+		Thread mutex tm;
+		Areas in need of protection:
 		void XXCLASS::foo(void)
-		{
-			ThreadGuard tg(this->tm);
-			下面的代码都是安全的
-			...
-		}
+			{
+			Thread guard tg(this->tm);
+			The following code was safe
+		... }
 */
 #ifndef KBE_THREADGUARD_H
 #define KBE_THREADGUARD_H

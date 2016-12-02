@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -25,7 +25,7 @@ namespace KBEngine{ namespace script{ namespace math {
 //-------------------------------------------------------------------------------------
 bool installModule(const char* moduleName)
 {
-	// ³õÊ¼»¯Ò»¸öÊıÑ§Ïà¹ØµÄÄ£¿é
+	// åˆå§‹åŒ–ä¸€ä¸ªæ•°å­¦ç›¸å…³çš„æ¨¡å—
 	PyObject *mathModule = PyImport_AddModule(moduleName);
 	static struct PyModuleDef moduleDesc =   
 	{  
@@ -38,11 +38,11 @@ bool installModule(const char* moduleName)
 
 	PyModule_Create(&moduleDesc);			
 	
-	// ³õÊ¼»¯ScriptVector2
+	// åˆå§‹åŒ–ScriptVector2
 	script::ScriptVector2::installScript(mathModule, "Vector2");
-	// ³õÊ¼»¯ScriptVector3
+	// åˆå§‹åŒ–ScriptVector3
 	script::ScriptVector3::installScript(mathModule, "Vector3");
-	// ³õÊ¼»¯ScriptVector4
+	// åˆå§‹åŒ–ScriptVector4
 	script::ScriptVector4::installScript(mathModule, "Vector4");
 	return true;
 }

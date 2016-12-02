@@ -30,7 +30,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine{ namespace thread{
 
 /*
-	线程池的线程基类
+	Thread pool thread Cheng Ji class
 */
 
 class TPTask : public Task
@@ -38,18 +38,18 @@ class TPTask : public Task
 public:
 	enum TPTaskState
 	{
-		/// 一个任务已经完成
+		/// A task has been completed
 		TPTASK_STATE_COMPLETED = 0,
 
-		/// 继续在主线程执行
+		/// Continue in the main thread execution
 		TPTASK_STATE_CONTINUE_MAINTHREAD = 1,
 
-		// 继续在子线程执行
+		// Continue to thread
 		TPTASK_STATE_CONTINUE_CHILDTHREAD = 2,
 	};
 
 	/**
-		返回值： thread::TPTask::TPTaskState， 请参看TPTaskState
+		The return value： thread::TPTask::TPTaskState， Please refer to the TPTask State
 	*/
 	virtual thread::TPTask::TPTaskState presentMainThread(){ 
 		return thread::TPTask::TPTASK_STATE_COMPLETED; 

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -29,18 +29,18 @@ namespace KBEngine{ namespace script{
 class Copy
 {						
 public:	
-	/** ´úÀí copy.copy */
+	/** ä»£ç† copy.copy */
 	static PyObject* copy(PyObject* pyobj);
 	static PyObject* deepcopy(PyObject* pyobj);
 
-	/** ³õÊ¼»¯pickler */
+	/** åˆå§‹åŒ–pickler */
 	static bool initialize(void);
 	static void finalise(void);
 
 private:
-	static PyObject* copyMethod_;							// cPicket.dumps·½·¨Ö¸Õë
-	static PyObject* deepcopyMethod_;						// cPicket.loads·½·¨Ö¸Õë
-	static bool	isInit;										// ÊÇ·ñÒÑ¾­±»³õÊ¼»¯
+	static PyObject* copyMethod_;							// cPicket.dumpsæ–¹æ³•æŒ‡é’ˆ
+	static PyObject* deepcopyMethod_;						// cPicket.loadsæ–¹æ³•æŒ‡é’ˆ
+	static bool	isInit;										// æ˜¯å¦å·²ç»è¢«åˆå§‹åŒ–
 } ;
 
 }

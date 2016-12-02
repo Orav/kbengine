@@ -1,4 +1,4 @@
-/*
+﻿/*
 A* Algorithm Implementation using STL is
 Copyright (C)2001-2005 Justin Heyes-Jones
 

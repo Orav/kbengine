@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -125,7 +125,7 @@ bool WebSocketProtocol::handshake(Network::Channel* pChannel, MemoryStream* s)
 		findIter = headers.find("Origin");
 		if(findIter == headers.end())
 		{
-			//ÓÐÐ©app¼¶¿Í»§¶Ë¿ÉÄÜÃ»ÓÐÕâ¸ö×Ö¶Î
+			//æœ‰äº›appçº§å®¢æˆ·ç«¯å¯èƒ½æ²¡æœ‰è¿™ä¸ªå­—æ®µ
 			//s->rpos(rpos);
 			//s->wpos(wpos);
 			//return false;
@@ -195,7 +195,7 @@ int WebSocketProtocol::makeFrame(WebSocketProtocol::FrameType frame_type,
 {
 	uint64 size = pInPacket->length(); 
 
-	// Ð´ÈëframeÀàÐÍ
+	// å†™å…¥frameç±»åž‹
 	(*pOutPacket) << ((uint8)frame_type); 
 
 	if(size <= 125)
@@ -247,31 +247,31 @@ int WebSocketProtocol::getFrame(Packet * pPacket, uint8& msg_opcode, uint8& msg_
 		+---------------------------------------------------------------+
 	*/
 
-	// ²»×ã3×Ö½Ú£¬ÐèÒª¼ÌÐøµÈ´ý
+	// ä¸è¶³3å­—èŠ‚ï¼Œéœ€è¦ç»§ç»­ç­‰å¾…
 	if(pPacket->length() < 3) 
 	{
 		frameType = INCOMPLETE_FRAME;
 		return 3;
 	}
 
-	// µÚÒ»¸ö×Ö½Ú, ×î¸ßÎ»ÓÃÓÚÃèÊöÏûÏ¢ÊÇ·ñ½áÊø, ×îµÍ4Î»ÓÃÓÚÃèÊöÏûÏ¢ÀàÐÍ
+	// ç¬¬ä¸€ä¸ªå­—èŠ‚, æœ€é«˜ä½ç”¨äºŽæè¿°æ¶ˆæ¯æ˜¯å¦ç»“æŸ, æœ€ä½Ž4ä½ç”¨äºŽæè¿°æ¶ˆæ¯ç±»åž‹
 	uint8 bytedata;
 	(*pPacket) >> bytedata;
 
 	msg_opcode = bytedata & 0x0F;
 	msg_fin = (bytedata >> 7) & 0x01;
 
-	// µÚ¶þ¸ö×Ö½Ú, ÏûÏ¢µÄµÚ¶þ¸ö×Ö½ÚÖ÷ÒªÓÃÓÚÃèÊöÑÚÂëºÍÏûÏ¢³¤¶È, ×î¸ßÎ»ÓÃ0»ò1À´ÃèÊöÊÇ·ñÓÐÑÚÂë´¦Àí
+	// ç¬¬äºŒä¸ªå­—èŠ‚, æ¶ˆæ¯çš„ç¬¬äºŒä¸ªå­—èŠ‚ä¸»è¦ç”¨äºŽæè¿°æŽ©ç å’Œæ¶ˆæ¯é•¿åº¦, æœ€é«˜ä½ç”¨0æˆ–1æ¥æè¿°æ˜¯å¦æœ‰æŽ©ç å¤„ç†
 	(*pPacket) >> bytedata;
 	msg_masked = (bytedata >> 7) & 0x01;
 
-	// ÏûÏ¢½âÂë
+	// æ¶ˆæ¯è§£ç 
 	msg_length_field = bytedata & (~0x80);
 
-	// Ê£ÏÂµÄºóÃæ7Î»ÓÃÀ´ÃèÊöÏûÏ¢³¤¶È, ÓÉÓÚ7Î»×î¶àÖ»ÄÜÃèÊö127ËùÒÔÕâ¸öÖµ»á´ú±íÈýÖÖÇé¿ö
-	// Ò»ÖÖÊÇÏûÏ¢ÄÚÈÝÉÙÓÚ126´æ´¢ÏûÏ¢³¤¶È, Èç¹ûÏûÏ¢³¤¶ÈÉÙÓÚUINT16µÄÇé¿ö´ËÖµÎª126
-	// µ±ÏûÏ¢³¤¶È´óÓÚUINT16µÄÇé¿öÏÂ´ËÖµÎª127;
-	// ÕâÁ½ÖÖÇé¿öµÄÏûÏ¢³¤¶È´æ´¢µ½½ôËæºóÃæµÄbyte[], ·Ö±ðÊÇUINT16(2Î»byte)ºÍUINT64(4Î»byte)
+	// å‰©ä¸‹çš„åŽé¢7ä½ç”¨æ¥æè¿°æ¶ˆæ¯é•¿åº¦, ç”±äºŽ7ä½æœ€å¤šåªèƒ½æè¿°127æ‰€ä»¥è¿™ä¸ªå€¼ä¼šä»£è¡¨ä¸‰ç§æƒ…å†µ
+	// ä¸€ç§æ˜¯æ¶ˆæ¯å†…å®¹å°‘äºŽ126å­˜å‚¨æ¶ˆæ¯é•¿åº¦, å¦‚æžœæ¶ˆæ¯é•¿åº¦å°‘äºŽUINT16çš„æƒ…å†µæ­¤å€¼ä¸º126
+	// å½“æ¶ˆæ¯é•¿åº¦å¤§äºŽUINT16çš„æƒ…å†µä¸‹æ­¤å€¼ä¸º127;
+	// è¿™ä¸¤ç§æƒ…å†µçš„æ¶ˆæ¯é•¿åº¦å­˜å‚¨åˆ°ç´§éšåŽé¢çš„byte[], åˆ†åˆ«æ˜¯UINT16(2ä½byte)å’ŒUINT64(4ä½byte)
 	if(msg_length_field <= 125) 
 	{
 		msg_payload_length = msg_length_field;
@@ -296,15 +296,15 @@ int WebSocketProtocol::getFrame(Packet * pPacket, uint8& msg_opcode, uint8& msg_
 		pPacket->read_skip(8);
 	}
 
-	// »º³å¿É¶Á³¤¶È²»¹»
-	/* ÕâÀï²»×ö¼ì²é£¬Ö»½âÎöÐ­ÒéÍ·
+	// ç¼“å†²å¯è¯»é•¿åº¦ä¸å¤Ÿ
+	/* è¿™é‡Œä¸åšæ£€æŸ¥ï¼Œåªè§£æžåè®®å¤´
 	if(pPacket->length() < (size_t)msg_payload_length) {
 		frameType = INCOMPLETE_FRAME;
 		return (size_t)msg_payload_length - pPacket->length();
 	}
 	*/
 
-	// Èç¹û´æÔÚÑÚÂëµÄÇé¿öÏÂ»ñÈ¡4×Ö½ÚÑÚÂëÖµ
+	// å¦‚æžœå­˜åœ¨æŽ©ç çš„æƒ…å†µä¸‹èŽ·å–4å­—èŠ‚æŽ©ç å€¼
 	if(msg_masked) 
 	{
 		(*pPacket) >> msg_mask;
@@ -333,7 +333,7 @@ int WebSocketProtocol::getFrame(Packet * pPacket, uint8& msg_opcode, uint8& msg_
 //-------------------------------------------------------------------------------------
 bool WebSocketProtocol::decodingDatas(Packet* pPacket, uint8 msg_masked, uint32 msg_mask)
 {
-	// ½âÂëÄÚÈÝ
+	// è§£ç å†…å®¹
 	if(msg_masked) 
 	{
 		uint8* c = pPacket->data() + pPacket->rpos();

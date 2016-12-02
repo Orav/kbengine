@@ -1,4 +1,4 @@
-/*
+О╩©/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -72,7 +72,7 @@ bool FixedMessages::loadConfig(std::string fileName)
 	rootNode = xml->getRootNode();
 	if(rootNode == NULL)
 	{
-		// root╫з╣Цобц╩спвс╫з╣Цак
+		// rootХ┼┌Г┌╧Д╦▀Ф╡║Ф°┴Е╜░Х┼┌Г┌╧Д╨├
 		return true;
 	}
 

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -29,7 +29,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace KBEngine{ namespace script{ namespace math {
 	
-/** °²×°ÊıÑ§Ä£¿é */
+/** å®‰è£…æ•°å­¦æ¨¡å— */
 bool installModule(const char* moduleName);
 bool uninstallModule();
 

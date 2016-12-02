@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -35,7 +35,7 @@ public:
 	virtual ~ScriptStdOutErr();
 
 	/** 
-		°²×°ºÍĞ¶ÔØÕâ¸öÄ£¿é 
+		å®‰è£…å’Œå¸è½½è¿™ä¸ªæ¨¡å— 
 	*/
 	bool install(void);
 	bool uninstall(void);

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -212,7 +212,7 @@ static PyObject* delWatcher(PyObject* self, PyObject* args)
 //-------------------------------------------------------------------------------------
 bool initializePyWatcher(Script* pScript)
 {
-	// ×¢²á²úÉúuuid·½·¨µ½py
+	// æ³¨å†Œäº§ç”Ÿuuidæ–¹æ³•åˆ°py
 	APPEND_SCRIPT_MODULE_METHOD(pScript->getModule(),		addWatcher,			addWatcher,					METH_VARARGS,			0);
 	APPEND_SCRIPT_MODULE_METHOD(pScript->getModule(),		delWatcher,			delWatcher,					METH_VARARGS,			0);
 	return true;

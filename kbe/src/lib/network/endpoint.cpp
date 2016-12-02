@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -278,7 +278,7 @@ int EndPoint::findIndicatedInterface(const char * spec, u_int32_t & address)
 		return -1;
 	}
 
-	// ÊÇ·ñÖ¸¶¨µØÖ·
+	// æ˜¯å¦æŒ‡å®šåœ°å€
 	if (0 == Address::string2ip(spec, address))
 	{
 		return 0;
@@ -385,7 +385,7 @@ int EndPoint::getInterfaceAddressByMAC(const char * mac, u_int32_t & address)
 		return ret;
 	}
 
-	// macµØÖ·×ª»»
+	// macåœ°å€è½¬æ¢
 	unsigned char macAddress[16] = {0};
 	unsigned char macAddressIdx = 0;
 	char szTemp[2] = {0};

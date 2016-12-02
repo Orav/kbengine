@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -37,7 +37,7 @@ class PyProfile
 {						
 public:	
 	/** 
-		¼¤»îÓëÍ£Ö¹Ä³¸öprofile
+		æ¿€æ´»ä¸åœæ­¢æŸä¸ªprofile
 	*/
 	static bool start(std::string profile);
 	static bool stop(std::string profile);
@@ -48,7 +48,7 @@ public:
 	static void print_stats(const std::string& sort = "time", const std::string& profileName = "kbengine");
 
 	/** 
-		³õÊ¼»¯pickler 
+		åˆå§‹åŒ–pickler 
 	*/
 	static bool initialize(Script* pScript);
 	static void finalise(void);
@@ -59,7 +59,7 @@ private:
 
 	static PyObject* profileMethod_;
 
-	static bool	isInit;										// ÊÇ·ñÒÑ¾­±»³õÊ¼»¯
+	static bool	isInit;										// æ˜¯å¦å·²ç»è¢«åˆå§‹åŒ–
 
 	static Script* pScript_;
 } ;

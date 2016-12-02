@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -67,7 +67,7 @@ SystemInfo::SystemInfo()
 {
 	totalmem_ = 0;
 
-	// ²»ÒªÔÚ³õÊ¼»¯ÖĞ×öÕâ¼şÊÂÇé£¬ÒòÎªÈ«¾Ö¾²Ì¬±äÁ¿ÕâÀï¿ÉÄÜÔÚmainÖ®Ç°±»µ÷ÓÃÒ»´Î
+	// ä¸è¦åœ¨åˆå§‹åŒ–ä¸­åšè¿™ä»¶äº‹æƒ…ï¼Œå› ä¸ºå…¨å±€é™æ€å˜é‡è¿™é‡Œå¯èƒ½åœ¨mainä¹‹å‰è¢«è°ƒç”¨ä¸€æ¬¡
 	//_autocreate();
 	//getCPUPer();
 	//getProcessInfo();

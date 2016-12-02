@@ -34,7 +34,7 @@ namespace KBEConcurrency
 {
 
 /**
-	主线程处于空闲时触发
+	Triggered when a thread is idle
 */
 inline void onStartMainThreadIdling()
 {
@@ -43,7 +43,7 @@ inline void onStartMainThreadIdling()
 }
 
 /**
-	主线程结束空闲开始繁忙时触发
+	Triggered when a thread ends free start busy
 */
 inline void onEndMainThreadIdling()
 {
@@ -52,8 +52,8 @@ inline void onEndMainThreadIdling()
 }
 
 /**
-	设置回调函数
-	当回调触发时通知他们
+	Sets the callback function 
+	When callback is triggered, inform them
 */
 inline void setMainThreadIdleCallbacks(void (*pStartCallback)(), void (*pEndCallback)())
 {

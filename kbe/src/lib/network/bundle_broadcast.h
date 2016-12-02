@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -35,7 +35,7 @@ namespace Network
 class NetworkInterface;
 
 /*
-	¿ÉÒÔ·½±ãµÄ´¦ÀíÈç:Ïò¾ÖÓòÍøÄÚ¹ã²¥Ä³Ğ©ĞÅÏ¢£¬ ²¢´¦ÀíÊÕ¼¯Ïà¹ØĞÅÏ¢¡£
+	å¯ä»¥æ–¹ä¾¿çš„å¤„ç†å¦‚:å‘å±€åŸŸç½‘å†…å¹¿æ’­æŸäº›ä¿¡æ¯ï¼Œ å¹¶å¤„ç†æ”¶é›†ç›¸å…³ä¿¡æ¯ã€‚
 */
 class BundleBroadcast : public Bundle
 {

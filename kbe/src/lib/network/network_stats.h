@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -32,7 +32,7 @@ namespace Network
 class MessageHandler;
 
 /*
-	¼ÇÂ¼networkÁ÷Á¿µÈĞÅÏ¢
+	è®°å½•networkæµé‡ç­‰ä¿¡æ¯
 */
 class NetworkStats : public Singleton<NetworkStats>
 {

@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -30,7 +30,7 @@ namespace KBEngine{ namespace script{
 class Script;
 
 /*
-	Ê¹watcherÄÜ¹»¼àÊÓµ½py½Å±¾ÖĞµÄÊı¾İ
+	ä½¿watcherèƒ½å¤Ÿç›‘è§†åˆ°pyè„šæœ¬ä¸­çš„æ•°æ®
 */
 template <class T>
 class PyWatcherObject : public WatcherObject

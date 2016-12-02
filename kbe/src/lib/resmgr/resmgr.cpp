@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -117,7 +117,7 @@ void Resmgr::updatePaths()
 	char splitFlag = ';';
 	strutil::kbe_split<char>(tbuf, splitFlag, respaths_);
 
-	// windowsÓÃ»§²»ÄÜ·Ö¸îÃ°ºÅ£¬ ¿ÉÄÜ»á°ÑÅÌ·û¸ø·Ö¸îÁË
+	// Windows user cannot be separated by a colon may have split my drive letter
 #if KBE_PLATFORM != PLATFORM_WIN32
 	if(respaths_.size() < 2)
 	{
@@ -154,7 +154,7 @@ bool Resmgr::initialize()
 	//if(isInit())
 	//	return true;
 
-	// »ñÈ¡ÒıÇæ»·¾³ÅäÖÃ
+	// Gets the engine environment configuration
 	kb_env_.root_path		= getenv("KBE_ROOT") == NULL ? "" : getenv("KBE_ROOT");
 	kb_env_.res_path		= getenv("KBE_RES_PATH") == NULL ? "" : getenv("KBE_RES_PATH"); 
 	kb_env_.bin_path		= getenv("KBE_BIN_PATH") == NULL ? "" : getenv("KBE_BIN_PATH"); 

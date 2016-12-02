@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -19,7 +19,7 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 /*
-	×ÊÔ´¹ÜÀíÆ÷¡£
+	The resource manager.
 */
 #ifndef KBE_RESMGR_H
 #define KBE_RESMGR_H
@@ -42,7 +42,7 @@ namespace KBEngine{
 class Resmgr : public Singleton<Resmgr>, public TimerHandler
 {
 public:
-	// ÒıÇæ»·¾³±äÁ¿
+	// Engine environment variables
 	struct KBEEnv
 	{
 		std::string root_path;
@@ -66,7 +66,7 @@ public:
 	const Resmgr::KBEEnv& getEnv() { return kb_env_; }
 
 	/*
-		´Ó×ÊÔ´Â·¾¶ÖĞ(»·¾³±äÁ¿ÖĞÖ¸¶¨µÄ)Æ¥Åäµ½ÍêÕûµÄ×ÊÔ´µØÖ·
+		From the resource path (specified in the environment variable), to a complete resource address
 	*/
 	std::string matchRes(const std::string& res);
 	std::string matchRes(const char* res);
@@ -76,12 +76,12 @@ public:
 	FILE* openRes(std::string res, const char* mode = "r");
 
 	/*
-		ÁĞ³öÄ¿Â¼ÏÂËùÓĞµÄ×ÊÔ´ÎÄ¼ş
+		List down all the resource files
 	*/
 	bool listPathRes(std::wstring path, const std::wstring& extendName, std::vector<std::wstring>& results);
 
 	/*
-		´Ó×ÊÔ´Â·¾¶ÖĞ(»·¾³±äÁ¿ÖĞÖ¸¶¨µÄ)Æ¥Åäµ½Ä¿Â¼
+		From the resource path (environment variables specified in), to the directory
 	*/
 	std::string matchPath(const std::string& path);
 	std::string matchPath(const char* path);
@@ -97,19 +97,19 @@ public:
 	}
 
 	/**
-		»ñµÃÒıÇæÏµÍ³¼¶×ÊÔ´Ä¿Â¼
+		Access to system-level resources directory
 		kbe\\res\\*
 	*/
 	std::string getPySysResPath();
 
 	/**
-		»ñµÃÓÃ»§¼¶×ÊÔ´Ä¿Â¼
+		Access to user-level resources directory
 		assets\\res\\*
 	*/
 	std::string getPyUserResPath();
 
 	/**
-		»ñµÃÓÃ»§¼¶½Å±¾Ä¿Â¼
+		For user-level scripts directory
 		assets\\scripts\\*
 	*/
 	std::string getPyUserScriptsPath();

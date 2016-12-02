@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -141,7 +141,7 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 
 				reset();
 
-				// Èç¹ûÃ»ÓĞ´´½¨¹ı»º´æ£¬ÏÈ³¢ÊÔÖ±½Ó½âÎö°üÍ·£¬Èç¹ûĞÅÏ¢×ã¹»³É¹¦½âÎöÔò¼ÌĞøµ½ÏÂÒ»²½
+				// å¦‚æœæ²¡æœ‰åˆ›å»ºè¿‡ç¼“å­˜ï¼Œå…ˆå°è¯•ç›´æ¥è§£æåŒ…å¤´ï¼Œå¦‚æœä¿¡æ¯è¶³å¤ŸæˆåŠŸè§£æåˆ™ç»§ç»­åˆ°ä¸‹ä¸€æ­¥
 				pFragmentDatasRemain_ = websocket::WebSocketProtocol::getFrame(pPacket, msg_opcode_, msg_fin_, msg_masked_, 
 					msg_mask_, msg_length_field_, msg_payload_length_, msg_frameType_);
 
@@ -162,8 +162,8 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 			{
 				KBE_ASSERT(pTCPPacket_ != NULL);
 
-				// ³¤¶ÈÈç¹û´óÓÚÊ£Óà¶ÁÈ¡³¤¶È£¬ÄÇÃ´¿ÉÒÔ¿ªÊ¼½âÎöÁË
-				// ·ñÔò½«°üÄÚ´æ¼ÌĞø»º´æ
+				// é•¿åº¦å¦‚æœå¤§äºå‰©ä½™è¯»å–é•¿åº¦ï¼Œé‚£ä¹ˆå¯ä»¥å¼€å§‹è§£æäº†
+				// å¦åˆ™å°†åŒ…å†…å­˜ç»§ç»­ç¼“å­˜
 				if((int32)pPacket->length() >= pFragmentDatasRemain_)
 				{
 					pFragmentDatasRemain_ = websocket::WebSocketProtocol::getFrame(pTCPPacket_, msg_opcode_, msg_fin_, msg_masked_, 
@@ -171,11 +171,11 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 
 					KBE_ASSERT(pFragmentDatasRemain_ == 0);
 
-					// frame½âÎöÍê±Ï£¬½«¶ÔÏó»ØÊÕ
+					// frameè§£æå®Œæ¯•ï¼Œå°†å¯¹è±¡å›æ”¶
 					TCPPacket::reclaimPoolObject(pTCPPacket_);
 					pTCPPacket_ = NULL;
 
-					// ÊÇ·ñÓĞÊı¾İĞ¯´ø£¿Èç¹ûÃ»ÓĞÔò²»½øÈëdata½âÎö
+					// æ˜¯å¦æœ‰æ•°æ®æºå¸¦ï¼Ÿå¦‚æœæ²¡æœ‰åˆ™ä¸è¿›å…¥dataè§£æ
 					if(msg_payload_length_ > 0)
 					{
 						fragmentDatasFlag_ = FRAGMENT_MESSAGE_DATAS;
@@ -226,7 +226,7 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 			}
 			else if(msg_frameType_ == websocket::WebSocketProtocol::INCOMPLETE_FRAME)
 			{
-				// ¼ÌĞøµÈ´ıºóĞøÄÚÈİµ½´ï
+				// ç»§ç»­ç­‰å¾…åç»­å†…å®¹åˆ°è¾¾
 			}
 		}
 		else
@@ -273,7 +273,7 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 
 			Reason reason = PacketFilter::recv(pChannel, receiver, pTCPPacket_);
 
-			// pTCPPacket_²»ĞèÒªÔÚÕâÀï»ØÊÕÁË
+			// pTCPPacket_ä¸éœ€è¦åœ¨è¿™é‡Œå›æ”¶äº†
 			pTCPPacket_ = NULL;
 
 			if(pFragmentDatasRemain_ == 0)

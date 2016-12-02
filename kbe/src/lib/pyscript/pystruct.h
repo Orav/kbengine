@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -30,26 +30,26 @@ class PyStruct
 {						
 public:	
 	/** 
-		´úÀí struct.pack
+		ä»£ç† struct.pack
 	*/
 	static std::string pack(PyObject* fmt, PyObject* args);
 
 	/** 
-		´úÀí struct.unpack
+		ä»£ç† struct.unpack
 	*/
 	static PyObject* unpack(PyObject* fmt, PyObject* args);
 
 	/** 
-		³õÊ¼»¯pickler 
+		åˆå§‹åŒ–pickler 
 	*/
 	static bool initialize(void);
 	static void finalise(void);
 	
 private:
-	static PyObject* pack_;									// struct.pack·½·¨Ö¸Õë
-	static PyObject* unpack_;								// struct.unpack·½·¨Ö¸Õë
+	static PyObject* pack_;									// struct.packæ–¹æ³•æŒ‡é’ˆ
+	static PyObject* unpack_;								// struct.unpackæ–¹æ³•æŒ‡é’ˆ
 
-	static bool	isInit;										// ÊÇ·ñÒÑ¾­±»³õÊ¼»¯
+	static bool	isInit;										// æ˜¯å¦å·²ç»è¢«åˆå§‹åŒ–
 } ;
 
 }

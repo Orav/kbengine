@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -45,7 +45,7 @@ void createMiniDump(EXCEPTION_POINTERS* pep)
 		}		
 	}
 	
-	// Ã¿´Î¶¼³¢ÊÔ´´½¨Ò»¸ö´æ·ÅCrashDumpÄ¿Â¼
+	// æ¯æ¬¡éƒ½å°è¯•åˆ›å»ºä¸€ä¸ªå­˜æ”¾CrashDumpç›®å½•
 	CreateDirectory(L"CrashDumps", 0);
 
 	// Open the file 

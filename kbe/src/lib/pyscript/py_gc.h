@@ -1,4 +1,4 @@
-/*
+ï»¿/*
 This source file is part of KBEngine
 For the latest info, see http://www.kbengine.org/
 
@@ -36,48 +36,48 @@ public:
 	static uint32 DEBUG_LEAK;
 	
 	/** 
-		³õÊ¼»¯pickler 
+		åˆå§‹åŒ–pickler 
 	*/
 	static bool initialize(void);
 	static void finalise(void);
 	
 	/** 
-		Ç¿ÖÆ»ØÊÕÀ¬»ø
+		å¼ºåˆ¶å›æ”¶åƒåœ¾
 	*/
 	static void collect(int8 generations = -1);
 
 	/** 
-		ÉèÖÃµ÷ÊÔ±êÖ¾
+		è®¾ç½®è°ƒè¯•æ ‡å¿—
 	*/
 	static void set_debug(uint32 flsgs);
 	
 	/**
-		Ôö¼Ó¼ÆÊı
+		å¢åŠ è®¡æ•°
 	*/
 	static void incTracing(std::string name);
 
 	/**
-		¼õÉÙ¼ÆÊı
+		å‡å°‘è®¡æ•°
 	*/
 	static void decTracing(std::string name);
 
 	/**
-		debug×·×Ùkbe·â×°µÄpy¶ÔÏó¼ÆÊı
+		debugè¿½è¸ªkbeå°è£…çš„pyå¯¹è±¡è®¡æ•°
 	*/
 	static void debugTracing(bool shuttingdown = true);
 
 	/**
-		½Å±¾µ÷ÓÃ
+		è„šæœ¬è°ƒç”¨
 	*/
 	static PyObject* __py_debugTracing(PyObject* self, PyObject* args);
 
 private:
-	static PyObject* collectMethod_;							// cPicket.dumps·½·¨Ö¸Õë
-	static PyObject* set_debugMethod_;							// cPicket.loads·½·¨Ö¸Õë
+	static PyObject* collectMethod_;							// cPicket.dumpsæ–¹æ³•æŒ‡é’ˆ
+	static PyObject* set_debugMethod_;							// cPicket.loadsæ–¹æ³•æŒ‡é’ˆ
 
-	static bool	isInit;											// ÊÇ·ñÒÑ¾­±»³õÊ¼»¯
+	static bool	isInit;											// æ˜¯å¦å·²ç»è¢«åˆå§‹åŒ–
 
-	static KBEUnordered_map<std::string, int> tracingCountMap_;	// ×·×ÙÌØ¶¨µÄ¶ÔÏó¼ÆÊıÆ÷
+	static KBEUnordered_map<std::string, int> tracingCountMap_;	// è¿½è¸ªç‰¹å®šçš„å¯¹è±¡è®¡æ•°å™¨
 } ;
 
 }
