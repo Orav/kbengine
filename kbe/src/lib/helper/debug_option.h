@@ -29,23 +29,23 @@ namespace Network
 {
 
 /** 
-	这个开关设置数据包是否总是携带长度信息， 这样在某些前端进行耦合时提供一些便利
-	 如果为false则一些固定长度的数据包不携带长度信息， 由对端自行解析
+	This switch sets the length of the packet is always to bring information that way in front of the coupling provides a few convenience
+	 If false the length of fixed-length packets do not carry information up to the end to resolve
 */
 extern bool g_packetAlwaysContainLength;
 
 /**
-是否需要将任何接收和发送的包以文本输出到log中提供调试
+Any incoming and outgoing packages need to be provided in the text output to the log debug
 		g_trace_packet:
-			0: 不输出
-			1: 16进制输出
-			2: 字符流输出
-			3: 10进制输出
+			0: Do not output
+			1: 16 input and output
+			2: Stream output
+			3: 10 input and output
 		use_logfile:
-			是否独立一个log文件来记录包内容，文件名通常为
+			Independent of a log file to record the package contents, the file name is usually
 			appname_packetlogs.log
 		g_trace_packet_disables:
-			关闭某些包的输出
+			Close some package output
 */
 extern uint8 g_trace_packet;
 extern bool g_trace_encrypted_packet;
@@ -55,12 +55,12 @@ extern bool g_trace_packet_use_logfile;
 }
 
 /**
-	是否输出entity的创建， 脚本获取属性， 初始化属性等调试信息。
+	Whether to output entity created, the script gets the property and initialization properties for debugging information.
 */
 extern bool g_debugEntity;
 
 /**
-	apps发布状态, 可在脚本中获取该值
+	Apps published indefinitely, in script, you can get the value
 		0 : debug
 		1 : release
 */

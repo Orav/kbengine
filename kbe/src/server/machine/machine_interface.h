@@ -43,10 +43,10 @@ along with KBEngine.  If not, see <http://www.gnu.org/licenses/>.
 namespace KBEngine{
 
 /**
-	machine所有消息接口在此定义
+	Machine all messaging interface defined here
 */
 NETWORK_INTERFACE_DECLARE_BEGIN(MachineInterface)
-	// 其他组件向app广播自己的接口地址
+	// Other components to the app broadcasts its own interface addresses
 	MACHINE_MESSAGE_DECLARE_ARGS25(onBroadcastInterface,			NETWORK_VARIABLE_MESSAGE,
 									int32,							uid, 
 									std::string,					username,
@@ -74,7 +74,7 @@ NETWORK_INTERFACE_DECLARE_BEGIN(MachineInterface)
 									uint32,							backRecvAddr,
 									uint16,							backRecvPort)
 	
-	// 其他组件向app请求获取某个组件类别的地址
+	// Other components to the app request obtains the address of a component category
 	MACHINE_MESSAGE_DECLARE_ARGS7(onFindInterfaceAddr,				NETWORK_VARIABLE_MESSAGE,
 									int32,							uid, 
 									std::string,					username,
@@ -84,33 +84,33 @@ NETWORK_INTERFACE_DECLARE_BEGIN(MachineInterface)
 									uint32,							addr, 
 									uint16,							finderRecvPort)
 						
-	// 查询所有接口信息
+	// All interface information
 	MACHINE_MESSAGE_DECLARE_ARGS3(onQueryAllInterfaceInfos,			NETWORK_VARIABLE_MESSAGE,
 									int32,							uid, 
 									std::string,					username,
 									uint16,							finderRecvPort)
 		
-	// 查询所有machine进程
+	// All machine processes
 	MACHINE_MESSAGE_DECLARE_ARGS3(onQueryMachines,					NETWORK_VARIABLE_MESSAGE,
 									int32,							uid, 
 									std::string,					username,
 									uint16,							finderRecvPort)
-	// 某app主动请求look。
+	// Some app look active requests.
 	MACHINE_MESSAGE_DECLARE_ARGS0(lookApp,							NETWORK_FIXED_MESSAGE)
 
-	// 某个app请求查看该app负载状态。
+	// View the app an app request load.
 	MACHINE_MESSAGE_DECLARE_ARGS0(queryLoad,						NETWORK_FIXED_MESSAGE)
 
-	// 启动服务器
+	// Start the server
 	MACHINE_MESSAGE_DECLARE_STREAM(startserver,						NETWORK_VARIABLE_MESSAGE)
 
-	// 关闭服务器
+	// Turn off the server
 	MACHINE_MESSAGE_DECLARE_STREAM(stopserver,						NETWORK_VARIABLE_MESSAGE)
 
-	// 关闭服务器
+	// Turn off the server
 	MACHINE_MESSAGE_DECLARE_STREAM(killserver,						NETWORK_VARIABLE_MESSAGE)
 
-	// 请求强制杀死当前app
+	// Forced to kill the current app
 	MACHINE_MESSAGE_DECLARE_STREAM(reqKillServer,					NETWORK_VARIABLE_MESSAGE)
 
 NETWORK_INTERFACE_DECLARE_END()

@@ -54,7 +54,7 @@ typedef uint8 WATCHER_VALUE_TYPE;
 class Watchers;
 
 /*
-	watcher基础对象
+	Foundation watcher object
 */
 class WatcherObject
 {
@@ -242,7 +242,7 @@ inline void WatcherObject::updateStream<const char*>(MemoryStream* s)
 
 
 /*
-	watcher: 直接监视一个值
+	Watcher: monitoring a value directly
 */
 template <class T>
 class WatcherValue : public WatcherObject
@@ -275,7 +275,7 @@ protected:
 };
 
 /*
-	watcher: 监视一个方法返回的值
+	Watcher: monitors the return value of a method
 */
 template <class RETURN_TYPE>
 class WatcherFunction : public WatcherObject
@@ -309,7 +309,7 @@ protected:
 };
 
 /*
-	watcher: 监视一个成员函数返回的值
+	Watcher: monitor a member function returns the value of
 */
 template <class RETURN_TYPE, class OBJ_TYPE>
 class WatcherMethod : public WatcherObject
@@ -379,7 +379,7 @@ protected:
 };
 
 /*
-	watcher管理器
+	Watcher Manager
 */
 class Watchers
 {
@@ -450,7 +450,7 @@ protected:
 };
 
 /**
-	用于监视一个值
+	To monitor a value
 	int32 a = 1;
 	addWatcher("a", a);
 
@@ -468,7 +468,7 @@ inline WatcherObject* addWatcher(std::string path, const TYPE& type)
 };
 
 /**
-	用于监视一个函数的返回值
+	Used to monitor the return value of a function
 
 	int32 func(){}
 
@@ -484,7 +484,7 @@ inline WatcherObject* addWatcher(std::string path, RETURN_TYPE (*func)())
 };
 
 /**
-	用于监视一个成员函数的返回值
+	To monitor a member function return value
 
 	int32 AAA::func(){}
 	AAA a;

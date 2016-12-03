@@ -79,22 +79,22 @@ public:
 private:
 	struct ProfileVal
 	{
-		// 名称
+		// The name
 		std::string		name;
 
-		// startd后的时间.
+		// Startd after time.
 		TimeStamp		lastTime;
 		TimeStamp		diff_lastTime;
 
-		// count_次的总时间
+		// Count the total time
 		TimeStamp		sumTime;
 		TimeStamp		diff_sumTime;
 
-		// 记录最后一次内部时间片
+		// Record the last time
 		TimeStamp		lastIntTime;
 		TimeStamp		diff_lastIntTime;
 
-		// count_次内部总时间
+		// Count the total time
 		TimeStamp		sumIntTime;
 		TimeStamp		diff_sumIntTime;
 
@@ -102,8 +102,8 @@ private:
 		uint32			diff_count;
 	};
 
-	// 此ProfileVal只在计时器开始时记录default.profiles的初始值
-	// 在结束时取出差值得到结果
+	// This Profile Val timer only recorded at the beginning of the initial value of default.profiles
+	// To take on a business trip worth it at the end results
 	typedef KBEUnordered_map<std::string,  ProfileVal> PROFILEVALS;
 	PROFILEVALS profileVals_;
 };
@@ -134,15 +134,15 @@ private:
 			count = 0;
 		}
 
-		// 名称
+		// The name
 		std::string		name;
 
 		uint32			size;
 		uint32			count;
 	};
 
-	// 此ProfileVal只在计时器开始时记录default.profiles的初始值
-	// 在结束时取出差值得到结果
+	// This Profile Val timer only recorded at the beginning of the initial value of default.profiles
+	// To take on a business trip worth it at the end results
 	typedef KBEUnordered_map<std::string,  ProfileVal> PROFILEVALS;
 
 	typedef KBEUnordered_map< std::string,  PROFILEVALS > PROFILEVALMAP;
@@ -184,7 +184,7 @@ private:
 			total_recv_count = 0;
 		}
 
-		// 名称
+		// The name
 		std::string		name;
 
 		uint32			send_size;

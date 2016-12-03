@@ -695,7 +695,7 @@ void* TPThread::threadFunc(void* arg)
 			tptd->processTask(task);
 			tptd->onProcessTaskEnd(task);
 			
-			// 尝试继续从任务队列里取出一个繁忙的未处理的任务
+			// Attempted to remove from the task queue of a busy unprocessed tasks
 			TPTask * task1 = tptd->tryGetTask();
 
 			if(!task1)
@@ -753,8 +753,8 @@ bool TPThread::onWaitCondSignal(void)
 		DWORD ret = WaitForSingleObject(cond_, threadWaitSecond_ * 1000);
 		ResetEvent(cond_);
 
-		// 如果是因为超时了， 说明这个线程很久没有被用到， 我们应该注销这个线程。
-		// 通知ThreadPool注销自己
+		// If timeout, this thread has not been used for a long time, we should close this thread.
+		// Notifies the Thread pool log off yourself
 		if (ret == WAIT_TIMEOUT)
 		{
 			threadPool_->removeHangThread(this);
@@ -787,10 +787,10 @@ bool TPThread::onWaitCondSignal(void)
 		int ret = pthread_cond_timedwait(&cond_, &mutex_, &timeout);
 		unlock();
 		
-		// 如果是因为超时了， 说明这个线程很久没有被用到， 我们应该注销这个线程。
+		// If timeout, this thread has not been used for a long time, we should close this thread.
 		if (ret == ETIMEDOUT)
 		{
-			// 通知ThreadPool注销自己
+			// Notifies the Thread pool log off yourself
 			threadPool_->removeHangThread(this);
 			return false;
 		}

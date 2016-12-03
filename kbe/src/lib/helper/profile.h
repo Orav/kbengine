@@ -84,25 +84,25 @@ public:
 
 		TimeStamp now = timestamp();
 
-		// 记录第几次处理
+		// Record how many times
 		if (inProgress_++ == 0)
 			lastTime_ = now;
 
 		ProfileGroup::PROFILEVALS & stack = pProfileGroup_->stack();
 
-		// 如果栈中有对象则自己是从上一个ProfileVal函数进入调用的
-		// 我们可以在此得到上一个函数进入到本函数之前的一段时间片
-		// 然后将其加入到sumIntTime_
+		// If objects in the stack itself is from the previous Profile of the Val function to call
+		// We can get the last function to function for a period of time
+		// Then add it to the sum int time 
 		if (!stack.empty()){
 			ProfileVal & profile = *stack.back();
 			profile.lastIntTime_ = now - profile.lastIntTime_;
 			profile.sumIntTime_ += profile.lastIntTime_;
 		}
 
-		// 将自己压栈
+		// His pushes
 		stack.push_back(this);
 
-		// 记录开始时间
+		// Record start time
 		lastIntTime_ = now;
 	}
 
@@ -110,8 +110,8 @@ public:
 	{
 		TimeStamp now = timestamp();
 
-		// 如果为0则表明自己是调用栈的产生着
-		// 在此我们可以得到这个函数总共耗费的时间
+		// If 0 then their is the call stack From this, 
+		// we can get the function total elapsed time
 		if (--inProgress_ == 0){
 			lastTime_ = now - lastTime_;
 			sumTime_ += lastTime_;
@@ -126,13 +126,13 @@ public:
 
 		stack.pop_back();
 
-		// 得到本函数所耗费的时间
+		// Time spent in this function
 		lastIntTime_ = now - lastIntTime_;
 		sumIntTime_ += lastIntTime_;
 
-		// 我们需要在此重设上一个函数中的profile对象的最后一次内部时间
-		// 使其能够在start时正确得到自调用完本函数之后进入下一个profile函数中时所消耗
-		// 的时间片段
+		// We need to reset the last function within the profile object in the last time
+		// So that it can get after calling this function correctly at start time when you enter the next profile function after consumption
+		// Pieces of time
 		if (!stack.empty())
 			stack.back()->lastIntTime_ = now;
 	}
@@ -160,29 +160,29 @@ public:
 
 	INLINE uint32 count() const;
 
-	// 名称
+	// The name
 	std::string	name_;
 
-	// ProfileGroup指针
+	// Profile group pointer
 	ProfileGroup * pProfileGroup_;
 
-	// startd后的时间.
+	// Startd after time.
 	TimeStamp		lastTime_;
 
-	// count_次的总时间
+	// Count the total time
 	TimeStamp		sumTime_;
 
-	// 记录最后一次内部时间片
+	// Record the last time
 	TimeStamp		lastIntTime_;
 
-	// count_次内部总时间
+	// Count the total time
 	TimeStamp		sumIntTime_;
 
 	uint32		lastQuantity_;	///< The last value passed into stop.
 	uint32		sumQuantity_;	///< The total of all values passed into stop.
 	uint32		count_;			///< The number of times stop has been called.
 
-	// 记录第几次处理, 如递归等
+	// Record how many times, such as recursion,
 	int			inProgress_;
 
 	bool initWatcher_;
@@ -235,7 +235,7 @@ private:
 #define STOP_PROFILE_WITH_DATA( PROFILE, DATA )									\
 	PROFILE.stop( __FILE__, __LINE__ , DATA );
 
-// 由此可得到系统profile时间
+// This system profile
 uint64 runningTime();
 
 #else
