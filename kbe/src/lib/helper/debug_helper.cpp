@@ -367,10 +367,10 @@ void DebugHelper::sync()
 		return;
 	}
 
-	// 将子线程日志放入bufferedLogPackets_
+	// Child thread logs into buffered log packets 
 	while (childThreadBufferedLogPackets_.size() > 0)
 	{
-		// 从主对象池取出一个对象，将子线程中对象vector内存交换进去
+		// Remove an object from the main object pool, vector objects in the child thread swap
 		MemoryStream* pMemoryStream = childThreadBufferedLogPackets_.front();
 		childThreadBufferedLogPackets_.pop();
 
@@ -381,11 +381,11 @@ void DebugHelper::sync()
 		pBundle->finiCurrPacket();
 		pBundle->newPacket();
 
-		// 将他们的内存交换进去
+		// Their memory swapping
 		pBundle->pCurrPacket()->swap(*pMemoryStream);
 		pBundle->currMsgLength(pBundle->currMsgLength() + pBundle->pCurrPacket()->length());
 
-		// 将所有对象交还给对象池
+		// All the objects returned to the object pool
 		memoryStreamPool_.reclaimObject(pMemoryStream);
 	}
 
@@ -461,7 +461,7 @@ void DebugHelper::sync()
 		--hasBufferedLogPackets_;
 	}
 
-	// 这里需要延时发送，否则在发送过程中产生错误，导致日志输出会出现死锁
+	// Sent here needs to latency or errors during the sending process, causes the log output to a deadlock
 	if(bundles.size() > 0 && !pLoggerChannel->sending())
 		pLoggerChannel->delayedSend();
 
@@ -694,7 +694,7 @@ void DebugHelper::script_info_msg(const std::string& s)
 
 	onMessage(KBELOG_TYPE_MAPPING(scriptMsgType_), s.c_str(), (uint32)s.size());
 
-	// 如果是用户手动设置的也输出为错误信息
+	// If the user manually set output for error messages
 	if(log4cxx::ScriptLevel::SCRIPT_ERR == scriptMsgType_)
 	{
 		set_errorcolor();

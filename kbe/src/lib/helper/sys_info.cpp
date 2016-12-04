@@ -67,7 +67,7 @@ SystemInfo::SystemInfo()
 {
 	totalmem_ = 0;
 
-	// 不要在初始化中做这件事情，因为全局静态变量这里可能在main之前被调用一次
+	// Do not initialize to do this thing, because there is a global static variable may be called before the main time
 	//_autocreate();
 	//getCPUPer();
 	//getProcessInfo();
