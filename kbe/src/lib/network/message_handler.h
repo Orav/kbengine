@@ -36,14 +36,14 @@ namespace Network
 class Channel;
 class MessageHandlers;
 
-/** 一个消息的参数抽象类 */
+/** A message argument abstraction class */
 class MessageArgs
 {
 public:
 	enum MESSAGE_ARGS_TYPE
 	{
-		MESSAGE_ARGS_TYPE_VARIABLE = -1,		// 可变参数长度
-		MESSAGE_ARGS_TYPE_FIXED = 0				// 固定参数长度
+		MESSAGE_ARGS_TYPE_VARIABLE = -1,		// Variable-length parameters
+		MESSAGE_ARGS_TYPE_FIXED = 0				// Fixed parameter length
 	};
 
 	MessageArgs():strArgsTypes(){};
@@ -60,7 +60,7 @@ struct ExposedMessageInfo
 {
 	std::string name;
 	Network::MessageID id;
-	int16 msgLen; // 对外消息不会超过1500
+	int16 msgLen; // External message no more than 1500
 	int8 argsType;
 	std::vector<uint8> argsTypes;
 };
@@ -74,7 +74,7 @@ public:
 	std::string name;
 	MessageID msgID;
 	MessageArgs* pArgs;
-	int32 msgLen;					// 如果长度为-1则为非固定长度消息
+	int32 msgLen;					// If length is-1 for non-fixed-length messages
 	bool exposed;
 	MessageHandlers* pMessageHandlers;
 
@@ -93,7 +93,7 @@ public:
 	uint32 recvavgsize() const  { return (recv_count <= 0) ? 0 : recv_size / recv_count; }
 
 	/**
-		默认返回类别为组件消息
+		Default category for the component message is returned
 	*/
 	virtual NETWORK_MESSAGE_TYPE type() const
 	{ 
@@ -105,7 +105,7 @@ public:
 	const char* c_str();
 
 	/**
-		当这个handler被正是安装到MessageHandlers后被调用
+		When the handler is installed to the Message handlers are called
 	*/
 	virtual void onInstall(){}
 
@@ -113,7 +113,7 @@ public:
 	{
 		pArgs->createFromStream(s);
 		
-		// 将参数传给最终的接口
+		// Parameters passed to the final interface
 	};
 };
 

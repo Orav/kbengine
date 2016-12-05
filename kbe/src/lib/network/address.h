@@ -87,7 +87,7 @@ inline Address::Address(uint32 ipArg, uint16 portArg) :
 {
 } 
 
-// 比较操作符重载
+// Operator overloading
 inline bool operator==(const Address & a, const Address & b)
 {
 	return (a.ip == b.ip) && (a.port == b.port);

@@ -27,7 +27,7 @@ namespace Network
 class Channel;
 class MessageHandler;
 
-/** 此类接口用于接收普通的Network输入消息
+/** This type of the Network interface used to receive general input messages
 */
 class InputNotificationHandler
 {
@@ -36,7 +36,7 @@ public:
 	virtual int handleInputNotification(int fd) = 0;
 };
 
-/** 此类接口用于接收普通的Network输出消息
+/** Network output of such interface is used to receive general news
 */
 class OutputNotificationHandler
 {
@@ -45,7 +45,7 @@ public:
 	virtual int handleOutputNotification(int fd) = 0;
 };
 
-/** 此类接口用于接收一个网络通道超时消息
+/** Such interfaces for receiving a network channel timeout messages
 */
 class ChannelTimeOutHandler
 {
@@ -53,7 +53,7 @@ public:
 	virtual void onChannelTimeOut(Channel * pChannel) = 0;
 };
 
-/** 此类接口用于接收一个内部网络通道取消注册
+/** This type of interface to receive an internal network channel to cancel registration
 */
 class ChannelDeregisterHandler
 {
@@ -61,7 +61,7 @@ public:
 	virtual void onChannelDeregister(Channel * pChannel) = 0;
 };
 
-/** 此类接口用于监听NetworkStats事件
+/** This type of interface is used to monitor the Network stats
 */
 class NetworkStatsHandler
 {

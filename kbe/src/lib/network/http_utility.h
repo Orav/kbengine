@@ -49,7 +49,7 @@ namespace HttpUtility
             {      
                 buf[0] = sIn[ix];
             }
-            //else if ( isspace( (uint8)sIn[ix] ) ) //貌似把空格编码成%20或者+都可以
+            //else if ( isspace( (uint8)sIn[ix] ) ) //+ Can spaces encoded as%20 or
             //{
             //    buf[0] = '+';
             //}

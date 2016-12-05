@@ -69,10 +69,10 @@ public:
 	
 	enum ChannelTypes
 	{
-		/// 普通通道
+		/// General channel
 		CHANNEL_NORMAL = 0,
 
-		// 浏览器web通道
+		// Browser Web channel
 		CHANNEL_WEB = 1,
 	};
 
@@ -119,8 +119,8 @@ public:
 	Bundles & bundles();
 	
 	/**
-		创建发送bundle，该bundle可能是从send放入发送队列中获取的，如果队列为空
-		则创建一个新的
+		Creating bundle, the bundle may be obtained from the send in the send queue if the queue is empty
+		You create a new
 	*/
 	Bundle* createSendBundle();
 	
@@ -205,10 +205,10 @@ private:
 
 	enum Flags
 	{
-		FLAG_SENDING	= 0x00000001,	// 发送信息中
-		FLAG_DESTROYED	= 0x00000002,	// 通道已经销毁
-		FLAG_HANDSHAKE	= 0x00000004,	// 已经握手过
-		FLAG_CONDEMN	= 0x00000008,	// 该频道已经变得不合法
+		FLAG_SENDING	= 0x00000001,	// Send a message
+		FLAG_DESTROYED	= 0x00000002,	// Channel destroyed
+		FLAG_HANDSHAKE	= 0x00000004,	// Has been shaking hands
+		FLAG_CONDEMN	= 0x00000008,	// The channel has become illegal
 	};
 
 	enum TimeOutType
@@ -253,18 +253,18 @@ private:
 	PacketReceiver*				pPacketReceiver_;
 	PacketSender*				pPacketSender_;
 
-	// 如果是外部通道且代理了一个前端则会绑定前端代理ID
+	// If it is an external channel and agent of a front-end will bind front end proxy ID
 	ENTITY_ID					proxyID_;
 
-	// 扩展用
+	// Extended use
 	std::string					strextra_;
 
-	// 通道类别
+	// Channel category
 	ChannelTypes				channelType_;
 
 	COMPONENT_ID				componentID_;
 
-	// 支持指定某个通道使用某个消息handlers
+	// Support a channel using a specified message handlers
 	KBEngine::Network::MessageHandlers* pMsgHandlers_;
 
 	uint32						flags_;

@@ -32,7 +32,7 @@ namespace Network
 class MessageHandler;
 
 /*
-	记录network流量等信息
+	Record information such as network traffic
 */
 class NetworkStats : public Singleton<NetworkStats>
 {

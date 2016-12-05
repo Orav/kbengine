@@ -30,14 +30,14 @@ namespace KBEngine {
 namespace Network
 {
 /*
-	用来对中间协议(前端与后端之间)进行强制约定。
-	没有使用到kbe整套协议自动绑定机制的前端可以使用此处来强制约定协议。
+	Used for intermediate protocols (between the front-end and back-end) mandatory Convention.
+	Did not use the KBE the front of the package of agreements binding mechanisms automatically can use here to force agreement.
 */
 class FixedMessages : public Singleton<FixedMessages>
 {
 public:
 
-	// 固定的协议数据结构
+	// Fixed protocol data structures
 	struct MSGInfo
 	{
 		MessageID msgid;

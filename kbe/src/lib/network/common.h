@@ -31,34 +31,34 @@ namespace Network
 const uint32 BROADCAST = 0xFFFFFFFF;
 const uint32 LOCALHOST = 0x0100007F;
 
-// 消息的ID
+// Message ID
 typedef uint16	MessageID;
 
-// 消息长度，目前长度有2种，默认消息长度最大MessageLength
-// 当超过这个数时需要扩展长度，底层使用MessageLength1
-typedef uint16	MessageLength;		// 最大65535
-typedef uint32	MessageLength1;		// 最大4294967295
+// The message length, length currently has 2, the default maximum Message length the message length
+// When the required length extension when this number is exceeded, the underlying Message length1
+typedef uint16	MessageLength;		// Max 65535
+typedef uint32	MessageLength1;		// Maximum of 4294967295
 
 typedef int32	ChannelID;
 const ChannelID CHANNEL_ID_NULL = 0;
 
-// 通道超时时间
+// Channel timeout
 extern float g_channelInternalTimeout;
 extern float g_channelExternalTimeout;
 
-// 通道发送超时重试
+// Send Timeout Retry
 extern uint32 g_intReSendInterval;
 extern uint32 g_intReSendRetries;
 extern uint32 g_extReSendInterval;
 extern uint32 g_extReSendRetries;
 
-// 外部通道加密类别
+// External channel encryption categories
 extern int8 g_channelExternalEncryptType;
 
-// listen监听队列最大值
+// Listen listen queue maximum
 extern uint32 g_SOMAXCONN;
 
-// 不做通道超时检查
+// Do not channel timeout check
 #define CLOSE_CHANNEL_INACTIVITIY_DETECTION()										\
 {																					\
 	Network::g_channelExternalTimeout = Network::g_channelInternalTimeout = -1.0f;	\
@@ -71,7 +71,7 @@ namespace udp{
 namespace tcp{
 }
 
-// 加密额外存储的信息占用字节(长度+填充)
+// Encrypt bytes of information takes up extra storage (length + fill)
 #define ENCRYPTTION_WASTAGE_SIZE			(1 + 7)
 
 #define PACKET_MAX_SIZE						1500
@@ -80,7 +80,7 @@ namespace tcp{
 #endif
 #define PACKET_MAX_SIZE_UDP					1472
 
-typedef uint16								PacketLength;				// 最大65535
+typedef uint16								PacketLength;				// Max 65535
 #define PACKET_LENGTH_SIZE					sizeof(PacketLength)
 
 #define NETWORK_MESSAGE_ID_SIZE				sizeof(Network::MessageID)
@@ -89,21 +89,21 @@ typedef uint16								PacketLength;				// 最大65535
 #define NETWORK_MESSAGE_MAX_SIZE			65535
 #define NETWORK_MESSAGE_MAX_SIZE1			4294967295
 
-// 游戏内容可用包大小
+// Game contents available package sizes
 #define GAME_PACKET_MAX_SIZE_TCP			PACKET_MAX_SIZE_TCP - NETWORK_MESSAGE_ID_SIZE - \
 											NETWORK_MESSAGE_LENGTH_SIZE - ENCRYPTTION_WASTAGE_SIZE
 
-/** kbe machine端口 */
+/** KBE machine port */
 #define KBE_PORT_START						20000
-#define KBE_MACHINE_BROADCAST_SEND_PORT		KBE_PORT_START + 86			// machine接收广播的端口
+#define KBE_MACHINE_BROADCAST_SEND_PORT		KBE_PORT_START + 86			// Machine receiving broadcast port
 #define KBE_PORT_BROADCAST_DISCOVERY		KBE_PORT_START + 87
 #define KBE_MACHINE_TCP_PORT				KBE_PORT_START + 88
 
 #define KBE_INTERFACES_TCP_PORT				30099
 
 /*
-	网络消息类型， 定长或者变长。
-	如果需要自定义长度则在NETWORK_INTERFACE_DECLARE_BEGIN中声明时填入长度即可。
+	Web message types, fixed-length or variable-length.
+	If you need a custom length in length filled NETWORK INTERFACE declared in the DECLARE BEGIN.
 */
 #ifndef NETWORK_FIXED_MESSAGE
 #define NETWORK_FIXED_MESSAGE 0
@@ -113,11 +113,11 @@ typedef uint16								PacketLength;				// 最大65535
 #define NETWORK_VARIABLE_MESSAGE -1
 #endif
 
-// 网络消息类别
+// Network news categories
 enum NETWORK_MESSAGE_TYPE
 {
-	NETWORK_MESSAGE_TYPE_COMPONENT = 0,	// 组件消息
-	NETWORK_MESSAGE_TYPE_ENTITY = 1,	// entity消息
+	NETWORK_MESSAGE_TYPE_COMPONENT = 0,	// Component messages
+	NETWORK_MESSAGE_TYPE_ENTITY = 1,	// Entity news
 };
 
 enum ProtocolType
@@ -191,13 +191,13 @@ const char * reasonToString(Reason reason)
 		if(slen != (int)pPacket->totalSize())																\
 		{																									\
 			reason = Network::PacketSender::checkSocketErrors(ep, slen, pPacket->totalSize());				\
-			/* 如果发送出现错误那么我们可以继续尝试一次， 超过3次退出	*/										\
+			/* If you send the error so we can continue to try more than 3 times to quit	*/										\
 			if (reason == Network::REASON_NO_SUCH_PORT && retries <= 3)										\
 			{																								\
 				continue;																					\
 			}																								\
 																											\
-			/* 如果系统发送缓冲已经满了，则我们等待10ms	*/													\
+			/* If the send buffer is full, then we wait for 10ms	*/													\
 			if ((reason == REASON_RESOURCE_UNAVAILABLE || reason == REASON_GENERAL_NETWORK)					\
 															&& retries <= 3)								\
 			{																								\
@@ -247,13 +247,13 @@ const char * reasonToString(Reason reason)
 			if(pPacket->sentSize != pPacket->length())														\
 			{																								\
 				reason = PacketSender::checkSocketErrors(&ep);												\
-				/* 如果发送出现错误那么我们可以继续尝试一次， 超过60次退出	*/									\
+				/* If you send the error so we can continue to try again, more than 60 times to quit	*/									\
 				if (reason == REASON_NO_SUCH_PORT && retries <= 3)											\
 				{																							\
 					continue;																				\
 				}																							\
 																											\
-				/* 如果系统发送缓冲已经满了，则我们等待10ms	*/												\
+				/* If the send buffer is full, then we wait for 10ms	*/												\
 				if ((reason == REASON_RESOURCE_UNAVAILABLE || reason == REASON_GENERAL_NETWORK)				\
 																					&& retries <= 60)		\
 				{																							\
@@ -317,7 +317,7 @@ const char * reasonToString(Reason reason)
 }																											\
 
 
-// 配合服务端配置选项trace_packet使用，用来跟踪一条即将输出的消息包
+// Trace packet combined with server-side configuration options to use to track a message output
 #define TRACE_MESSAGE_PACKET(isrecv, pPacket, pCurrMsgHandler, length, addr, readPacketHead)				\
 	if(Network::g_trace_packet > 0)																			\
 	{																										\
@@ -394,7 +394,7 @@ extern uint64						g_numPacketsReceived;
 extern uint64						g_numBytesSent;
 extern uint64						g_numBytesReceived;
 
-// 包接收窗口溢出
+// Receive Windows overflows
 extern uint32						g_receiveWindowMessagesOverflowCritical;
 extern uint32						g_intReceiveWindowMessagesOverflow;
 extern uint32						g_extReceiveWindowMessagesOverflow;

@@ -79,7 +79,7 @@ public:
 
 	EventDispatcher & dispatcher()		{ return *pDispatcher_; }
 
-	/* 外部网点和内部网点 */
+	/* External networks and internal networks */
 	EndPoint & extEndpoint()				{ return extEndpoint_; }
 	EndPoint & intEndpoint()				{ return intEndpoint_; }
 	
@@ -92,7 +92,7 @@ public:
 	
 	const ChannelMap& channels(void) { return channelMap_; }
 		
-	/** 发送相关 */
+	/** Send related */
 	void sendIfDelayed(Channel & channel);
 	void delayedSend(Channel & channel);
 	
@@ -101,7 +101,7 @@ public:
 	void onChannelTimeOut(Channel * pChannel);
 	
 	/* 
-		处理所有channels  
+		All channels  
 	*/
 	void processChannels(KBEngine::Network::MessageHandlers* pMsgHandlers);
 
@@ -126,7 +126,7 @@ private:
 	
 	DelayedChannels * 						pDelayedChannels_;
 	
-	ChannelTimeOutHandler *					pChannelTimeOutHandler_;	// 超时的通道可被这个句柄捕捉， 例如告知上层client断开
+	ChannelTimeOutHandler *					pChannelTimeOutHandler_;	// Channel timeout can be the handle catch, such as informing the top client disconnected
 	ChannelDeregisterHandler *				pChannelDeregisterHandler_;
 
 	const bool								isExternal_;

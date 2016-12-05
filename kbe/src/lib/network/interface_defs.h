@@ -118,7 +118,7 @@ namespace Network
 	
 #endif
 
-// 定义接口域名称
+// Defines the interface name
 #ifndef DEFINE_IN_INTERFACE
 #define NETWORK_INTERFACE_DECLARE_BEGIN(INAME) 						\
 	namespace INAME													\
@@ -136,7 +136,7 @@ namespace Network
 #define NETWORK_INTERFACE_DECLARE_END() }
 
 /**---------------------------------------------------------------------
-/		流消息 接收消息的接口参数为memorystream, 自己处理
+/		Interface parameters for the MemoryStream stream message receive a message, handle
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_STREAM(NAME)
@@ -173,7 +173,7 @@ namespace Network
 	MESSAGE_STREAM(NAME)											\
 
 /**---------------------------------------------------------------------
-/		零个参数的消息
+/		Zero message parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS0(NAME)
@@ -211,7 +211,7 @@ namespace Network
 	MESSAGE_ARGS0(NAME)												\
 
 /**---------------------------------------------------------------------
-/		一个参数的消息
+/		A message parameter
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS1(NAME, ARG_TYPE1, ARG_NAME1)
@@ -263,7 +263,7 @@ namespace Network
 	MESSAGE_ARGS1(NAME, ARG_TYPE1, ARG_NAME1)						\
 
 /**---------------------------------------------------------------------
-/		二个参数的消息
+/		News of the two parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS2(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -336,7 +336,7 @@ namespace Network
 						ARG_TYPE2, ARG_NAME2)						\
 
 /**---------------------------------------------------------------------
-/		三个参数的消息
+/		News of the three parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS3(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -426,7 +426,7 @@ namespace Network
 
 	
 /**---------------------------------------------------------------------
-/		四个参数的消息
+/		News of the four parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS4(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -532,7 +532,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		伍个参数的消息
+/		5 parameter news
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS5(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -653,7 +653,7 @@ namespace Network
 						ARG_TYPE5, ARG_NAME5)						\
 
 /**---------------------------------------------------------------------
-/		六个参数的消息
+/		Six parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS6(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -790,7 +790,7 @@ namespace Network
 							ARG_TYPE6, ARG_NAME6)					\
 
 /**---------------------------------------------------------------------
-/		七个参数的消息
+/		News of the seven parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS7(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -943,7 +943,7 @@ namespace Network
 							ARG_TYPE7, ARG_NAME7)					\
 	
 /**---------------------------------------------------------------------
-/		八个参数的消息
+/		Eight parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS8(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -1113,7 +1113,7 @@ namespace Network
 							ARG_TYPE8, ARG_NAME8)					\
 	
 /**---------------------------------------------------------------------
-/		九个参数的消息
+/		Nine parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS9(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -1299,7 +1299,7 @@ namespace Network
 							ARG_TYPE9, ARG_NAME9)					\
 	
 /**---------------------------------------------------------------------
-/		十个参数的消息
+/		Ten parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS10(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -1503,7 +1503,7 @@ namespace Network
 
 	
 /**---------------------------------------------------------------------
-/		十一个参数的消息
+/		News of 11 parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS11(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -1723,7 +1723,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		十二个参数的消息
+/		12 parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS12(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -1958,7 +1958,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		十三个参数的消息
+/		News of 13 parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS13(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -2211,7 +2211,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		十四个参数的消息
+/		14 parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS14(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -2477,7 +2477,7 @@ namespace Network
 							ARG_TYPE14, ARG_NAME14)					\
 
 /**---------------------------------------------------------------------
-/		十五个参数的消息
+/		News of 15 parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS15(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -2760,7 +2760,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		十六个参数的消息
+/		News of 16 parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS16(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -3059,7 +3059,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		十七个参数的消息
+/		News of 17 parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS17(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -3374,7 +3374,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		十八个参数的消息
+/		18 parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS18(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -3705,7 +3705,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		十九个参数的消息
+/		News of 19 parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS19(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -4052,7 +4052,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		二十个参数的消息
+/		News of 20 parameters
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS20(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -4416,7 +4416,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		二十一个参数的消息
+/		21 parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS21(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -4796,7 +4796,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		二十二个参数的消息
+/		22 parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS22(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -5192,7 +5192,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		二十三个参数的消息
+/		23 parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS23(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -5603,7 +5603,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		二十四个参数的消息
+/		24 parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS24(NAME, ARG_TYPE1, ARG_NAME1, 					\
@@ -6030,7 +6030,7 @@ namespace Network
 
 
 /**---------------------------------------------------------------------
-/		二十五个参数的消息
+/		25 parameters message
 -----------------------------------------------------------------------*/
 #ifdef DEFINE_IN_INTERFACE
 #define MESSAGE_ARGS25(NAME, ARG_TYPE1, ARG_NAME1, 					\

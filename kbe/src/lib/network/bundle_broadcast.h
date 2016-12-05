@@ -35,7 +35,7 @@ namespace Network
 class NetworkInterface;
 
 /*
-	可以方便的处理如:向局域网内广播某些信息， 并处理收集相关信息。
+	Can easily handle such as broadcasting certain information to a LAN, and dealing with the collection of relevant information.
 */
 class BundleBroadcast : public Bundle
 {
