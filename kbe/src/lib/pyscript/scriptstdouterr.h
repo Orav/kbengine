@@ -35,7 +35,7 @@ public:
 	virtual ~ScriptStdOutErr();
 
 	/** 
-		安装和卸载这个模块 
+		Installing and uninstalling the module 
 	*/
 	bool install(void);
 	bool uninstall(void);

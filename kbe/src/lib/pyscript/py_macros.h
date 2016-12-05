@@ -104,7 +104,7 @@ namespace KBEngine{ namespace script{
 #define PY_METHOD_ARG_ENTITY_ID_PYARGTYPE				"i"
 
 //-----------------------------------------------------------------------------------------------------------
-/** 定义暴露给脚本的方法宏
+/** Define a method that is exposed to script macros
 */
 #define SCRIPT_METHOD_DECLARE_BEGIN(CLASS)													bool CLASS::_##CLASS##_py_installed = false; PyMethodDef CLASS::_##CLASS##_scriptMethods[] = {
 #define TEMPLATE_SCRIPT_METHOD_DECLARE_BEGIN(TEMPLATE_HEADER, TEMPLATE_CLASS, CLASSNAME)	TEMPLATE_HEADER bool TEMPLATE_CLASS::_##CLASSNAME##_py_installed = false;  TEMPLATE_HEADER PyMethodDef TEMPLATE_CLASS::_##CLASSNAME##_scriptMethods[] = {
@@ -112,7 +112,7 @@ namespace KBEngine{ namespace script{
 #define SCRIPT_DIRECT_METHOD_DECLARE(METHOD_NAME, METHOD_FUNC, FLAGS, DOC)					{METHOD_NAME, (PyCFunction)&METHOD_FUNC, FLAGS, DOC},
 #define SCRIPT_METHOD_DECLARE_END()															{0, 0, 0, 0}};
 
-// 向模块追加方法
+// Appending to the module method
 #define APPEND_SCRIPT_MODULE_METHOD(MODULE, NAME, FUNC, FLAGS, SELF)						\
 	static PyMethodDef __pymethod_##NAME = {#NAME, (PyCFunction) FUNC, FLAGS, NULL};		\
 	if(PyModule_AddObject(MODULE, #NAME, PyCFunction_New(&__pymethod_##NAME, SELF)) != 0)	\
@@ -121,14 +121,14 @@ namespace KBEngine{ namespace script{
 		ERROR_MSG("append " #NAME " to pyscript is error!\n");								\
 	}																						\
 	
-/** 定义暴露给脚本的属性宏
+/** Defines the property is exposed to script macros
 */
 #define SCRIPT_MEMBER_DECLARE_BEGIN(CLASS)													PyMemberDef CLASS::_##CLASS##_scriptMembers[] =	{
 #define TEMPLATE_SCRIPT_MEMBER_DECLARE_BEGIN(TEMPLATE_HEADER, TEMPLATE_CLASS, CLASSNAME)	TEMPLATE_HEADER PyMemberDef TEMPLATE_CLASS::_##CLASSNAME##_scriptMembers[] =	{
 #define SCRIPT_MEMBER_DECLARE(MEMBER_NAME, MEMBER_REF, MEMBER_TYPE, FLAGS, DOC)				{const_cast<char*>(MEMBER_NAME), MEMBER_TYPE, offsetof(ThisClass, MEMBER_REF), FLAGS, DOC},
 #define SCRIPT_MEMBER_DECLARE_END()															{0, 0, 0, 0, 0}};
 
-/** 定义暴露给脚本的getset属性宏
+/** Define the GetSet property is exposed to script macros
 */
 #define SCRIPT_GETSET_DECLARE_BEGIN(CLASS)													PyGetSetDef CLASS::_##CLASS##_scriptGetSeters[] =	{
 #define TEMPLATE_SCRIPT_GETSET_DECLARE_BEGIN(TEMPLATE_HEADER, TEMPLATE_CLASS, CLASSNAME)	TEMPLATE_HEADER PyGetSetDef TEMPLATE_CLASS::_##CLASSNAME##_scriptGetSeters[] =	{
@@ -138,7 +138,7 @@ namespace KBEngine{ namespace script{
 #define SCRIPT_GETSET_DECLARE_END()															{0, 0, 0, 0, 0}};
 
 //-----------------------------------------------------------------------------------------------------------
-/* 声明一个脚本get方法 */
+/* Declare a script get method */
 #define DECLARE_PY_GET_MOTHOD(MNAME)												\
 	PyObject* MNAME();																\
 	static PyObject* __pyget_##MNAME(PyObject *self, void *closure)					\
@@ -147,7 +147,7 @@ namespace KBEngine{ namespace script{
 	}																				\
 
 
-/* 声明一个脚本set方法 */
+/* Declare a script set methods */
 #define DECLARE_PY_SET_MOTHOD(MNAME)												\
 	int MNAME(PyObject *value);														\
 	static int __pyset_##MNAME(PyObject *self,										\
@@ -156,7 +156,7 @@ namespace KBEngine{ namespace script{
 		return static_cast<ThisClass*>(self)->MNAME(value);							\
 	}																				\
 
-/* 声明一个脚本getset方法 */
+/* GetSet method declares a script */
 #define DECLARE_PY_GETSET_MOTHOD(GETNAME, SETNAME)									\
 	DECLARE_PY_GET_MOTHOD(GETNAME)													\
 	DECLARE_PY_SET_MOTHOD(SETNAME)													\
@@ -670,7 +670,7 @@ namespace KBEngine{ namespace script{
 
 
 //-----------------------------------------------------------------------------------------------------------
-/** 定义宏用于安全的调用一个对象的方法
+/** Define macros for safe calling a method on an object
 */
 #define SCRIPT_OBJECT_CALL_ARGS0(OBJ, METHOT_NAME)														\
 {																										\

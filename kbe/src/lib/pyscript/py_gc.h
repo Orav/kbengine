@@ -36,48 +36,48 @@ public:
 	static uint32 DEBUG_LEAK;
 	
 	/** 
-		初始化pickler 
+		Initialize Pickler 
 	*/
 	static bool initialize(void);
 	static void finalise(void);
 	
 	/** 
-		强制回收垃圾
+		Compulsory recycling
 	*/
 	static void collect(int8 generations = -1);
 
 	/** 
-		设置调试标志
+		Set the debug flag
 	*/
 	static void set_debug(uint32 flsgs);
 	
 	/**
-		增加计数
+		To increase the count
 	*/
 	static void incTracing(std::string name);
 
 	/**
-		减少计数
+		Reduction count
 	*/
 	static void decTracing(std::string name);
 
 	/**
-		debug追踪kbe封装的py对象计数
+		Debug tracing py objects of the KBE package count
 	*/
 	static void debugTracing(bool shuttingdown = true);
 
 	/**
-		脚本调用
+		Script invocation
 	*/
 	static PyObject* __py_debugTracing(PyObject* self, PyObject* args);
 
 private:
-	static PyObject* collectMethod_;							// cPicket.dumps方法指针
-	static PyObject* set_debugMethod_;							// cPicket.loads方法指针
+	static PyObject* collectMethod_;							// cPicket.dumps A method pointer
+	static PyObject* set_debugMethod_;							// cPicket.loads A method pointer
 
-	static bool	isInit;											// 是否已经被初始化
+	static bool	isInit;											// Has already been initialized
 
-	static KBEUnordered_map<std::string, int> tracingCountMap_;	// 追踪特定的对象计数器
+	static KBEUnordered_map<std::string, int> tracingCountMap_;	// Track a specific object counters
 } ;
 
 }

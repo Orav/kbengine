@@ -28,7 +28,7 @@ namespace KBEngine{ namespace script{
 
 class Map : public ScriptObject
 {		
-	/** 子类化 将一些py操作填充进派生类 */
+	/** Subclass py operations filling in a derived class */
 	INSTANCE_SCRIPT_HREADER(Map, ScriptObject)
 
 public:	
@@ -39,7 +39,7 @@ public:
 	virtual ~Map();
 
 	/** 
-		暴露一些字典方法给python 
+		Exposed some dictionary methods for Python 
 	*/
 	static PyObject* __py_has_key(PyObject* self, PyObject* args);
 	static PyObject* __py_keys(PyObject* self, PyObject* args);
@@ -49,7 +49,7 @@ public:
 	static PyObject* __py_get(PyObject* self, PyObject* args);
 	static int __py_contains(PyObject* self, PyObject* args);
 	/** 
-		map操作函数相关 
+		Map manipulation functions 
 	*/
 	static PyObject* mp_subscript(PyObject* self, PyObject* key);
 
@@ -59,18 +59,18 @@ public:
 	static int mp_length(PyObject* self);
 
 	/** 
-		获取字典对象 
+		Gets the Dictionary object 
 	*/
 	INLINE PyObject* getDictObject(void) const;
 	
 	/** 
-		数据改变通知 
+		Data change notifications 
 	*/
 	virtual void onDataChanged(PyObject* key, PyObject* value, 
 		bool isDelete = false);
 
 protected:
-	// 字典数据， 所有的数据都往这里面写
+	// Dictionary data, all data is to write here
 	PyObject* pyDict_;
 } ;
 

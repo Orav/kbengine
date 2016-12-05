@@ -29,18 +29,18 @@ namespace KBEngine{ namespace script{
 class Copy
 {						
 public:	
-	/** 代理 copy.copy */
+	/** Agent copy.copy */
 	static PyObject* copy(PyObject* pyobj);
 	static PyObject* deepcopy(PyObject* pyobj);
 
-	/** 初始化pickler */
+	/** Initialize Pickler */
 	static bool initialize(void);
 	static void finalise(void);
 
 private:
-	static PyObject* copyMethod_;							// cPicket.dumps方法指针
-	static PyObject* deepcopyMethod_;						// cPicket.loads方法指针
-	static bool	isInit;										// 是否已经被初始化
+	static PyObject* copyMethod_;							// Picket.dumps c method pointer
+	static PyObject* deepcopyMethod_;						// cPicket.loads A method pointer
+	static bool	isInit;										// Has already been initialized
 } ;
 
 }

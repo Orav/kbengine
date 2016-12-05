@@ -30,14 +30,14 @@ namespace KBEngine{ namespace script{
 class ScriptStdOutErr;
 class ScriptStdErr: public ScriptObject
 {
-	/** 子类化 将一些py操作填充进派生类 */
+	/** Subclass py operations filling in a derived class */
 	INSTANCE_SCRIPT_HREADER(ScriptStdErr, ScriptObject)
 public:	
 	ScriptStdErr(ScriptStdOutErr* pScriptStdOutErr);
 	virtual ~ScriptStdErr();
 
 	/** 
-		python执行写操作 
+		Python implementation of write operations 
 	*/
 	static PyObject* __py_write(PyObject* self, PyObject *args);
 	static PyObject* __py_flush(PyObject* self, PyObject *args);

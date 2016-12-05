@@ -29,7 +29,7 @@ namespace KBEngine{ namespace script{
 	
 class ScriptVector3 : public ScriptObject
 {		
-	/** 子类化 将一些py操作填充进派生类 */
+	/** Subclass py operations filling in a derived class */
 	INSTANCE_SCRIPT_HREADER(ScriptVector3, ScriptObject)
 public:	
 	typedef std::tr1::function<void (void)> PYVector3ChangedCallback;
@@ -43,18 +43,18 @@ public:
 	virtual ~ScriptVector3();
 
 	/** 
-		获得对象的描述 
+		Get object descriptions 
 	*/
 	PyObject* tp_repr();
 	PyObject* tp_str();
 
 	/** 
-		脚本模块对象从python中创建 
+		Created script module from Python 
 	*/
 	static PyObject* tp_new(PyTypeObject* type, PyObject* args, PyObject* kwds);
 
 	/** 
-		seq相关操作 
+		SEQ-related operations 
 	*/
 	static Py_ssize_t seq_length(PyObject* self);
 	static PyObject* seq_item(PyObject* self, Py_ssize_t index);
@@ -62,7 +62,7 @@ public:
 	static int seq_ass_item(PyObject* self, Py_ssize_t index, PyObject* value);
 	
 	/** 
-		加减乘除相关操作 
+		Calculation of related operations 
 	*/
 	static PyObject* py_add(PyObject *a, PyObject *b);
 	static PyObject* py_subtract(PyObject *a, PyObject *b);
@@ -80,7 +80,7 @@ public:
 	static PyObject* py_inplace_divide(PyObject *self, PyObject *b);
 	
 	/** 
-		暴漏一些方法 
+		Exposed methods 
 	*/
 	static PyObject* __py_pyFlatDistTo(PyObject* self, PyObject* args);
 	static PyObject* __py_pyFlatDistSqrTo(PyObject* self, PyObject* args);
@@ -102,17 +102,17 @@ public:
 	DECLARE_PY_GETSET_MOTHOD(pyGetZ, pySetZ);
 	
 	/** 
-		支持pickler 方法 
+		Supports Pickler method 
 	*/
 	static PyObject* __reduce_ex__(PyObject* self, PyObject* protocol);
 
 	/** 
-		unpickle方法 
+		Unpickle method 
 	*/
 	static PyObject* __unpickle__(PyObject* self, PyObject* args);
 
 	/** 
-		脚本被安装时被调用 
+		Is called when the script is installed 
 	*/
 	static void onInstallScript(PyObject* mod);
 	
@@ -123,17 +123,17 @@ public:
 	void setVectorFromPy(const Vector3& v);
 
 	/** 
-		检查某个python对象是否可以转换为本类型 
+		A Python object, check whether the type can be converted to the 
 	*/
 	static bool check(PyObject* value, bool isPrintErr = true);
 	
 	/** 
-		将某个经过check检查过的python对象转换为vector3 
+		A through check check the Python object to a Vector3 
 	*/
 	static bool convertPyObjectToVector3(Vector3& v, PyObject* obj);
 
 	/** 
-		设置mailbox的__getEntityFunc函数地址 
+		Set up mailbox The _getEntityFunc Function address 
 	*/
 	void setPYVector3ChangedCallback(PYVector3ChangedCallback* func){ 
 		_pyVector3ChangedCallback = func; 
