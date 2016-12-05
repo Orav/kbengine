@@ -28,7 +28,7 @@ namespace KBEngine{
 KBEngine::ScriptTimers KBEngine::PythonApp::scriptTimers_;
 
 /**
-内部定时器处理类
+Internal timer class
 */
 class ScriptTimerHandler : public TimerHandler
 {
@@ -240,7 +240,7 @@ bool PythonApp::uninstallPyScript()
 //-------------------------------------------------------------------------------------
 bool PythonApp::installPyModules()
 {
-	// 安装入口模块
+	// Install entry module
 	PyObject *entryScriptFileName = NULL;
 	if(componentType() == BASEAPP_TYPE)
 	{
@@ -281,29 +281,29 @@ bool PythonApp::installPyModules()
 
 	APPEND_SCRIPT_MODULE_METHOD(module, MemoryStream, script::PyMemoryStream::py_new, METH_VARARGS, 0);
 
-	// 注册创建entity的方法到py
-	// 向脚本注册app发布状态
+	// Registered entity created to py
+	// Released to the script-registration app status
 	APPEND_SCRIPT_MODULE_METHOD(module, publish, __py_getAppPublish, METH_VARARGS, 0);
 
-	// 注册设置脚本输出类型
+	// Registration settings script output type
 	APPEND_SCRIPT_MODULE_METHOD(module, scriptLogType, __py_setScriptLogType, METH_VARARGS, 0);
 	
-	// 获得资源全路径
+	// Access the full path
 	APPEND_SCRIPT_MODULE_METHOD(module, getResFullPath, __py_getResFullPath, METH_VARARGS, 0);
 
-	// 是否存在某个资源
+	// The existence of a resource
 	APPEND_SCRIPT_MODULE_METHOD(module, hasRes, __py_hasRes, METH_VARARGS, 0);
 
-	// 打开一个文件
+	// Open a file
 	APPEND_SCRIPT_MODULE_METHOD(module, open, __py_kbeOpen, METH_VARARGS, 0);
 
-	// 列出目录下所有文件
+	// Directory all the files that are listed
 	APPEND_SCRIPT_MODULE_METHOD(module, listPathRes, __py_listPathRes, METH_VARARGS, 0);
 
-	// 匹配相对路径获得全路径
+	// Relative full path match
 	APPEND_SCRIPT_MODULE_METHOD(module, matchPath, __py_matchPath, METH_VARARGS, 0);
 
-	// debug追踪kbe封装的py对象计数
+	// Debug tracing py objects of the KBE package count
 	APPEND_SCRIPT_MODULE_METHOD(module, debugTracing, script::PyGC::__py_debugTracing, METH_VARARGS, 0);
 
 	if (PyModule_AddIntConstant(module, "LOG_TYPE_NORMAL", log4cxx::ScriptLevel::SCRIPT_INT))
@@ -336,7 +336,7 @@ bool PythonApp::installPyModules()
 		ERROR_MSG( "PythonApp::installPyModules: Unable to set KBEngine.NEXT_ONLY.\n");
 	}
 	
-	// 注册所有pythonApp都要用到的通用接口
+	// Register all Python app to use common interface
 	APPEND_SCRIPT_MODULE_METHOD(module,		addTimer,						__py_addTimer,											METH_VARARGS,	0);
 	APPEND_SCRIPT_MODULE_METHOD(module,		delTimer,						__py_delTimer,											METH_VARARGS,	0);
 	APPEND_SCRIPT_MODULE_METHOD(module,		registerReadFileDescriptor,		PyFileDescriptor::__py_registerReadFileDescriptor,		METH_VARARGS,	0);
@@ -687,7 +687,7 @@ void PythonApp::onExecScriptCommand(Network::Channel* pChannel, KBEngine::Memory
 		retbuf = "\r\n";
 	}
 
-	// 将结果返回给客户端
+	// Returns the results to the client
 	Network::Bundle* pBundle = Network::Bundle::createPoolObject();
 	ConsoleInterface::ConsoleExecCommandCBMessageHandler msgHandler;
 	(*pBundle).newMessage(msgHandler);
@@ -710,7 +710,7 @@ void PythonApp::reloadScript(bool fullReload)
 
 	// SCOPED_PROFILE(SCRIPTCALL_PROFILE);
 
-	// 所有脚本都加载完毕
+	// All scripts are loaded
 	PyObject* pyResult = PyObject_CallMethod(getEntryScript().get(),
 										const_cast<char*>("onInit"),
 										const_cast<char*>("i"), 

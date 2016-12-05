@@ -40,75 +40,71 @@ char _g_state_str[][256] = {
 };
 
 /*
-	格式: echo "\033[字背景颜色;字体颜色m字符串\033[0m" 
+	Format: echo "\033[background color; font color m string \033[0m" 
 
-	例如: 
-	echo "\033[41;36m something here \033[0m"  
-
-	其中41的位置代表底色, 36的位置是代表字的颜色 
-
-
-	那些ascii code 是对颜色调用的始末.  
-	\033[ ; m …… \033[0m  
+	For example: echo "\033[41;36M something here \033[0m" 
+	representatives of 41 of the background, position 36 representatives
+	from the word on color is the color of the ASCII code called from a to z. 
+	\033[ ; m ...... \033[0m
 
 
 
-	字背景颜色范围:40----49 
-	40:黑 
-	41:深红 
-	42:绿 
-	43:黄色 
-	44:蓝色 
-	45:紫色 
-	46:深绿 
-	47:白色 
+	Background color range:40----49 
+	40:Black 
+	41:Dark red 
+	42: Green 
+	43:Yellow 
+	44:Blue 
+	45:Purple 
+	46:Dark green 
+	47:White 
 
-	字颜色:30-----------39 
-	30:黑 
-	31:红 
-	32:绿 
-	33:黄 
-	34:蓝色 
-	35:紫色 
-	36:深绿 
-	37:白色 
+	Character color :30-----------39 
+	30:Black 
+	31:Red 
+	32:Green 
+	33: yellow
+	34: Blue
+	35: purple
+	36: dark green
+	37: white 
 
-	\33[0m 关闭所有属性  
-	\33[1m 设置高亮度  
-	\33[4m 下划线  
-	\33[5m 闪烁  
-	\33[7m 反显  
-	\33[8m 消隐  
-	\33[30m -- \33[37m 设置前景色  
-	\33[40m -- \33[47m 设置背景色  
-	\33[nA 光标上移n行  
-	\33[nB 光标下移n行  
-	\33[nC 光标右移n行  
-	\33[nD 光标左移n行  
-	\33[y;xH设置光标位置  
-	\33[2J 清屏  
-	\33[K 清除从光标到行尾的内容  
-	\33[s 保存光标位置  
-	\33[u 恢复光标位置  
-	\33[?25l 隐藏光标  
-	\33[?25h 显示光标  
+	\33[0m close all properties  
+	\33[1m Set brightness  
+	\33[4m Underline  
+	\33[5m Flashing  
+	\33[7m Invert  
+	\33[8m Hidden  
+	\33[30m -- \33[37m Set the foreground color  
+	\33[40m -- \33[47m Set the background color  
+	\33[nA Cursor up n lines  
+	\33[nB Cursor down n lines  
+	\33[nC Cursor right n  
+	\33[nD Cursor left n  
+	\33[y;X h setting the cursor location  
+	\33[2J Clear screen  
+	\33[K Clear the contents from the cursor to the end of the line  
+	\33[s Save cursor position  
+	\33[u Restore cursor position  
+	\33[?25l Hide the cursor  
+	\33[?25h Show the cursor  
 
-	使用格式能更复杂： 
+	Use format is more complex： 
 	^[[..m;..m;..m;..m
-	例如： \033[2;7;1m高亮\033[2;7;0m
+	For example： \033[2;7;1m Leung go\033[2;7;0m
 */
 
-#define TELNET_CMD_LEFT							"\033[D"			// 左
-#define TELNET_CMD_RIGHT						"\033[C"			// 右
-#define TELNET_CMD_UP							"\033[A"			// 上
-#define TELNET_CMD_DOWN							"\033[B"			// 下
-#define TELNET_CMD_HOME							"\033[1~"			// 移到行首
-#define TELNET_CMD_END							"\033[4~"			// 移到行尾
+#define TELNET_CMD_LEFT							"\033[D"			// Left
+#define TELNET_CMD_RIGHT						"\033[C"			// Right
+#define TELNET_CMD_UP							"\033[A"			// Up
+#define TELNET_CMD_DOWN							"\033[B"			// Down
+#define TELNET_CMD_HOME							"\033[1~"			// Move to the beginning of
+#define TELNET_CMD_END							"\033[4~"			// Move to end of line
 
-#define TELNET_CMD_DEL							"\033[K"			// 删除字符
-#define TELNET_CMD_NEWLINE						"\r\n"				// 新行
-#define TELNET_CMD_MOVE_FOCUS_LEFT_MAX			"\33[9999999999D"	// 左移光标到最前面
-#define TELNET_CMD_MOVE_FOCUS_RIGHT_MAX			"\33[9999999999C"	// 右移光标到最后面
+#define TELNET_CMD_DEL							"\033[K"			// Delete character
+#define TELNET_CMD_NEWLINE						"\r\n"				// New row
+#define TELNET_CMD_MOVE_FOCUS_LEFT_MAX			"\33[9999999999D"	// Move the cursor to the left to the front
+#define TELNET_CMD_MOVE_FOCUS_RIGHT_MAX			"\33[9999999999C"	// Right moves the cursor to the end of
 
 //-------------------------------------------------------------------------------------
 TelnetHandler::TelnetHandler(Network::EndPoint* pEndPoint, TelnetServer* pTelnetServer, Network::NetworkInterface* pNetworkInterface, TELNET_STATE defstate):
@@ -300,7 +296,7 @@ void TelnetHandler::onRecvInput(const char *buffer, int size)
 				}
 			}
 			break;
-		case 8:		// 退格
+		case 8:		// BACKSPACE
 			if (currPos_ == 0)
 			{
 				resetStartPosition();
@@ -311,7 +307,7 @@ void TelnetHandler::onRecvInput(const char *buffer, int size)
 				checkAfterStr();
 			}
 			break;
-		case 27:	// vt100命令码: 0x1b
+		case 27:	// VT100 command code: 0x1B
 		{
 			std::string s = "";
 			std::string vt100cmd(s + c);
@@ -326,22 +322,22 @@ void TelnetHandler::onRecvInput(const char *buffer, int size)
 				vt100cmd.append(s + c);
 				switch (c)
 				{
-				case 'A': // 光标上移n行
-				case 'B': // 光标下移n行
-				case 'C': // 光标右移n列
-				case 'D': // 光标左移n列
-				case '~': // home、end等
+				case 'A': // Cursor up n lines
+				case 'B': // Cursor down n lines
+				case 'C': // Cursor right n columns
+				case 'D': // Cursor left n columns
+				case '~': // home、end 等
 					shouldBeContinue = false;
 					break;
 
-				case 'm': // 颜色等属性或命令
-				case 'J': // 清屏
-				case 'K': // 清除从光标到行尾的内容
-				case 's': // 保存光标位置
-				case 'u': // 恢复光标位置
-				case 'l': // 隐藏光标
-				case 'h': // 显示光标
-				case 'H': // 设置光标位置
+				case 'm': // Properties such as color, or command
+				case 'J': // Clear screen
+				case 'K': // Clear the contents from the cursor to the end of the line
+				case 's': // Save cursor position
+				case 'u': // Restore cursor position
+				case 'l': // Hide the cursor
+				case 'h': // Show the cursor
+				case 'H': // Sets the cursor position
 				default:
 					break;
 				}
@@ -349,8 +345,8 @@ void TelnetHandler::onRecvInput(const char *buffer, int size)
 
 			if (!checkUDLR(vt100cmd))
 			{
-				// 把不认识的命令原样输出,但会把命令符改成“^”
-				// 以避免客户端触发命令操作
+				// Command output as is not known, but it will break the order into the "^"
+				// To avoid client-side trigger command operations
 				vt100cmd[0] = '^';
 				command_.insert(currPos_, vt100cmd);
 				currPos_ += vt100cmd.length();
@@ -403,7 +399,7 @@ void TelnetHandler::checkAfterStr()
 //-------------------------------------------------------------------------------------
 bool TelnetHandler::checkUDLR(const std::string &cmd)
 {
-	if (cmd.find(TELNET_CMD_UP) != std::string::npos)		// 上 
+	if (cmd.find(TELNET_CMD_UP) != std::string::npos)		// up
 	{
 		pEndPoint_->send(TELNET_CMD_MOVE_FOCUS_LEFT_MAX, strlen(TELNET_CMD_MOVE_FOCUS_LEFT_MAX));
 		sendDelChar();
@@ -423,7 +419,7 @@ bool TelnetHandler::checkUDLR(const std::string &cmd)
 		currPos_ = s.size();
 		return true;
 	}
-	else if (cmd.find(TELNET_CMD_DOWN) != std::string::npos)	// 下
+	else if (cmd.find(TELNET_CMD_DOWN) != std::string::npos)	// down
 	{
 		pEndPoint_->send(TELNET_CMD_MOVE_FOCUS_LEFT_MAX, strlen(TELNET_CMD_MOVE_FOCUS_LEFT_MAX));
 		sendDelChar();
@@ -443,7 +439,7 @@ bool TelnetHandler::checkUDLR(const std::string &cmd)
 		currPos_ = s.size();
 		return true;
 	}
-	else if (cmd.find(TELNET_CMD_RIGHT) != std::string::npos)	// 右
+	else if (cmd.find(TELNET_CMD_RIGHT) != std::string::npos)	// right
 	{
 		int cmdlen = strlen(TELNET_CMD_RIGHT);
 		if(currPos_ < (int)command_.size())
@@ -453,7 +449,7 @@ bool TelnetHandler::checkUDLR(const std::string &cmd)
 		}
 		return true;
 	}
-	else if (cmd.find(TELNET_CMD_LEFT) != std::string::npos)	// 左 
+	else if (cmd.find(TELNET_CMD_LEFT) != std::string::npos)	// left
 	{
 		int cmdlen = strlen(TELNET_CMD_LEFT);
 		if(currPos_ > 0)
@@ -463,7 +459,7 @@ bool TelnetHandler::checkUDLR(const std::string &cmd)
 		}
 		return true;
 	}
-	else if (cmd.find(TELNET_CMD_HOME) != std::string::npos)	// 移动到行首
+	else if (cmd.find(TELNET_CMD_HOME) != std::string::npos)	// Move to the beginning of
 	{
 		if (currPos_ > 0)
 		{
@@ -473,7 +469,7 @@ bool TelnetHandler::checkUDLR(const std::string &cmd)
 		}
 		return true;
 	}
-	else if (cmd.find(TELNET_CMD_END) != std::string::npos)	    // 移动到行尾
+	else if (cmd.find(TELNET_CMD_END) != std::string::npos)	    // Move to end of line
 	{
 		if (currPos_ != (int32)command_.length())
 		{
@@ -755,7 +751,7 @@ void TelnetHandler::processPythonCommand(std::string command)
 
 	pTelnetServer_->pScript()->run_simpleString(PyBytes_AsString(pycmd1), &retbuf);
 
-	// 把返回值中的'\n'替換成'\r\n'，以解决在vt100终端中显示不正确的问题
+	// Views in the return value of '\n' for the '\r\n' in order to solve the problem of not displaying correctly in the VT100 terminal
 	std::string::size_type pos = 0;
 	while ((pos = retbuf.find('\n', pos)) != std::string::npos)
 	{
@@ -769,7 +765,7 @@ void TelnetHandler::processPythonCommand(std::string command)
 
 	if(retbuf.size() > 0)
 	{
-		// 将结果返回给客户端
+		// Returns the results to the client
 		Network::Bundle* pBundle = Network::Bundle::createPoolObject();
 		(*pBundle) << retbuf;
 		pEndPoint_->send(pBundle);
@@ -853,7 +849,7 @@ void TelnetPyProfileHandler::sendStream(MemoryStream* s)
 	std::string datas;
 	(*s) >> datas;
 
-	// 把返回值中的'\n'替換成'\r\n'，以解决在vt100终端中显示不正确的问题
+	// Views in the return value of '\n' for the '\r\n' in order to solve the problem of not displaying correctly in the VT100 terminal
 	std::string::size_type pos = 0;
 	while ((pos = datas.find('\n', pos)) != std::string::npos)
 	{
@@ -878,7 +874,7 @@ void TelnetPyTickProfileHandler::sendStream(MemoryStream* s)
 	std::string datas;
 	(*s) >> datas;
 
-	// 把返回值中的'\n'替換成'\r\n'，以解决在vt100终端中显示不正确的问题
+	// Views in the return value of '\n' for the '\r\n' in order to solve the problem of not displaying correctly in the VT100 terminal
 	std::string::size_type pos = 0;
 	while ((pos = datas.find('\n', pos)) != std::string::npos)
 	{

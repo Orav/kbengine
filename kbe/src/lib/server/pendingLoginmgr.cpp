@@ -119,7 +119,7 @@ void PendingLoginMgr::removeNextTick(std::string& accountName)
 	{
 		PLInfos* infos = iter->second;
 
-		// 下一tick处理时就超时了
+		// Timeout at the next tick treatment
 		TimeStamp curr = timestamp();
 		infos->lastProcessTime = curr - OP_TIME_OUT_MAX - 1;
 	}

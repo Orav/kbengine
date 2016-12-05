@@ -66,7 +66,7 @@ bool GlobalDataClient::write(PyObject* pyKey, PyObject* pyValue)
 		{
 			ret = true;
 
-			// 此处不能减引用，因为需要被pyDict_引用
+			// Cannot reduce a reference here, because of the need to be referenced by py dict
 			// Py_XDECREF(pyKey);
 			// Py_XDECREF(pyValue);
 		}
@@ -100,7 +100,7 @@ bool GlobalDataClient::del(PyObject* pyKey)
 			ret = true;
 		}
 
-		// PyDict_GetItem为弱引用
+		// PyDict_GetItem Weak references
 		// Py_XDECREF(pyVal);
 	}
 	else

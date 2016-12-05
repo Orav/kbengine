@@ -76,15 +76,15 @@ threadPool_()
 	networkInterface_.pChannelTimeOutHandler(this);
 	networkInterface_.pChannelDeregisterHandler(this);
 
-	// 广播自己的地址给网上上的所有kbemachine
-	// 并且从kbemachine获取basappmgr和cellappmgr以及dbmgr地址
+	// Broadcasting their all on the Internet at the address kbemachine
+	// Obtained from the kbemachine and basappmgr and cellappmgr and dbMgr address
 	Components::getSingleton().pHandler(this);
 	this->dispatcher().addTask(&Components::getSingleton());
 	
 	pActiveTimerHandle_ = new ComponentActiveReportHandler(this);
 	pActiveTimerHandle_->startActiveTick(KBE_MAX(1.f, Network::g_channelInternalTimeout / 2.0f));
 
-	// 默认所有app都设置为这个值， 如果需要调整则各自在派生类重新赋值
+	// All the app is set to the default value, if you need to assign values to adjust their roles in derived classes
 	ProfileVal::setWarningPeriod(stampsPerSecond() / g_kbeSrvConfig.gameUpdateHertz());
 }
 
