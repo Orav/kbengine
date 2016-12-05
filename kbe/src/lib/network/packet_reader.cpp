@@ -69,7 +69,7 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 	{
 		if(fragmentDatasFlag_ == FRAGMENT_DATA_UNKNOW)
 		{
-			// 如果没有ID信息，先获取ID
+			// If there is no ID information, get the ID
 			if(currMsgID_ == 0)
 			{
 				if(NETWORK_MESSAGE_ID_SIZE > 1 && pPacket->length() < NETWORK_MESSAGE_ID_SIZE)
@@ -89,7 +89,7 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 				MemoryStream* pPacket1 = pFragmentStream_ != NULL ? pFragmentStream_ : pPacket;
 				TRACE_MESSAGE_PACKET(true, pPacket1, pMsgHandler, pPacket1->length(), pChannel_->c_str(), false);
 				
-				// 用作调试时比对
+				// When used as a debugging
 				uint32 rpos = pPacket1->rpos();
 				pPacket1->rpos(0);
 				TRACE_MESSAGE_PACKET(true, pPacket1, pMsgHandler, pPacket1->length(), pChannel_->c_str(), false);
@@ -104,18 +104,18 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 				break;
 			}
 
-			// 如果没有可操作的数据了则退出等待下一个包处理。
-			// 可能是一个无参数数据包
+			// Without actionable data you exit to wait for the next packet.
+			// May be a parameter-free packet
 			//if(pPacket->opsize() == 0)	
 			//	break;
 			
-			// 如果长度信息没有获得，则等待获取长度信息
+			// If the length information is not obtained, the wait for length information
 			if(currMsgLen_ == 0)
 			{
-				// 如果长度信息是可变的或者配置了永远包含长度信息选项时，从流中分析长度数据
+				// If the information is of variable length or configuration will never contain length information option, the analysis from the stream length
 				if(pMsgHandler->msgLen == NETWORK_VARIABLE_MESSAGE)
 				{
-					// 如果长度信息不完整，则等待下一个包处理
+					// If the length information is not complete, you wait for the next packet processing
 					if(pPacket->length() < NETWORK_MESSAGE_LENGTH_SIZE)
 					{
 						writeFragmentMessage(FRAGMENT_DATA_MESSAGE_LENGTH, pPacket, NETWORK_MESSAGE_LENGTH_SIZE);
@@ -123,7 +123,7 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 					}
 					else
 					{
-						// 此处获得了长度信息
+						// Here for the length of information
 						Network::MessageLength currlen;
 						(*pPacket) >> currlen;
 						currMsgLen_ = currlen;
@@ -131,18 +131,18 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 						NetworkStats::getSingleton().trackMessage(NetworkStats::RECV, *pMsgHandler, 
 							currMsgLen_ + NETWORK_MESSAGE_ID_SIZE + NETWORK_MESSAGE_LENGTH_SIZE);
 
-						// 如果长度占满说明使用了扩展长度，我们还需要等待扩展长度信息
+						// If the length is filled using the extended length, we also need to wait for the extended length information
 						if(currMsgLen_ == NETWORK_MESSAGE_MAX_SIZE)
 						{
 							if(pPacket->length() < NETWORK_MESSAGE_LENGTH1_SIZE)
 							{
-								// 如果长度信息不完整，则等待下一个包处理
+								// If the length information is not complete, you wait for the next packet processing
 								writeFragmentMessage(FRAGMENT_DATA_MESSAGE_LENGTH1, pPacket, NETWORK_MESSAGE_LENGTH1_SIZE);
 								break;
 							}
 							else
 							{
-								// 此处获得了扩展长度信息
+								// Here for the extended length messages
 								(*pPacket) >> currMsgLen_;
 
 								NetworkStats::getSingleton().trackMessage(NetworkStats::RECV, *pMsgHandler, 
@@ -197,7 +197,7 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 					break;
 				}
 
-				// 临时设置有效读取位， 防止接口中溢出操作
+				// Temporarily set a valid reading to prevent overflow in the interface operation
 				size_t wpos = pPacket->wpos();
 				// size_t rpos = pPacket->rpos();
 				size_t frpos = pPacket->rpos() + currMsgLen_;
@@ -206,7 +206,7 @@ void PacketReader::processMessages(KBEngine::Network::MessageHandlers* pMsgHandl
 				TRACE_MESSAGE_PACKET(true, pPacket, pMsgHandler, currMsgLen_, pChannel_->c_str(), true);
 				pMsgHandler->handle(pChannel_, *pPacket);
 
-				// 如果handler没有处理完数据则输出一个警告
+				// If the handler does not handle the data it prints a warning
 				if(currMsgLen_ > 0)
 				{
 					if(frpos != pPacket->rpos())
@@ -269,19 +269,19 @@ void PacketReader::mergeFragmentMessage(Packet* pPacket)
 
 		switch(fragmentDatasFlag_)
 		{
-		case FRAGMENT_DATA_MESSAGE_ID:			// 消息ID信息不全
+		case FRAGMENT_DATA_MESSAGE_ID:			// Message ID information is not complete
 			memcpy(&currMsgID_, pFragmentDatas_, NETWORK_MESSAGE_ID_SIZE);
 			break;
 
-		case FRAGMENT_DATA_MESSAGE_LENGTH:		// 消息长度信息不全
+		case FRAGMENT_DATA_MESSAGE_LENGTH:		// Message length of incomplete information
 			memcpy(&currMsgLen_, pFragmentDatas_, NETWORK_MESSAGE_LENGTH_SIZE);
 			break;
 
-		case FRAGMENT_DATA_MESSAGE_LENGTH1:		// 消息长度信息不全
+		case FRAGMENT_DATA_MESSAGE_LENGTH1:		// Message length of incomplete information
 			memcpy(&currMsgLen_, pFragmentDatas_, NETWORK_MESSAGE_LENGTH1_SIZE);
 			break;
 
-		case FRAGMENT_DATA_MESSAGE_BODY:		// 消息内容信息不全
+		case FRAGMENT_DATA_MESSAGE_BODY:		// Message content is incomplete information
 			pFragmentStream_ = MemoryStream::createPoolObject();
 			pFragmentStream_->append(pFragmentDatas_, currMsgLen_);
 			break;

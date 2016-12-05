@@ -141,7 +141,7 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 
 				reset();
 
-				// 如果没有创建过缓存，先尝试直接解析包头，如果信息足够成功解析则继续到下一步
+				// If you did not create the cache, try the direct analysis of baotou, if information is successfully resolved enough to continue to the next step
 				pFragmentDatasRemain_ = websocket::WebSocketProtocol::getFrame(pPacket, msg_opcode_, msg_fin_, msg_masked_, 
 					msg_mask_, msg_length_field_, msg_payload_length_, msg_frameType_);
 
@@ -162,8 +162,8 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 			{
 				KBE_ASSERT(pTCPPacket_ != NULL);
 
-				// 长度如果大于剩余读取长度，那么可以开始解析了
-				// 否则将包内存继续缓存
+				// If the length is greater than the remaining reading length, then you can start parsing
+				// Or memory to continue the package cache
 				if((int32)pPacket->length() >= pFragmentDatasRemain_)
 				{
 					pFragmentDatasRemain_ = websocket::WebSocketProtocol::getFrame(pTCPPacket_, msg_opcode_, msg_fin_, msg_masked_, 
@@ -171,11 +171,11 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 
 					KBE_ASSERT(pFragmentDatasRemain_ == 0);
 
-					// frame解析完毕，将对象回收
+					// Frame analysis is completed, the object is reclaimed
 					TCPPacket::reclaimPoolObject(pTCPPacket_);
 					pTCPPacket_ = NULL;
 
-					// 是否有数据携带？如果没有则不进入data解析
+					// If there is data to carry? If no access data analysis
 					if(msg_payload_length_ > 0)
 					{
 						fragmentDatasFlag_ = FRAGMENT_MESSAGE_DATAS;
@@ -226,7 +226,7 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 			}
 			else if(msg_frameType_ == websocket::WebSocketProtocol::INCOMPLETE_FRAME)
 			{
-				// 继续等待后续内容到达
+				// Continues to wait for subsequent content to reach
 			}
 		}
 		else
@@ -273,7 +273,7 @@ Reason WebSocketPacketFilter::recv(Channel * pChannel, PacketReceiver & receiver
 
 			Reason reason = PacketFilter::recv(pChannel, receiver, pTCPPacket_);
 
-			// pTCPPacket_不需要在这里回收了
+			// pTCPPacket Not need to recycle here
 			pTCPPacket_ = NULL;
 
 			if(pFragmentDatasRemain_ == 0)

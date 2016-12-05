@@ -98,8 +98,8 @@ void TCPPacketSender::onGetError(Channel* pChannel)
 {
 	pChannel->condemn();
 	
-	// 此处不必立即销毁，可能导致bufferedReceives_内部遍历迭代器破坏
-	// 交给TCPPacketReceiver处理即可
+	// Here do not have to be destroyed immediately, can cause traversing the iterator within the buffered receives damage
+	// To the TCPPacket receiver
 	//pChannel->networkInterface().deregisterChannel(pChannel);
 	//pChannel->destroy();
 }
@@ -109,7 +109,7 @@ bool TCPPacketSender::processSend(Channel* pChannel)
 {
 	bool noticed = pChannel == NULL;
 
-	// 如果是由poller通知的，我们需要通过地址找到channel
+	// If it is informed by the poller, and we need to address to find channel
 	if(noticed)
 		pChannel = getChannel();
 
@@ -150,13 +150,13 @@ bool TCPPacketSender::processSend(Channel* pChannel)
 
 			if (reason == REASON_RESOURCE_UNAVAILABLE)
 			{
-				/* 此处输出可能会造成debugHelper处死锁
+				/* Output may cause debug helper here death lock
 					WARNING_MSG(fmt::format("TCPPacketSender::processSend: "
 						"Transmit queue full, waiting for space(kbengine.xml->channelCommon->writeBufferSize->{})...\n",
 						(pChannel->isInternal() ? "internal" : "external")));
 				*/
 
-				// 连续超过10次则通知出错
+				// More than 10 times in a row the notification error
 				if (++sendfailCount_ >= 10 && pChannel->isExternal())
 				{
 					onGetError(pChannel);
@@ -220,7 +220,7 @@ Reason TCPPacketSender::processFilterPacket(Channel* pChannel, Packet * pPacket)
 	}
 	else
 	{
-		// 如果只发送了一部分数据，则认为是REASON_RESOURCE_UNAVAILABLE
+		// If only a portion of the data is sent, it is assumed REASON_RESOURCE_UNAVAILABLE
 		if (len > 0)
 			return REASON_RESOURCE_UNAVAILABLE;
 	}

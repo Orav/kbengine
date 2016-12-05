@@ -112,7 +112,7 @@ bool TCPPacketReceiver::processRecv(bool expectingPacket)
 
 		return rstate == PacketReceiver::RECV_STATE_CONTINUE;
 	}
-	else if(len == 0) // 客户端正常退出
+	else if(len == 0) // Client a graceful exit
 	{
 		TCPPacket::reclaimPoolObject(pReceiveWindow);
 		onGetError(pChannel);
@@ -138,7 +138,7 @@ void TCPPacketReceiver::onGetError(Channel* pChannel)
 //-------------------------------------------------------------------------------------
 Reason TCPPacketReceiver::processFilteredPacket(Channel* pChannel, Packet * pPacket)
 {
-	// 如果为None， 则可能是被过滤器过滤掉了(过滤器正在按照自己的规则组包解密)
+	// If None, you may be filtered out (filter is in accordance with their own rules for package decryption)
 	if(pPacket)
 	{
 		pChannel->addReceiveWindow(pPacket);
@@ -156,9 +156,9 @@ PacketReceiver::RecvState TCPPacketReceiver::checkSocketErrors(int len, bool exp
 
 	if (
 #if KBE_PLATFORM == PLATFORM_WIN32
-		wsaErr == WSAEWOULDBLOCK && !expectingPacket// send出错大概是缓冲区满了, recv出错已经无数据可读了
+		wsaErr == WSAEWOULDBLOCK && !expectingPacket// Send error is probably the buffer is full, recv error has no data can be read
 #else
-		errno == EAGAIN && !expectingPacket			// recv缓冲区已经无数据可读了
+		errno == EAGAIN && !expectingPacket			// recv Buffer has no data can be read
 #endif
 		)
 	{
@@ -166,9 +166,9 @@ PacketReceiver::RecvState TCPPacketReceiver::checkSocketErrors(int len, bool exp
 	}
 
 #ifdef unix
-	if (errno == EAGAIN ||							// 已经无数据可读了
-		errno == ECONNREFUSED ||					// 连接被服务器拒绝
-		errno == EHOSTUNREACH)						// 目的地址不可到达
+	if (errno == EAGAIN ||							// Have no data can be read
+		errno == ECONNREFUSED ||					// Connections rejected by the server
+		errno == EHOSTUNREACH)						// Destination address unreachable
 	{
 		this->dispatcher().errorReporter().reportException(
 				REASON_NO_SUCH_PORT);
@@ -177,10 +177,12 @@ PacketReceiver::RecvState TCPPacketReceiver::checkSocketErrors(int len, bool exp
 	}
 #else
 	/*
-	存在的连接被远程主机强制关闭。通常原因为：远程主机上对等方应用程序突然停止运行，或远程主机重新启动，
-	或远程主机在远程方套接字上使用了“强制”关闭（参见setsockopt(SO_LINGER)）。
-	另外，在一个或多个操作正在进行时，如果连接因“keep-alive”活动检测到一个失败而中断，也可能导致此错误。
-	此时，正在进行的操作以错误码WSAENETRESET失败返回，后续操作将失败返回错误码WSAECONNRESET
+	The connection was closed by the remote host.
+	Usually because: peer application has suddenly stopped running on the remote host, or remote host to restart,
+	Or remote host on the remote sockets using the "force" close (see setsockopt (SO LINGER).
+	In addition, when one or more operation is in progress, if the connection "keep-alive" interrupted activities detected a failure,
+	can also cause this error. At this point, the ongoing operation failed error code WSAENETRESET returned, 
+	subsequent operation returns a failure error code is WSAECONNRESET
 	*/
 	switch(wsaErr)
 	{

@@ -72,7 +72,7 @@ bool FixedMessages::loadConfig(std::string fileName)
 	rootNode = xml->getRootNode();
 	if(rootNode == NULL)
 	{
-		// root节点下没有子节点了
+		// Under the root node has no child nodes
 		return true;
 	}
 

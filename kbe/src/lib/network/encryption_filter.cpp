@@ -153,7 +153,7 @@ Reason BlowfishFilter::recv(Channel * pChannel, PacketReceiver & receiver, Packe
 
 		if(packetLen_ <= 0)
 		{
-			// 如果满足一个最小包则尝试解包, 否则缓存这个包待与下一个包合并然后解包
+			// If a minimum package the attempt to unpack or cache this package to be merged with the next packet and then unpack
 			if(pPacket->length() >= (PACKET_LENGTH_SIZE + 1 + BLOCK_SIZE))
 			{
 				(*pPacket) >> packetLen_;
@@ -161,7 +161,7 @@ Reason BlowfishFilter::recv(Channel * pChannel, PacketReceiver & receiver, Packe
 				
 				packetLen_ -= 1;
 
-				// 如果包是完整的下面流程会解密， 如果有多余的内容需要将其剪裁出来待与下一个包合并
+				// If the package is complete the following process will be decrypted if there is extra content need to be cut out to be merged with the next packet
 				if(pPacket->length() > packetLen_)
 				{
 					MALLOC_PACKET(pPacket_, pPacket->isTCPPacket());
@@ -192,8 +192,8 @@ Reason BlowfishFilter::recv(Channel * pChannel, PacketReceiver & receiver, Packe
 		}
 		else
 		{
-			// 如果上一次有做过解包行为但包还没有完整则继续处理
-			// 如果包是完整的下面流程会解密， 如果有多余的内容需要将其剪裁出来待与下一个包合并
+			// If unpack once did but no complete continues to address
+			// If the package is complete the following process will be decrypted if there is extra content need to be cut out to be merged with the next packet
 			if(pPacket->length() > packetLen_)
 			{
 				MALLOC_PACKET(pPacket_, pPacket->isTCPPacket());
@@ -242,8 +242,8 @@ Reason BlowfishFilter::recv(Channel * pChannel, PacketReceiver & receiver, Packe
 		
 		decrypt(pPacket, pPacket);
 
-		// 上面的流程能保证wpos之后不会有多余的包
-		// 如果有多余的包数据会放在pPacket_
+		// After the above process ensures wpos no unwanted packages
+		// If there is excess data is placed in the pPacket_
 		pPacket->wpos((int)(pPacket->wpos() - padSize_));
 
 		packetLen_ = 0;
@@ -270,19 +270,19 @@ Reason BlowfishFilter::recv(Channel * pChannel, PacketReceiver & receiver, Packe
 //-------------------------------------------------------------------------------------
 void BlowfishFilter::encrypt(Packet * pInPacket, Packet * pOutPacket)
 {
-	// BlowFish 每次只能加密和解密8字节数据
-	// 不足8字节则填充0
+	// BlowFish You can only encrypt and decrypt 8 bytes of data
+	// Less than 8 bytes padding 0
 	uint8 padSize = 0;
 
 	if (pInPacket->length() % BLOCK_SIZE != 0)
 	{
-		// 得到不足大小
+		// By less than size
 		padSize = BLOCK_SIZE - (pInPacket->length() % BLOCK_SIZE);
 
-		// 向pPacket中填充这么多
+		// Towards pPacket Filling in so many
 		pInPacket->data_resize(pInPacket->size() + padSize);
 
-		// 填充0
+		// Fill to 0
 		memset(pInPacket->data() + pInPacket->wpos(), 0, padSize);
 
 		pInPacket->wpos((int)(pInPacket->wpos() + padSize));

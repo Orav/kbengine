@@ -125,7 +125,7 @@ bool WebSocketProtocol::handshake(Network::Channel* pChannel, MemoryStream* s)
 		findIter = headers.find("Origin");
 		if(findIter == headers.end())
 		{
-			//有些app级客户端可能没有这个字段
+			//Some app-level clients may not have this field
 			//s->rpos(rpos);
 			//s->wpos(wpos);
 			//return false;
@@ -195,7 +195,7 @@ int WebSocketProtocol::makeFrame(WebSocketProtocol::FrameType frame_type,
 {
 	uint64 size = pInPacket->length(); 
 
-	// 写入frame类型
+	// Write frame types
 	(*pOutPacket) << ((uint8)frame_type); 
 
 	if(size <= 125)
@@ -247,31 +247,31 @@ int WebSocketProtocol::getFrame(Packet * pPacket, uint8& msg_opcode, uint8& msg_
 		+---------------------------------------------------------------+
 	*/
 
-	// 不足3字节，需要继续等待
+	// Less than 3 bytes, you need to wait
 	if(pPacket->length() < 3) 
 	{
 		frameType = INCOMPLETE_FRAME;
 		return 3;
 	}
 
-	// 第一个字节, 最高位用于描述消息是否结束, 最低4位用于描述消息类型
+	// The first byte, top bit describes whether the message ended, lowest 4 bits are used to describe message types
 	uint8 bytedata;
 	(*pPacket) >> bytedata;
 
 	msg_opcode = bytedata & 0x0F;
 	msg_fin = (bytedata >> 7) & 0x01;
 
-	// 第二个字节, 消息的第二个字节主要用于描述掩码和消息长度, 最高位用0或1来描述是否有掩码处理
+	// The second byte and second byte of the message is mainly used to describe mask and the message length, highest level 0 or IL Description mask treatment
 	(*pPacket) >> bytedata;
 	msg_masked = (bytedata >> 7) & 0x01;
 
-	// 消息解码
+	// Message decoded
 	msg_length_field = bytedata & (~0x80);
 
-	// 剩下的后面7位用来描述消息长度, 由于7位最多只能描述127所以这个值会代表三种情况
-	// 一种是消息内容少于126存储消息长度, 如果消息长度少于UINT16的情况此值为126
-	// 当消息长度大于UINT16的情况下此值为127;
-	// 这两种情况的消息长度存储到紧随后面的byte[], 分别是UINT16(2位byte)和UINT64(4位byte)
+	// 7 used to describe messages that follow the rest of the length, due to the 7-limit description 127 so that representatives of three cases
+	// A length less than 126 messages are stored the message content, if this value is less than UINT16 length is 126
+	// When a message is longer than this value as UINT16 127;
+	// To store the message length of these two cases followed later in byte [], UINT16, respectively (2 byte) and UINT64 (4 byte)
 	if(msg_length_field <= 125) 
 	{
 		msg_payload_length = msg_length_field;
@@ -296,15 +296,15 @@ int WebSocketProtocol::getFrame(Packet * pPacket, uint8& msg_opcode, uint8& msg_
 		pPacket->read_skip(8);
 	}
 
-	// 缓冲可读长度不够
-	/* 这里不做检查，只解析协议头
+	// Buffer to be read not long enough
+	/* Not checking here, resolve only the protocol header
 	if(pPacket->length() < (size_t)msg_payload_length) {
 		frameType = INCOMPLETE_FRAME;
 		return (size_t)msg_payload_length - pPacket->length();
 	}
 	*/
 
-	// 如果存在掩码的情况下获取4字节掩码值
+	// If there is a case of mask Gets a 4-byte mask value
 	if(msg_masked) 
 	{
 		(*pPacket) >> msg_mask;
@@ -333,7 +333,7 @@ int WebSocketProtocol::getFrame(Packet * pPacket, uint8& msg_opcode, uint8& msg_
 //-------------------------------------------------------------------------------------
 bool WebSocketProtocol::decodingDatas(Packet* pPacket, uint8 msg_masked, uint32 msg_mask)
 {
-	// 解码内容
+	// Decoded content
 	if(msg_masked) 
 	{
 		uint8* c = pPacket->data() + pPacket->rpos();

@@ -152,7 +152,7 @@ bool UDPPacketReceiver::processRecv(bool expectingPacket)
 //-------------------------------------------------------------------------------------
 Reason UDPPacketReceiver::processFilteredPacket(Channel* pChannel, Packet * pPacket)
 {
-	// 如果为None， 则可能是被过滤器过滤掉了(过滤器正在按照自己的规则组包解密)
+	// If None, you may be filtered out (filter is in accordance with their own rules for package decryption)
 	if(pPacket)
 	{
 		pChannel->addReceiveWindow(pPacket);

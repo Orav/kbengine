@@ -63,7 +63,7 @@ NetworkInterface::NetworkInterface(Network::EventDispatcher * pDispatcher,
 		this->recreateListeningSocket("EXTERNAL", htons(extlisteningPort_min), htons(extlisteningPort_max), 
 			extlisteningInterface, &extEndpoint_, pExtListenerReceiver_, extrbuffer, extwbuffer);
 
-		// 如果配置了对外端口范围， 如果范围过小这里extEndpoint_可能没有端口可用了
+		// If you configure the external port range, if the range is too small here ext endpoint may have no ports are available
 		if(extlisteningPort_min != -1)
 		{
 			KBE_ASSERT(extEndpoint_.good() && "Channel::EXTERNAL: no available port, "
@@ -164,7 +164,7 @@ bool NetworkInterface::recreateListeningSocket(const char* pEndPointName, uint16
 	bool listeningInterfaceEmpty =
 		(listeningInterface == NULL || listeningInterface[0] == 0);
 
-	// 查找指定接口名 NIP、MAC、IP是否可用
+	// Finds the specified interface name NIP, MAC, IP availability
 	if(pEP->findIndicatedInterface(listeningInterface, ifIPAddr) == 0)
 	{
 		char szIp[MAX_IP] = {0};
@@ -175,7 +175,7 @@ bool NetworkInterface::recreateListeningSocket(const char* pEndPointName, uint16
 			pEndPointName, listeningInterface, szIp));
 	}
 
-	// 如果不为空又找不到那么警告用户错误的设置，同时我们采用默认的方式(绑定到INADDR_ANY)
+	// If not null and then warn the user not found error is set, and we used the default way (bind INADDR ANY)
 	else if (!listeningInterfaceEmpty)
 	{
 		WARNING_MSG(fmt::format("NetworkInterface::recreateListeningSocket({}): "
@@ -183,7 +183,7 @@ bool NetworkInterface::recreateListeningSocket(const char* pEndPointName, uint16
 			pEndPointName, listeningInterface));
 	}
 	
-	// 尝试绑定到端口，如果被占用向后递增
+	// Attempt to bind to a port, if being used backwards increments
 	bool foundport = false;
 	uint32 listeningPort = listeningPort_min;
 	if(listeningPort_min != listeningPort_max)
@@ -210,7 +210,7 @@ bool NetworkInterface::recreateListeningSocket(const char* pEndPointName, uint16
 		}
 	}
 
-	// 如果无法绑定到合适的端口那么报错返回，进程将退出
+	// If the port cannot be bound to the appropriate error returned, the process will exit
 	if(!foundport)
 	{
 		ERROR_MSG(fmt::format("NetworkInterface::recreateListeningSocket({}): "
@@ -221,7 +221,7 @@ bool NetworkInterface::recreateListeningSocket(const char* pEndPointName, uint16
 		return false;
 	}
 
-	// 获得当前绑定的地址，如果是INADDR_ANY这里获得的IP是0
+	// Get the address of the current binding, if the IP is INADDR ANY here for is 0
 	pEP->getlocaladdress( (u_int16_t*)&address.port,
 		(u_int32_t*)&address.ip );
 

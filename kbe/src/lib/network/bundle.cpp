@@ -104,8 +104,8 @@ Bundle::Bundle(Channel * pChannel, ProtocolType pt):
 //-------------------------------------------------------------------------------------
 Bundle::Bundle(const Bundle& bundle)
 {
-	// 这些必须在前面设置
-	// 否则中途创建packet可能错误
+	// These must be set before
+	// Create a packet or midway may not be correct
 	isTCPPacket_ = bundle.isTCPPacket_;
 	pChannel_ = bundle.pChannel_;
 	pCurrMsgHandler_ = bundle.pCurrMsgHandler_;
@@ -149,8 +149,8 @@ void Bundle::onReclaimObject()
 //-------------------------------------------------------------------------------------
 void Bundle::_calcPacketMaxSize()
 {
-	// 如果使用了openssl加密通讯则我们保证一个包最大能被Blowfish::BLOCK_SIZE除尽
-	// 这样我们在加密一个满载包时不需要额外填充字节
+	// If you use OpenSSL encryption communication we guarantee a maximum can be Blowfish::BLOCK divisible by SIZE
+	// We encrypt one full package do not need extra padding bytes
 	if(g_channelExternalEncryptType == 1)
 	{
 		packetMaxSize_ = isTCPPacket_ ? (int)(TCPPacket::maxBufferSize() - ENCRYPTTION_WASTAGE_SIZE) :
@@ -195,7 +195,7 @@ int32 Bundle::onPacketAppend(int32 addsize, bool inseparable)
 	if(inseparable)
 		fwpos += addsize;
 
-	// 如果当前包装不下本次append的数据，将其填充到新包中
+	// If the current wrapper this append data to fill in the new package
 	if(fwpos >= packetMaxSize_)
 	{
 		packets_.push_back(pCurrPacket_);
@@ -207,7 +207,7 @@ int32 Bundle::onPacketAppend(int32 addsize, bool inseparable)
 	int32 remainsize = packetMaxSize_ - totalsize;
 	int32 taddsize = addsize;
 
-	// 如果当前包剩余空间小于要添加的字节则本次填满此包
+	// If free space is less than byte you want to add the fill for this package
 	if(remainsize < addsize)
 		taddsize = remainsize;
 	
@@ -308,7 +308,7 @@ void Bundle::newMessage(const MessageHandler& msgHandler)
 	(*this) << msgHandler.msgID;
 	pCurrPacket_->messageID(msgHandler.msgID);
 
-	// 此处对于非固定长度的消息来说需要先设置它的消息长度位为0， 到最后需要填充长度
+	// For non-fixed-length messages, you need to set the message length is 0, to finally fill the length
 	if(msgHandler.msgLen == NETWORK_VARIABLE_MESSAGE)
 	{
 		MessageLength msglen = 0;
@@ -335,7 +335,7 @@ void Bundle::finiMessage(bool isSend)
 		packets_.push_back(pCurrPacket_);
 	}
 
-	// 对消息进行跟踪
+	// To track messages
 	if(pCurrMsgHandler_){
 		if(isSend || numMessages_ > 1)
 		{
@@ -344,7 +344,7 @@ void Bundle::finiMessage(bool isSend)
 		}
 	}
 
-	// 此处对于非固定长度的消息来说需要设置它的最终长度信息
+	// For non-fixed-length messages need to be set for its final length information
 	if(currMsgID_ > 0 && (currMsgHandlerLength_ < 0))
 	{
 		Packet* pPacket = pCurrPacket_;
@@ -354,15 +354,15 @@ void Bundle::finiMessage(bool isSend)
 		currMsgLength_ -= NETWORK_MESSAGE_ID_SIZE;
 		currMsgLength_ -= NETWORK_MESSAGE_LENGTH_SIZE;
 
-		// 按照设计一个包最大也不可能超过NETWORK_MESSAGE_MAX_SIZE
+		// According to the design of a package maximum cannot exceed NETWORK MESSAGE MAX SIZE
 		if(g_componentType == BOTS_TYPE || g_componentType == CLIENT_TYPE)
 		{
 			KBE_ASSERT(currMsgLength_ <= NETWORK_MESSAGE_MAX_SIZE);
 		}
 
-		// 如果消息长度大于等于NETWORK_MESSAGE_MAX_SIZE
-		// 使用扩展消息长度机制，向消息长度后面再填充4字节
-		// 用于描述更大的长度
+		// If a length greater than or equal to a message NETWORK MESSAGE MAX SIZE
+		// Using extended message length mechanism to fill behind the message length 4 bytes
+		// Used to describe the larger length
 		if(currMsgLength_ >= NETWORK_MESSAGE_MAX_SIZE)
 		{
 			MessageLength1 ex_msg_length = currMsgLength_;
@@ -415,7 +415,7 @@ void Bundle::debugCurrentMessages(MessageID currMsgID, const Network::MessageHan
 
 	if (pCurrMsgHandler->msgLen == NETWORK_VARIABLE_MESSAGE)
 	{
-		// 因为Bundle::finiMessage等地方遇到可变参数消息时将长度去掉了消息头部，这里要还原消息就要加回来
+		// Bundle::fini case of variable parameters such as message message length when you remove the message header, to restore message here will be added back
 		currMsgLength += NETWORK_MESSAGE_ID_SIZE;
 		currMsgLength += NETWORK_MESSAGE_LENGTH_SIZE;
 		if (currMsgLength - NETWORK_MESSAGE_ID_SIZE - NETWORK_MESSAGE_LENGTH_SIZE >= NETWORK_MESSAGE_MAX_SIZE)
@@ -424,11 +424,11 @@ void Bundle::debugCurrentMessages(MessageID currMsgID, const Network::MessageHan
 	
 	MemoryStream* pMemoryStream = MemoryStream::createPoolObject();
 	
-	// 通过消息长度找到消息头，然后将消息内容输出
+	// Found through the message length the message headers, and then output the message content
 	int msglen = currMsgLength;
 	if(pCurrPacket)
 	{
-		// 如果当前消息所有内容都在当前包中，直接输出内容即可
+		// If the current message is everything in the current package, can be directly output
 		msglen -= pCurrPacket->length();
 		if(msglen <= 0)
 		{
@@ -445,11 +445,11 @@ void Bundle::debugCurrentMessages(MessageID currMsgID, const Network::MessageHan
 
 				Network::Packet* pPacket = (*packiter);
 
-				// 当前包可能已经计算过
+				// The current package may have calculated that
 				if (pCurrPacket == pPacket)
 					continue;
 
-				// 如果所有内容都在包中
+				// If all the content in the package
 				if((int)pPacket->length() >= msglen)
 				{
 					int wpos = pPacket->length() - msglen;
@@ -459,15 +459,15 @@ void Bundle::debugCurrentMessages(MessageID currMsgID, const Network::MessageHan
 					{
 						Network::Packet* pPacket1 = packets[i];
 						
-						// 这个包已经在上面处理过了
+						// Which the package has already been processed
 						if (pPacket1 == pPacket || pCurrPacket == pPacket1)
 							continue;
 						
-						// 期间的包内容全部加入
+						// Package contents during all join
 						pMemoryStream->append(pPacket1->data() + pPacket1->rpos(), pPacket1->length());
 					}
 					
-					// 把当前的包内容全部加进去
+					// Add all current packages
 					pMemoryStream->append(pCurrPacket->data() + pCurrPacket->rpos(), pCurrPacket->length());
 					break;
 				}
@@ -479,7 +479,7 @@ void Bundle::debugCurrentMessages(MessageID currMsgID, const Network::MessageHan
 		}
 	}
 	
-	// 一些sendto操作的包导致, 这类包也不需要追踪
+	// SendTo operation lead, these packages do not need to track
 	if(pMemoryStream->length() < NETWORK_MESSAGE_ID_SIZE)
 	{
 		MemoryStream::reclaimPoolObject(pMemoryStream);

@@ -204,10 +204,10 @@ bool Channel::initialize(NetworkInterface & networkInterface,
 
 		KBE_ASSERT(pPacketReceiver_->type() == PacketReceiver::TCP_PACKET_RECEIVER);
 
-		// UDP不需要注册描述符
+		// UDP does not need to register descriptor
 		pNetworkInterface_->dispatcher().registerReadFileDescriptor(*pEndPoint_, pPacketReceiver_);
 
-		// 需要发送数据时再注册
+		// Re-registration of data needs to be sent
 		// pPacketSender_ = new TCPPacketSender(*pEndPoint_, *pNetworkInterface_);
 		// pNetworkInterface_->dispatcher().registerWriteFileDescriptor(*pEndPoint_, pPacketSender_);
 	}
@@ -275,7 +275,7 @@ void Channel::startInactivityDetection( float period, float checkPeriod )
 {
 	stopInactivityDetection();
 
-	// 如果周期为负数则不检查
+	// If the cycle is negative does not check
 	if(period > 0.001f)
 	{
 		checkPeriod = std::max(1.f, checkPeriod);
@@ -322,7 +322,7 @@ void Channel::destroy()
 //-------------------------------------------------------------------------------------
 void Channel::clearState( bool warnOnDiscard /*=false*/ )
 {
-	// 清空未处理的接受包缓存
+	// Empty does not accept the package cache
 	if (bufferedReceives_.size() > 0)
 	{
 		BufferedReceives::iterator iter = bufferedReceives_.begin();
@@ -372,7 +372,7 @@ void Channel::clearState( bool warnOnDiscard /*=false*/ )
 		}
 	}
 
-	// 这里只清空状态，不释放
+	// Cleared only, not released
 	//SAFE_RELEASE(pPacketReader_);
 	//SAFE_RELEASE(pPacketSender_);
 
@@ -381,7 +381,7 @@ void Channel::clearState( bool warnOnDiscard /*=false*/ )
 
 	stopInactivityDetection();
 
-	// 由于pEndPoint通常由外部给入，必须释放，频道重新激活时会重新赋值
+	// Due to p end point is usually determined by external feed, must release the channel when you reactivate a reseeding
 	if(pEndPoint_)
 	{
 		pEndPoint_->close();
@@ -512,7 +512,7 @@ void Channel::send(Bundle * pBundle)
 
 		pPacketSender_->processSend(this);
 
-		// 如果不能立即发送到系统缓冲区，那么交给poller处理
+		// If you are not immediately sent to the system buffer, then to the poller
 		if(bundles_.size() > 0 && !isCondemn() && !isDestroyed())
 		{
 			flags_ |= FLAG_SENDING;
@@ -731,7 +731,7 @@ void Channel::handshake()
 		
 		flags_ |= FLAG_HANDSHAKE;
 
-		// 此处判定是否为websocket或者其他协议的握手
+		// Here to determine whether the websocket shaking hands or other agreements
 		if(websocket::WebSocketProtocol::isWebSocketProtocol(pPacket))
 		{
 			channelType_ = CHANNEL_WEB;
@@ -849,12 +849,12 @@ Bundle* Channel::createSendBundle()
 		Bundle* pBundle = bundles_.back();
 		Bundle::Packets& packets = pBundle->packets();
 
-		// pBundle和packets[0]都必须是没有被对象池回收的对象
-		// 必须是未经过加密的包，如果已经加密了就不要再重复拿出来用了，否则外部容易向其中添加未加密数据 
+		// pBundle and packets[0] must not be object collection object
+		// Must be a package that is not encrypted, if you have already encrypted and then do not repeat it out, otherwise the external easy to add the unencrypted data 
 		if (pBundle->packetHaveSpace() &&
 			!packets[0]->encrypted())
 		{
-			// 先从队列删除
+			// Removed from the queue
 			bundles_.pop_back();
 			pBundle->pChannel(this);
 			pBundle->pCurrMsgHandler(NULL);
