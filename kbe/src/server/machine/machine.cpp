@@ -84,7 +84,7 @@ void Machine::onBroadcastInterface(Network::Channel* pChannel, int32 uid, std::s
 									float cpu, float mem, uint32 usedmem, int8 state, uint32 machineID, uint64 extradata,
 									uint64 extradata1, uint64 extradata2, uint64 extradata3, uint32 backRecvAddr, uint16 backRecvPort)
 {
-	// 先查询一下是否存在相同身份，如果是相同身份且不是一个进程我们需要告知对方启动非法
+	// First check whether the same identity, if the identity is the same and not a process we need to tell the other side to start illegal
 	const Components::ComponentInfos* pinfos = Components::getSingleton().findComponent(componentID);
 	if(pinfos && isGameServerComponentType((COMPONENT_TYPE)componentType) && checkComponentUsable(pinfos, false, true))
 	{
@@ -122,7 +122,7 @@ void Machine::onBroadcastInterface(Network::Channel* pChannel, int32 uid, std::s
 		}
 	}
 
-	// 只记录本机启动的进程
+	// Record machine boot process
 	if(this->networkInterface().intaddr().ip == intaddr ||
 				this->networkInterface().extaddr().ip == intaddr)
 	{
@@ -138,7 +138,7 @@ void Machine::onBroadcastInterface(Network::Channel* pChannel, int32 uid, std::s
 			}
 		}
 
-		// 一台硬件上只能存在一个machine
+		// A hardware can exist on a machine
 		if(componentType == MACHINE_TYPE)
 		{
 			WARNING_MSG("Machine::onBroadcastInterface: machine is already running!\n");
@@ -180,7 +180,7 @@ void Machine::onFindInterfaceAddr(Network::Channel* pChannel, int32 uid, std::st
 	KBEngine::COMPONENT_TYPE tfindComponentType = (KBEngine::COMPONENT_TYPE)findComponentType;
 	KBEngine::COMPONENT_TYPE tComponentType = (KBEngine::COMPONENT_TYPE)componentType;
 
-	// 如果不是guiconsole发出的, uid也不等于当前服务器的uid则不理会。
+	// If it were not issued by the guiconsole, UID is not equal to the current server's UID is ignored.
 	if(tComponentType != CONSOLE_TYPE)
 	{
 		std::vector<int32>::iterator iter = std::find(localuids_.begin(), localuids_.end(), uid);
@@ -255,8 +255,8 @@ void Machine::onFindInterfaceAddr(Network::Channel* pChannel, int32 uid, std::st
 
 	if(!found)
 	{
-		// 如果是控制台， 且uid不是一致的则无需返回找不到消息
-		// 控制台可能广播到其他组去了
+		// If it's console, and the UID is not uniform are not required to return not found message
+		// Console may be broadcast to other groups
 		if(tComponentType == CONSOLE_TYPE)
 		{
 			std::vector<int32>::iterator iter = std::find(localuids_.begin(), localuids_.end(), uid);
@@ -293,7 +293,7 @@ bool Machine::checkComponentUsable(const Components::ComponentInfos* info, bool 
 	else
 		ret = Components::getSingleton().updateComponentInfos(info);
 
-	// 如果已经不可用且允许自动擦除则擦除它
+	// If you already have is not available and allows to automatically erase erase it
 	if(!ret && autoerase)
 		Components::getSingleton().delComponent(info->uid, info->componentType, info->cid);
 
@@ -387,7 +387,7 @@ void Machine::onQueryAllInterfaceInfos(Network::Channel* pChannel, int32 uid, st
 		}
 	}
 
-	// uid不等于当前服务器的uid则不理会。
+	// UID is equal to the current server's UID is not ignored.
 	if (uid > 0)
 	{
 		std::vector<int32>::iterator iter = std::find(localuids_.begin(), localuids_.end(), uid);
@@ -663,7 +663,7 @@ bool Machine::inInitialize()
 //-------------------------------------------------------------------------------------
 bool Machine::initializeEnd()
 {
-	pActiveTimerHandle_->cancel(); // machine不需要与其他组件保持活动状态关系
+	pActiveTimerHandle_->cancel(); // machine Do not need to maintain active relationships with other components
 	return true;
 }
 
@@ -757,7 +757,7 @@ void Machine::stopserver(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 	s >> uid;
 	s >> componentType;
 	
-	// 如果组件ID大于0则仅停止指定ID的组件
+	// If the component ID is greater than 0 stops only the specified component ID
 	s >> componentID;
 	
 	if(s.length() > 0)
@@ -864,7 +864,7 @@ void Machine::stopserver(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 			int selgot = select(ep1+1, &fds, NULL, NULL, &tv);
 			if(selgot == 0)
 			{
-				// 超时, 可能对方繁忙
+				// Timed out, possibly other busy
 				ERROR_MSG(fmt::format("--> stop {}({}), addr={}, timeout!\n", 
 					(*iter).cid, COMPONENT_NAME[componentType], (cinfos->pIntAddr != NULL ? 
 					cinfos->pIntAddr->c_str() : "unknown")));
@@ -942,7 +942,7 @@ void Machine::killserver(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 	s >> uid;
 	s >> componentType;
 
-	// 如果组件ID大于0则仅停止指定ID的组件
+	// If the component ID is greater than 0 stops only the specified component ID
 	s >> componentID;
 
 	if (s.length() > 0)
@@ -997,7 +997,7 @@ void Machine::killserver(Network::Channel* pChannel, KBEngine::MemoryStream& s)
 
 			while (killtry++ < 10)
 			{
-				// 杀死进程
+				// Kill the process
 				std::string killcmd;
 
 #if KBE_PLATFORM == PLATFORM_WIN32
@@ -1129,7 +1129,7 @@ uint16 Machine::startLinuxProcess(int32 uid, COMPONENT_TYPE componentType, uint6
 
 		std::string cmdLine = bin_path + COMPONENT_NAME_EX(componentType);
 
-		// 改变当前目录，以让出问题的时候core能在此处生成
+		// Change the current directory to make room for question core can be generated here
 		//chdir(bin_path.c_str());
 
 		const char *argv[6];
@@ -1178,17 +1178,17 @@ DWORD Machine::startWindowsProcess(int32 uid, COMPONENT_TYPE componentType, uint
 	str += COMPONENT_NAME_EX(componentType);
 	str += ".exe";
 
-	// 用双引号把命令行括起来，以避免路径中存在空格，从而执行错误
+	// Use double quotation marks to enclose the command line to avoid spaces in the path, so execution error
 	str = "\"" + str + "\"";
 
-	// 増加参数
+	// See number
 	str += fmt::format(" --cid={}", cid);
 	str += fmt::format(" --gus={}", gus);
 
 	wchar_t* szCmdline = KBEngine::strutil::char2wchar(str.c_str());
 
-	// 使用machine当前的工作目录作为新进程的工作目录，
-	// 为一些与相对目录的文件操作操作一致的工作目录（如日志）
+	// Using the machine to the current working directory as the working directory of the new process,
+	// For a number of file manipulation operations consistent with relative directories working directory (such as logs)
 	wchar_t currdir[1024];
 	GetCurrentDirectory(sizeof(currdir), currdir);
 
