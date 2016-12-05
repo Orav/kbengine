@@ -53,7 +53,7 @@ PyNumberMethods ScriptVector3::numberMethods =
 	ScriptVector3::py_negative,			//unaryfunc nb_negative;
 	ScriptVector3::py_positive,			//unaryfunc nb_positive;
 	0,									//unaryfunc nb_absolute;
-	ScriptVector3::py_nonzero,			//inquiry nb_nonzero  nb_nonzero重命名为nb_bool,__nonzero__()重命名为__bool__();
+	ScriptVector3::py_nonzero,			//inquiry nb_nonzero  nb_nonzero Rename to nb_bool, __nonzero__() Rename to __bool__();
 	0,									//unaryfunc nb_invert;
 	0,									//binaryfunc nb_lshift;
 	0,									//binaryfunc nb_rshift;
@@ -563,7 +563,7 @@ PyObject* ScriptVector3::py_positive(PyObject *self)
 int ScriptVector3::py_nonzero(PyObject *self)
 {
 	ScriptVector3* sv = static_cast<ScriptVector3*>(self);
-	// 点乘
+	// Dot
 	Vector3 v = sv->getVector();
 	float val = v.x * v.x + v.y * v.y + v.z * v.z;
 	return val > 0.f;
@@ -618,7 +618,7 @@ PyObject* ScriptVector3::py_inplace_multiply(PyObject *self, PyObject *b)
 		Vector3 bv;
 		convertPyObjectToVector3(bv, b);
 	
-		// 叉乘
+		// Cross products
 		v.x = (v.y * bv.z) - (v.z * bv.y);
 		v.y = (v.z * bv.x) - (v.x * bv.z);
 		v.z = (v.x * bv.y) - (v.y * bv.x);
@@ -719,7 +719,7 @@ PyObject* ScriptVector3::__py_pyDistTo(PyObject* self, PyObject* args)
 	convertPyObjectToVector3(v1, pyVal);
 	
 	Vector3 rv = (v - v1);
-	return PyFloat_FromDouble(KBEVec3Length(&rv)); //计算长度并返回
+	return PyFloat_FromDouble(KBEVec3Length(&rv)); //Length and returns
 }
 
 //-------------------------------------------------------------------------------------
@@ -745,7 +745,7 @@ PyObject* ScriptVector3::__py_pyDistSqrTo(PyObject* self, PyObject* args)
 	convertPyObjectToVector3(v1, pyVal);
 	
 	Vector3 rv = (v - v1);
-	return PyFloat_FromDouble(KBEVec3LengthSq(&rv)); //计算点乘并返回
+	return PyFloat_FromDouble(KBEVec3LengthSq(&rv)); //Calculates the dot product and return
 }
 
 //-------------------------------------------------------------------------------------

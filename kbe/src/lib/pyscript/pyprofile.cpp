@@ -208,7 +208,7 @@ void PyProfile::addToStream(std::string profile, MemoryStream* s)
 //-------------------------------------------------------------------------------------
 bool PyProfile::dump(std::string profile, std::string fileName)
 {
-	/* 加载结果
+	/* Loading results
 		import pstats
 		p = pstats.Stats("*.prof")
 		p.sort_stats("time").print_stats()

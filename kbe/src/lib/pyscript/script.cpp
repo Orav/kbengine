@@ -154,7 +154,7 @@ bool Script::install(const wchar_t* pythonHomeDir, std::wstring pyPaths,
 	pyPaths += pySysPaths;
 	free(pwpySysResPath);
 
-	// 先设置python的环境变量
+	// First set the Python environment variable
 	Py_SetPythonHome(const_cast<wchar_t*>(pythonHomeDir));								
 
 #if KBE_PLATFORM != PLATFORM_WIN32
@@ -185,7 +185,7 @@ bool Script::install(const wchar_t* pythonHomeDir, std::wstring pyPaths,
 
 	Py_SetPath(pyPaths.c_str());
 
-	// python解释器的初始化  
+	// Initialization of the Python interpreter  
 	Py_Initialize();
     if (!Py_IsInitialized())
     {
@@ -195,7 +195,7 @@ bool Script::install(const wchar_t* pythonHomeDir, std::wstring pyPaths,
 
 	PyObject *m = PyImport_AddModule("__main__");
 
-	// 添加一个脚本基础模块
+	// Add a script based modules
 	module_ = PyImport_AddModule(moduleName);
 	if (module_ == NULL)
 		return false;
@@ -208,7 +208,7 @@ bool Script::install(const wchar_t* pythonHomeDir, std::wstring pyPaths,
 		return false;
 	}
 	
-	// 注册产生uuid方法到py
+	// Method to register UUID py
 	APPEND_SCRIPT_MODULE_METHOD(module_,		genUUID64,			__py_genUUID64,					METH_VARARGS,			0);
 
 	if(!install_py_dlls())
@@ -217,7 +217,7 @@ bool Script::install(const wchar_t* pythonHomeDir, std::wstring pyPaths,
 		return false;
 	}
 
-	// 安装py重定向模块
+	// Redirect install py modules
 	ScriptStdOut::installScript(NULL);
 	ScriptStdErr::installScript(NULL);
 
@@ -231,18 +231,18 @@ bool Script::install(const wchar_t* pythonHomeDir, std::wstring pyPaths,
 			 NULL  
 	};  
 
-	// 初始化基础模块
+	// Initialize the base module
 	PyModule_Create(&moduleDesc);
 	*/
 
-	// 将模块对象加入main
+	// Module objects are main
 	PyObject_SetAttrString(m, moduleName, module_);	
 	PyObject_SetAttrString(module_, "__doc__", PyUnicode_FromString("This module is created by KBEngine!"));
 
-	// 重定向python输出
+	// Redirect Python output
 	pyStdouterr_ = new ScriptStdOutErr();
 	
-	// 安装py重定向脚本模块
+	// Redirect install py script module
 	if(!pyStdouterr_->install()){
 		ERROR_MSG("Script::install::pyStdouterr_->install() is failed!\n");
 		delete pyStdouterr_;
@@ -292,7 +292,7 @@ bool Script::uninstall()
 
 	PyGC::initialize();
 
-	// 卸载python解释器
+	// Uninstall the Python interpreter
 	Py_Finalize();
 
 	INFO_MSG("Script::uninstall(): is successfully!\n");
@@ -304,17 +304,17 @@ bool Script::installExtraModule(const char* moduleName)
 {
 	PyObject *m = PyImport_AddModule("__main__");
 
-	// 添加一个脚本扩展模块
+	// Added a scripting extension module
 	extraModule_ = PyImport_AddModule(moduleName);
 	if (extraModule_ == NULL)
 		return false;
 	
-	// 初始化扩展模块
+	// Initialize extension module
 	PyObject *module = PyImport_AddModule(moduleName);
 	if (module == NULL)
 		return false;
 
-	// 将扩展模块对象加入main
+	// Join the extension module object main
 	PyObject_SetAttrString(m, moduleName, extraModule_);
 
 	INFO_MSG(fmt::format("Script::install(): {} is successfully!\n", moduleName));

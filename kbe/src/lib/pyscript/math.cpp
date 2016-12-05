@@ -25,7 +25,7 @@ namespace KBEngine{ namespace script{ namespace math {
 //-------------------------------------------------------------------------------------
 bool installModule(const char* moduleName)
 {
-	// 初始化一个数学相关的模块
+	// Initializes a math-related modules
 	PyObject *mathModule = PyImport_AddModule(moduleName);
 	static struct PyModuleDef moduleDesc =   
 	{  
@@ -38,11 +38,11 @@ bool installModule(const char* moduleName)
 
 	PyModule_Create(&moduleDesc);			
 	
-	// 初始化ScriptVector2
+	// Initialize Script Vector2
 	script::ScriptVector2::installScript(mathModule, "Vector2");
-	// 初始化ScriptVector3
+	// Initialize Script Vector3
 	script::ScriptVector3::installScript(mathModule, "Vector3");
-	// 初始化ScriptVector4
+	// Initialize Script Vector4
 	script::ScriptVector4::installScript(mathModule, "Vector4");
 	return true;
 }
