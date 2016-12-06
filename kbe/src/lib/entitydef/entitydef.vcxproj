@@ -207,6 +207,7 @@
     <ClInclude Include="volatileinfo.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="datatype.inl" />
     <None Include="entitydef.inl" />
     <None Include="entitymailboxabstract.inl" />
